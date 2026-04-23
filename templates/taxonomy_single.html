@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros %}
+
+{% block title %}{{ term.name }} — {{ config.title }}{% endblock title %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 0 auto;">
+  <header class="page-header">
+    <h1>{{ term.name }}</h1>
+    <p>{{ term.pages | length }} article{{ term.pages | length | pluralize(singular='', plural='s') }}</p>
+  </header>
+
+  <div class="article-list">
+    {% for page in term.pages %}
+      {{ macros::article_card(page=page) }}
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

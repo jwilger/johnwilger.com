@@ -1,0 +1,28 @@
+base_url = "https://johnwilger.com"
+title = "John Wilger"
+description = "Senior Engineering Leader & Principal Engineering Consultant"
+default_language = "en"
+
+# Build settings
+build_search_index = true
+generate_feeds = true
+feed_filenames = ["rss.xml", "atom.xml"]
+compile_sass = true
+minify_html = false
+
+# Taxonomies
+taxonomies = [
+    { name = "tags", feed = true, paginate_by = 10 },
+]
+
+
+
+[slugify]
+paths = "on"
+taxonomies = "on"
+anchors = "on"
+
+[search]
+include_title = true
+include_description = true
+include_content = true

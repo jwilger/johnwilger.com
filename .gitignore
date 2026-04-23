@@ -1,0 +1,21 @@
+# Build output
+public/
+
+# Generated data
+data/projects.json
+
+# Compiled CSS
+static/css/
+
+# macOS
+.DS_Store
+
+# Editor
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Nix
+.direnv/

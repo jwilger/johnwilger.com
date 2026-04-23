@@ -1,0 +1,158 @@
+// Base styles: typography, resets, layout foundations
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+
+  @media (prefers-reduced-motion: reduce) {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--ctp-text);
+  background-color: var(--ctp-base);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Selection
+::selection {
+  background-color: var(--ctp-mauve);
+  color: var(--ctp-base);
+}
+
+// Typography scale — bold, confident
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--ctp-text);
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+}
+
+h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
+h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); }
+h3 { font-size: clamp(1.35rem, 3vw, 1.85rem); }
+h4 { font-size: 1.25rem; font-weight: 700; }
+h5 { font-size: 1.125rem; font-weight: 700; }
+h6 { font-size: 1rem; font-weight: 700; }
+
+p {
+  margin-bottom: 1.5rem;
+  max-width: 70ch;
+}
+
+a {
+  color: var(--ctp-mauve);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--ctp-pink);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ctp-mauve);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+// Lists
+ul, ol {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+
+  li {
+    margin-bottom: 0.5rem;
+  }
+}
+
+// Code
+code {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 0.875em;
+  background-color: var(--ctp-surface0);
+  color: var(--ctp-text);
+  padding: 0.2em 0.5em;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+pre {
+  background-color: var(--ctp-mantle);
+  border: 1px solid var(--ctp-surface0);
+  color: var(--ctp-text);
+  padding: 1.5rem;
+  border-radius: 12px;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+
+  code {
+    background-color: transparent;
+    padding: 0;
+    font-size: 0.875rem;
+    line-height: 1.7;
+  }
+}
+
+// Blockquotes
+blockquote {
+  border-left: 4px solid var(--ctp-mauve);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+  color: var(--ctp-subtext1);
+  font-style: italic;
+  font-size: 1.125rem;
+}
+
+// Horizontal rule
+hr {
+  border: none;
+  border-top: 1px solid var(--ctp-surface0);
+  margin: 3rem 0;
+}
+
+// Tables
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 0.9375rem;
+}
+
+th, td {
+  padding: 0.875rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--ctp-surface0);
+}
+
+th {
+  font-weight: 700;
+  color: var(--ctp-text);
+  background-color: var(--ctp-surface0);
+}

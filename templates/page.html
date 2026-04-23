@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros %}
+
+{% block title %}{{ page.title }} — {{ config.title }}{% endblock title %}
+{% block description %}{{ page.description | default(value=config.description) }}{% endblock description %}
+
+{% block content %}
+<article class="container {% if page.title == 'About Me' %}about-page{% endif %}" style="max-width: 800px; margin: 0 auto;">
+  <header class="page-header">
+    <h1>{{ page.title }}</h1>
+    {% if page.description %}
+    <p>{{ page.description }}</p>
+    {% endif %}
+  </header>
+
+  <div class="post-content">
+    {{ page.content | safe }}
+  </div>
+
+  {% if page.extra.projects %}
+  <section style="margin-top: 3rem;">
+    <h2>Featured Projects</h2>
+    {% set data = load_data(path="data/projects.json", format="json") %}
+    <div class="project-grid">
+      {% for project in data %}
+        {{ macros::project_card(project=project) }}
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</article>
+{% endblock content %}
