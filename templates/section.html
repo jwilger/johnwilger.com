@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros %}
+
+{% block title %}{{ section.title }} — {{ config.title }}{% endblock title %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 0 auto;">
+  <header class="page-header">
+    <h1>{{ section.title }}</h1>
+    {% if section.description %}
+    <p>{{ section.description }}</p>
+    {% endif %}
+  </header>
+
+  {% if term %}
+  {# Tag listing page #}
+  <div class="article-list">
+    {% for page in term.pages %}
+      {{ macros::article_card(page=page) }}
+    {% endfor %}
+  </div>
+  {% else %}
+  {# Regular section listing #}
+  <div class="article-list">
+    {% set pages = paginator.pages | default(value=section.pages) %}
+    {% for page in pages %}
+      {{ macros::article_card(page=page) }}
+    {% endfor %}
+  </div>
+  {% if paginator %}
+  <div class="pagination">
+    {% if paginator.previous %}
+    <a href="{{ paginator.previous | safe }}" class="btn btn-secondary">← Newer</a>
+    {% endif %}
+    {% if paginator.next %}
+    <a href="{{ paginator.next | safe }}" class="btn btn-secondary">Older →</a>
+    {% endif %}
+  </div>
+  {% endif %}
+  {% endif %}
+</div>
+{% endblock content %}

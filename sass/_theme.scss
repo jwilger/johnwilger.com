@@ -1,0 +1,65 @@
+// Theme mapping using CSS Custom Properties
+@use "catppuccin-latte" as latte;
+@use "catppuccin-mocha" as mocha;
+
+// Light theme (default)
+:root {
+  --ctp-rosewater: #{latte.$rosewater};
+  --ctp-flamingo: #{latte.$flamingo};
+  --ctp-pink: #{latte.$pink};
+  --ctp-mauve: #{latte.$mauve};
+  --ctp-red: #{latte.$red};
+  --ctp-maroon: #{latte.$maroon};
+  --ctp-peach: #{latte.$peach};
+  --ctp-yellow: #{latte.$yellow};
+  --ctp-green: #{latte.$green};
+  --ctp-teal: #{latte.$teal};
+  --ctp-sky: #{latte.$sky};
+  --ctp-sapphire: #{latte.$sapphire};
+  --ctp-blue: #{latte.$blue};
+  --ctp-lavender: #{latte.$lavender};
+  --ctp-text: #{latte.$text};
+  --ctp-subtext1: #{latte.$subtext1};
+  --ctp-subtext0: #{latte.$subtext0};
+  --ctp-overlay2: #{latte.$overlay2};
+  --ctp-overlay1: #{latte.$overlay1};
+  --ctp-overlay0: #{latte.$overlay0};
+  --ctp-surface2: #{latte.$surface2};
+  --ctp-surface1: #{latte.$surface1};
+  --ctp-surface0: #{latte.$surface0};
+  --ctp-base: #{latte.$base};
+  --ctp-mantle: #{latte.$mantle};
+  --ctp-crust: #{latte.$crust};
+  --ctp-crust-rgb: 220, 224, 232;
+}
+
+// Dark theme
+[data-theme="dark"] {
+  --ctp-rosewater: #{mocha.$rosewater};
+  --ctp-flamingo: #{mocha.$flamingo};
+  --ctp-pink: #{mocha.$pink};
+  --ctp-mauve: #{mocha.$mauve};
+  --ctp-red: #{mocha.$red};
+  --ctp-maroon: #{mocha.$maroon};
+  --ctp-peach: #{mocha.$peach};
+  --ctp-yellow: #{mocha.$yellow};
+  --ctp-green: #{mocha.$green};
+  --ctp-teal: #{mocha.$teal};
+  --ctp-sky: #{mocha.$sky};
+  --ctp-sapphire: #{mocha.$sapphire};
+  --ctp-blue: #{mocha.$blue};
+  --ctp-lavender: #{mocha.$lavender};
+  --ctp-text: #{mocha.$text};
+  --ctp-subtext1: #{mocha.$subtext1};
+  --ctp-subtext0: #{mocha.$subtext0};
+  --ctp-overlay2: #{mocha.$overlay2};
+  --ctp-overlay1: #{mocha.$overlay1};
+  --ctp-overlay0: #{mocha.$overlay0};
+  --ctp-surface2: #{mocha.$surface2};
+  --ctp-surface1: #{mocha.$surface1};
+  --ctp-surface0: #{mocha.$surface0};
+  --ctp-base: #{mocha.$base};
+  --ctp-mantle: #{mocha.$mantle};
+  --ctp-crust: #{mocha.$crust};
+  --ctp-crust-rgb: 17, 17, 27;
+}

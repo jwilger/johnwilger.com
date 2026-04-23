@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} — {{ config.title }}{% endblock title %}
+{% block description %}{{ page.description | default(value=page.summary | default(value='') | striptags | truncate(length=160)) }}{% endblock description %}
+
+{% block content %}
+<article class="container" style="max-width: 800px; margin: 0 auto;">
+  <header class="post-header">
+    <h1>{{ page.title }}</h1>
+    <div class="post-meta">
+      <time datetime="{{ page.date | date(format='%+') }}">{{ page.date | date(format='%B %e, %Y') }}</time>
+      {% if page.reading_time %}
+      <span>{{ page.reading_time }} min read</span>
+      {% endif %}
+      {% if page.taxonomies.tags %}
+      <div class="tags-list" style="margin-bottom: 0;">
+        {% for tag in page.taxonomies.tags %}
+        <a href="{{ get_taxonomy_url(kind='tags', name=tag) | safe }}" class="tag">{{ tag }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </header>
+
+  {% if page.toc and page.toc | length > 0 %}
+  <nav class="toc" aria-label="Table of contents">
+    <h2>Table of Contents</h2>
+    <ul>
+      {% for h2 in page.toc %}
+      <li>
+        <a href="#{{ h2.id | safe }}">{{ h2.title }}</a>
+        {% if h2.children %}
+        <ul>
+          {% for h3 in h2.children %}
+          <li><a href="#{{ h3.id | safe }}">{{ h3.title }}</a></li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </nav>
+  {% endif %}
+
+  <div class="post-content">
+    {{ page.content | safe }}
+  </div>
+
+  <section class="comments-section">
+    <h2>Comments</h2>
+    <p style="color: var(--ctp-subtext0); margin-bottom: 1.5rem;">
+      Comments are powered by <a href="https://giscus.app" target="_blank" rel="noopener noreferrer">Giscus</a> via GitHub Discussions.
+      You must have a GitHub account to comment.
+    </p>
+    <div class="giscus"
+         x-data="{ theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'catppuccin_mocha' : 'catppuccin_latte' }"
+         x-init="
+           const observer = new MutationObserver((mutations) => {
+             mutations.forEach((mutation) => {
+               if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+                 const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'catppuccin_mocha' : 'catppuccin_latte';
+                 const iframe = document.querySelector('.giscus-frame');
+                 if (iframe) {
+                   iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: newTheme } } }, 'https://giscus.app');
+                 }
+               }
+             });
+           });
+           observer.observe(document.documentElement, { attributes: true });
+         "
+    ></div>
+    <script src="https://giscus.app/client.js"
+            data-repo="jwilger/johnwilger.com"
+            data-repo-id=""
+            data-category="Blog Comments"
+            data-category-id=""
+            data-mapping="pathname"
+            data-strict="0"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="bottom"
+            data-theme="catppuccin_latte"
+            data-lang="en"
+            crossorigin="anonymous"
+            async>
+    </script>
+  </section>
+</article>
+{% endblock content %}

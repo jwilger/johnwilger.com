@@ -1,0 +1,89 @@
+// Syntax highlighting using Catppuccin-compatible colors
+// These styles complement Zola's built-in syntax highlighting
+
+pre {
+  &[data-lang] {
+    position: relative;
+
+    &::before {
+      content: attr(data-lang);
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--ctp-overlay0);
+      background-color: var(--ctp-crust);
+      border-radius: 0 8px 0 8px;
+    }
+  }
+}
+
+// Zola syntax highlighting classes
+.z-code {
+  color: var(--ctp-text);
+}
+
+.z-comment {
+  color: var(--ctp-overlay0);
+  font-style: italic;
+}
+
+.z-keyword {
+  color: var(--ctp-mauve);
+  font-weight: 600;
+}
+
+.z-string {
+  color: var(--ctp-green);
+}
+
+.z-variable {
+  color: var(--ctp-text);
+}
+
+.z-function {
+  color: var(--ctp-blue);
+}
+
+.z-number {
+  color: var(--ctp-peach);
+}
+
+.z-operator {
+  color: var(--ctp-sky);
+}
+
+.z-type {
+  color: var(--ctp-yellow);
+}
+
+.z-constant {
+  color: var(--ctp-peach);
+}
+
+.z-attribute {
+  color: var(--ctp-yellow);
+}
+
+.z-tag {
+  color: var(--ctp-mauve);
+}
+
+.z-escape {
+  color: var(--ctp-pink);
+}
+
+.z-error {
+  color: var(--ctp-red);
+}
+
+.z-warning {
+  color: var(--ctp-yellow);
+}
+
+.z-info {
+  color: var(--ctp-teal);
+}
