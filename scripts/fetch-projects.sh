@@ -2,7 +2,10 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DATA_FILE="${SCRIPT_DIR}/../data/projects.json"
+DATA_DIR="${SCRIPT_DIR}/../data"
+DATA_FILE="${DATA_DIR}/projects.json"
+
+mkdir -p "$DATA_DIR"
 
 echo "Fetching pinned repositories for jwilger..."
 
