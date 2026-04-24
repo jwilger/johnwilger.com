@@ -4,16 +4,22 @@
 {% block title %}{{ section.title }} — {{ config.title }}{% endblock title %}
 
 {% block content %}
-<div class="container" style="max-width: 800px; margin: 0 auto;">
-  <header class="page-header">
+<section class="hero" style="padding: 4rem 2rem;">
+  <div class="hero-content">
     <h1>{{ section.title }}</h1>
     {% if section.description %}
-    <p>{{ section.description }}</p>
+    <p class="hero-description">{{ section.description }}</p>
     {% endif %}
-  </header>
+  </div>
+</section>
 
+<section class="container" style="padding-bottom: 5rem;">
   {% if term %}
   {# Tag listing page #}
+  <div class="section-header">
+    <h2>{{ term.name }}</h2>
+    <p>{{ term.pages | length }} article{{ term.pages | length | pluralize(singular='', plural='s') }}</p>
+  </div>
   <div class="article-list">
     {% for page in term.pages %}
       {{ macros::article_card(page=page) }}
@@ -38,5 +44,5 @@
   </div>
   {% endif %}
   {% endif %}
-</div>
+</section>
 {% endblock content %}

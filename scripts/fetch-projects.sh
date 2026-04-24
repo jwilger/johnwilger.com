@@ -9,16 +9,26 @@ mkdir -p "$DATA_DIR"
 
 echo "Fetching pinned repositories for jwilger..."
 
-# Query GitHub GraphQL API for pinned repositories
 QUERY='{"query": "query { user(login: \"jwilger\") { pinnedItems(first: 6, types: REPOSITORY) { nodes { ... on Repository { name description url stargazerCount primaryLanguage { name } } } } } }"}'
 
-# Use gh CLI if authenticated, otherwise use curl with no auth (public data)
-if command -v gh &> /dev/null && gh auth status &> /dev/null; then
+# Try gh CLI first (works locally and in CI with GITHUB_TOKEN)
+if command -v gh &> /dev/null; then
     RESPONSE=$(gh api graphql -f query='query { user(login: "jwilger") { pinnedItems(first: 6, types: REPOSITORY) { nodes { ... on Repository { name description url stargazerCount primaryLanguage { name } } } } } }' 2>/dev/null || echo '')
-else
-    RESPONSE=$(curl -sL -X POST https://api.github.com/graphql \
-        -H "Content-Type: application/json" \
-        -d "$QUERY" 2>/dev/null || echo '')
+fi
+
+# Fallback to curl if gh didn't work
+if [ -z "${RESPONSE:-}" ]; then
+    # Use GITHUB_TOKEN if available (CI), otherwise no auth
+    if [ -n "${GITHUB_TOKEN:-}" ]; then
+        RESPONSE=$(curl -sL -X POST https://api.github.com/graphql \
+            -H "Authorization: bearer ${GITHUB_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "$QUERY" 2>/dev/null || echo '')
+    else
+        RESPONSE=$(curl -sL -X POST https://api.github.com/graphql \
+            -H "Content-Type: application/json" \
+            -d "$QUERY" 2>/dev/null || echo '')
+    fi
 fi
 
 if [ -z "$RESPONSE" ] || echo "$RESPONSE" | grep -q '"errors"'; then
