@@ -18,11 +18,11 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-  font-size: 1.125rem;
-  line-height: 1.7;
-  color: var(--ctp-text);
-  background-color: var(--ctp-base);
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  line-height: var(--lh-body);
+  color: var(--fg-1);
+  background-color: var(--bg-1);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -30,129 +30,127 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-// Selection
 ::selection {
   background-color: var(--ctp-mauve);
   color: var(--ctp-base);
 }
 
-// Typography scale — bold, confident
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 800;
-  line-height: 1.1;
-  color: var(--ctp-text);
-  letter-spacing: -0.02em;
-  margin-bottom: 1.25rem;
+  font-weight: var(--fw-black);
+  line-height: var(--lh-tight);
+  color: var(--fg-1);
+  letter-spacing: var(--ls-display);
+  margin-bottom: var(--space-5);
 }
 
-h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
-h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); }
-h3 { font-size: clamp(1.35rem, 3vw, 1.85rem); }
-h4 { font-size: 1.25rem; font-weight: 700; }
-h5 { font-size: 1.125rem; font-weight: 700; }
-h6 { font-size: 1rem; font-weight: 700; }
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+h4 { font-size: var(--fs-h4); font-weight: var(--fw-bold); }
+h5 { font-size: var(--fs-h5); font-weight: var(--fw-bold); }
+h6 { font-size: var(--fs-h6); font-weight: var(--fw-bold); }
 
 p {
-  margin-bottom: 1.5rem;
-  max-width: 70ch;
+  margin-bottom: var(--space-6);
+  max-width: var(--prose-max);
 }
 
 a {
-  color: var(--ctp-mauve);
+  color: var(--accent-primary);
   text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
+  font-weight: var(--fw-medium);
+  transition: color var(--dur-base) ease;
 
   &:hover {
-    color: var(--ctp-pink);
+    color: var(--accent-secondary);
     text-decoration: underline;
     text-underline-offset: 0.2em;
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ctp-mauve);
+    outline: 2px solid var(--accent-primary);
     outline-offset: 3px;
     border-radius: 3px;
   }
 }
 
-img {
+img, svg, video {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-// Lists
 ul, ol {
-  margin-bottom: 1.5rem;
-  padding-left: 1.5rem;
+  margin-bottom: var(--space-6);
+  padding-left: var(--space-6);
 
   li {
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-2);
   }
 }
 
-// Code
 code {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-family: var(--font-mono);
   font-size: 0.875em;
   background-color: var(--ctp-surface0);
-  color: var(--ctp-text);
+  color: var(--fg-1);
   padding: 0.2em 0.5em;
-  border-radius: 6px;
-  font-weight: 500;
+  border-radius: var(--radius-sm);
+  font-weight: var(--fw-medium);
 }
 
 pre {
-  background-color: var(--ctp-mantle);
-  border: 1px solid var(--ctp-surface0);
-  color: var(--ctp-text);
-  padding: 1.5rem;
-  border-radius: 12px;
+  font-family: var(--font-mono);
+  background-color: var(--bg-2);
+  border: 1px solid var(--border-1);
+  color: var(--fg-1);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
   overflow-x: auto;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-6);
 
   code {
     background-color: transparent;
     padding: 0;
-    font-size: 0.875rem;
-    line-height: 1.7;
+    font-size: var(--fs-sm);
+    line-height: var(--lh-body);
   }
 }
 
-// Blockquotes
 blockquote {
-  border-left: 4px solid var(--ctp-mauve);
-  padding-left: 1.5rem;
-  margin: 2rem 0;
-  color: var(--ctp-subtext1);
+  border-left: 4px solid var(--accent-primary);
+  padding-left: var(--space-6);
+  margin: var(--space-8) 0;
+  color: var(--fg-2);
   font-style: italic;
-  font-size: 1.125rem;
+  font-size: var(--fs-md);
 }
 
-// Horizontal rule
 hr {
   border: none;
-  border-top: 1px solid var(--ctp-surface0);
-  margin: 3rem 0;
+  border-top: 1px solid var(--border-1);
+  margin: var(--space-12) 0;
 }
 
-// Tables
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-6);
   font-size: 0.9375rem;
 }
 
 th, td {
   padding: 0.875rem 1rem;
   text-align: left;
-  border-bottom: 1px solid var(--ctp-surface0);
+  border-bottom: 1px solid var(--border-1);
 }
 
 th {
-  font-weight: 700;
-  color: var(--ctp-text);
+  font-weight: var(--fw-bold);
+  color: var(--fg-1);
   background-color: var(--ctp-surface0);
+}
+
+button {
+  font-family: inherit;
 }

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 120" role="img" aria-label="John Wilger">
+  <defs>
+    <linearGradient id="wm-grad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#8839ef"></stop>
+      <stop offset="50%" stop-color="#ea76cb"></stop>
+      <stop offset="100%" stop-color="#1e66f5"></stop>
+    </linearGradient>
+  </defs>
+  
+  <text x="0" y="82" font-family="Inter, system-ui, sans-serif" font-weight="800" font-size="82" letter-spacing="-2" fill="currentColor">John</text>
+  <text x="188" y="82" font-family="Inter, system-ui, sans-serif" font-weight="800" font-size="82" letter-spacing="-2" fill="url(#wm-grad)">Wilger</text>
+</svg>
