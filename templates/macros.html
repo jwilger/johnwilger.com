@@ -18,15 +18,15 @@
       {% if page.description %}
       <p class="article-excerpt">{{ page.description }}</p>
       {% endif %}
+      {% if page.taxonomies.tags %}
+      <div class="tags-list">
+        {% for tag in page.taxonomies.tags %}
+        <span class="tag">{{ tag }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
     </div>
   </a>
-  {% if page.taxonomies.tags %}
-  <div class="tags-list">
-    {% for tag in page.taxonomies.tags %}
-    <a href="{{ get_taxonomy_url(kind='tags', name=tag) | safe }}" class="tag">{{ tag }}</a>
-    {% endfor %}
-  </div>
-  {% endif %}
 </article>
 {% endmacro %}
 
