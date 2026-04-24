@@ -11,28 +11,24 @@ echo "Fetching pinned repositories for jwilger..."
 
 QUERY='{"query": "query { user(login: \"jwilger\") { pinnedItems(first: 6, types: REPOSITORY) { nodes { ... on Repository { name description url stargazerCount primaryLanguage { name } } } } } }"}'
 
-# Try gh CLI first (works locally and in CI with GITHUB_TOKEN)
-if command -v gh &> /dev/null; then
-    RESPONSE=$(gh api graphql -f query='query { user(login: "jwilger") { pinnedItems(first: 6, types: REPOSITORY) { nodes { ... on Repository { name description url stargazerCount primaryLanguage { name } } } } } }' 2>/dev/null || echo '')
-fi
+# Use GH_TOKEN or GITHUB_TOKEN for auth (required for GraphQL API)
+TOKEN="${GH_TOKEN:-${GITHUB_TOKEN:-}}"
 
-# Fallback to curl if gh didn't work
-if [ -z "${RESPONSE:-}" ]; then
-    # Use GITHUB_TOKEN if available (CI), otherwise no auth
-    if [ -n "${GITHUB_TOKEN:-}" ]; then
-        RESPONSE=$(curl -sL -X POST https://api.github.com/graphql \
-            -H "Authorization: bearer ${GITHUB_TOKEN}" \
-            -H "Content-Type: application/json" \
-            -d "$QUERY" 2>/dev/null || echo '')
-    else
-        RESPONSE=$(curl -sL -X POST https://api.github.com/graphql \
-            -H "Content-Type: application/json" \
-            -d "$QUERY" 2>/dev/null || echo '')
-    fi
+if [ -n "$TOKEN" ]; then
+    RESPONSE=$(curl -sL -X POST https://api.github.com/graphql \
+        -H "Authorization: bearer ${TOKEN}" \
+        -H "Content-Type: application/json" \
+        -d "$QUERY" 2>/dev/null || echo '')
+else
+    # Unauthenticated fallback (may hit rate limits)
+    RESPONSE=$(curl -sL -X POST https://api.github.com/graphql \
+        -H "Content-Type: application/json" \
+        -d "$QUERY" 2>/dev/null || echo '')
 fi
 
 if [ -z "$RESPONSE" ] || echo "$RESPONSE" | grep -q '"errors"'; then
-    echo "Warning: Could not fetch projects from GitHub API. Using fallback."
+    echo "Warning: Could not fetch projects from GitHub API. Response:"
+    echo "$RESPONSE" | head -5
     echo '[]' > "$DATA_FILE"
     exit 0
 fi

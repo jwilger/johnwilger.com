@@ -25,6 +25,8 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@main
 
       - name: Build site
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           nix develop --command just build
 
