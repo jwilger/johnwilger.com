@@ -4,6 +4,7 @@
 
 // Light theme (default)
 :root {
+  // Raw Catppuccin palette — Latte
   --ctp-rosewater: #{latte.$rosewater};
   --ctp-flamingo: #{latte.$flamingo};
   --ctp-pink: #{latte.$pink};
@@ -31,6 +32,54 @@
   --ctp-mantle: #{latte.$mantle};
   --ctp-crust: #{latte.$crust};
   --ctp-crust-rgb: 220, 224, 232;
+
+  // Semantic — FG/BG roles
+  --fg-1: var(--ctp-text);
+  --fg-2: var(--ctp-subtext1);
+  --fg-3: var(--ctp-subtext0);
+  --fg-4: var(--ctp-overlay0);
+  --bg-1: var(--ctp-base);
+  --bg-2: var(--ctp-mantle);
+  --bg-3: var(--ctp-crust);
+  --border-1: var(--ctp-surface0);
+  --border-2: var(--ctp-surface1);
+
+  // Brand accents
+  --accent-primary: var(--ctp-mauve);
+  --accent-secondary: var(--ctp-pink);
+  --accent-tertiary: var(--ctp-blue);
+  --accent-success: var(--ctp-green);
+  --accent-warning: var(--ctp-yellow);
+  --accent-danger: var(--ctp-red);
+  --accent-info: var(--ctp-teal);
+
+  // Signature gradients
+  --grad-brand: linear-gradient(135deg, var(--ctp-mauve), var(--ctp-pink));
+  --grad-headline: linear-gradient(135deg, var(--ctp-mauve), var(--ctp-blue), var(--ctp-teal));
+  --grad-project: linear-gradient(90deg, var(--ctp-teal), var(--ctp-sapphire));
+  --grad-accent-bar: linear-gradient(90deg, var(--ctp-mauve), var(--ctp-blue));
+
+  // Hero atmosphere
+  --grad-hero-base: linear-gradient(135deg, var(--ctp-crust) 0%, var(--ctp-base) 50%, var(--ctp-mantle) 100%);
+  --grad-hero-glow:
+    radial-gradient(ellipse at 30% 20%, rgba(136, 57, 239, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(30, 102, 245, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(203, 166, 247, 0.04) 0%, transparent 60%);
+
+  // Shadows
+  --shadow-xs: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.10);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.15);
+  --shadow-primary: 0 4px 16px rgba(136, 57, 239, 0.3);
+  --shadow-primary-strong: 0 6px 24px rgba(136, 57, 239, 0.4);
+  --shadow-avatar: 0 8px 32px rgba(0, 0, 0, 0.15);
+  --shadow-avatar-hover: 0 12px 40px rgba(136, 57, 239, 0.2);
+
+  // Glass / backdrop
+  --glass-bg: rgba(var(--ctp-crust-rgb), 0.8);
+  --glass-blur: blur(12px);
 }
 
 // Dark theme
@@ -62,4 +111,81 @@
   --ctp-mantle: #{mocha.$mantle};
   --ctp-crust: #{mocha.$crust};
   --ctp-crust-rgb: 17, 17, 27;
+
+  // Shadows are deeper / cooler in dark mode
+  --shadow-xs: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.45);
+  --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.55);
+  --shadow-primary: 0 4px 16px rgba(203, 166, 247, 0.25);
+  --shadow-primary-strong: 0 6px 24px rgba(203, 166, 247, 0.35);
+  --shadow-avatar: 0 8px 32px rgba(0, 0, 0, 0.45);
+  --shadow-avatar-hover: 0 12px 40px rgba(203, 166, 247, 0.25);
+}
+
+// Typography tokens (theme-agnostic)
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-black: 800;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;
+
+  --fs-h1: clamp(2.5rem, 6vw, 4.5rem);
+  --fs-h2: clamp(1.75rem, 4vw, 2.75rem);
+  --fs-h3: clamp(1.35rem, 3vw, 1.85rem);
+  --fs-h4: 1.25rem;
+  --fs-h5: 1.125rem;
+  --fs-h6: 1rem;
+
+  --lh-tight: 1.1;
+  --lh-snug: 1.3;
+  --lh-normal: 1.55;
+  --lh-body: 1.7;
+  --lh-prose: 1.75;
+
+  --ls-display: -0.02em;
+  --ls-tight: -0.03em;
+  --ls-upper: 0.05em;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-pill: 9999px;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 0.15s;
+  --dur-base: 0.2s;
+  --dur-slow: 0.3s;
+  --dur-carousel: 0.5s;
+
+  --container-max: 1200px;
+  --prose-max: 70ch;
+  --reading-max: 800px;
 }

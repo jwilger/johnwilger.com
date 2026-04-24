@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}{{ config.title }}{% endblock title %}</title>
   <meta name="description" content="{% block description %}{{ config.description }}{% endblock description %}">
-  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/main.css">
   <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml">
   <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/atom.xml">
   {% block extra_head %}{% endblock extra_head %}
@@ -28,9 +28,15 @@
     <div class="container">
       <a href="{{ get_url(path='@/_index.md') | safe }}" class="site-title">{{ config.title }}</a>
       <nav class="site-nav" aria-label="Main navigation">
-        <a href="{{ get_url(path='@/blog/_index.md') | safe }}" {% if current_path and current_path is starting_with('/blog') %}aria-current="page"{% endif %}>Blog</a>
-        <a href="{{ get_url(path='@/about.md') | safe }}" {% if current_path == '/about/' %}aria-current="page"{% endif %}>About</a>
-        <a href="{{ get_url(path='@/projects.md') | safe }}" {% if current_path == '/projects/' %}aria-current="page"{% endif %}>Projects</a>
+        <a href="{{ get_url(path='@/blog/_index.md') | safe }}"
+           class="{% if current_path and current_path is starting_with('/blog') %}current{% endif %}"
+           {% if current_path and current_path is starting_with('/blog') %}aria-current="page"{% endif %}>Blog</a>
+        <a href="{{ get_url(path='@/about.md') | safe }}"
+           class="{% if current_path == '/about/' %}current{% endif %}"
+           {% if current_path == '/about/' %}aria-current="page"{% endif %}>About</a>
+        <a href="{{ get_url(path='@/projects.md') | safe }}"
+           class="{% if current_path == '/projects/' %}current{% endif %}"
+           {% if current_path == '/projects/' %}aria-current="page"{% endif %}>Projects</a>
       </nav>
       <button
         type="button"
