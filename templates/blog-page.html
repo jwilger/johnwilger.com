@@ -4,7 +4,14 @@
 {% block description %}{{ page.description | default(value=page.summary | default(value='') | striptags | truncate(length=160)) }}{% endblock description %}
 
 {% block content %}
-<article class="container" style="max-width: 800px; margin: 0 auto;">
+{# Post hero with cover image #}
+{% if page.extra.cover %}
+<div class="post-hero" style="background-image: url('{{ page.extra.cover | safe }}');">
+  <div class="post-hero-overlay"></div>
+</div>
+{% endif %}
+
+<article class="container post-page" style="max-width: 800px; margin: 0 auto;">
   <header class="post-header">
     <h1>{{ page.title }}</h1>
     <div class="post-meta">

@@ -1,17 +1,24 @@
-{# Article card macro #}
+{# Article card macro — horizontal layout with cover image #}
 {% macro article_card(page) %}
 <article class="article-card">
-  <a href="{{ page.permalink | safe }}" style="text-decoration: none;">
-    <h3>{{ page.title }}</h3>
-    <div class="article-meta">
-      <time datetime="{{ page.date | date(format='%+') }}">{{ page.date | date(format='%B %e, %Y') }}</time>
-      {% if page.reading_time %}
-      <span>{{ page.reading_time }} min read</span>
+  <a href="{{ page.permalink | safe }}" class="article-card-link">
+    {% if page.extra.cover %}
+    <div class="article-card-image" style="background-image: url('{{ page.extra.cover | safe }}');">
+      <div class="article-card-image-overlay"></div>
+    </div>
+    {% endif %}
+    <div class="article-card-body">
+      <h3>{{ page.title }}</h3>
+      <div class="article-meta">
+        <time datetime="{{ page.date | date(format='%+') }}">{{ page.date | date(format='%B %e, %Y') }}</time>
+        {% if page.reading_time %}
+        <span>{{ page.reading_time }} min read</span>
+        {% endif %}
+      </div>
+      {% if page.description %}
+      <p class="article-excerpt">{{ page.description }}</p>
       {% endif %}
     </div>
-    {% if page.summary %}
-    <p class="article-excerpt">{{ page.summary | striptags | truncate(length=200) }}</p>
-    {% endif %}
   </a>
   {% if page.taxonomies.tags %}
   <div class="tags-list">
