@@ -21,7 +21,7 @@ CodeRabbit doesn't run on Forgejo. Nothing comparable does. The major commercial
 
 So I typed something like "what would it take to reimplement CodeRabbit for Forgejo" into Claude Code, expecting to come back to a list of reasons why this was a multi-quarter team-of-engineers project I had no business attempting alone. Then I went to bed. Twelve hours later I woke up to a working PR reviewer running against this very repository, posting inline comments on its own commits.
 
-This article has four threads. Why I'm leaving GitHub, in conversation with the writers above. How a language model reconstructed the architecture of a closed-source product from its creators' own public engineering writing. What came out of that: [`auto_review`](https://git.johnwilger.com/jwilger/auto_review), the system I'm releasing. And — the part I didn't see coming — the techniques the CodeRabbit team got right, which I had to compose to make any of this work, and which generalize well beyond code review. If you're considering an exit from GitHub, the next section. If you're working on agentic systems, jump to "What Generalizes." If you're CodeRabbit-curious, the middle is yours.
+This post covers four things: why I'm leaving GitHub, in conversation with the writers above; how a language model reconstructed CodeRabbit's architecture from its team's own public engineering writing; what came out of that, which is [`auto_review`](https://git.johnwilger.com/jwilger/auto_review); and the techniques CodeRabbit's team got right, which I had to put together to make any of it work and which generalize well beyond code review. The GitHub argument comes first. If you only want the architectural lessons, jump to "What Generalizes."
 
 ## Why I'm Going
 
