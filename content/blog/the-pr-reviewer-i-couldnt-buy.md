@@ -4,6 +4,9 @@ description = "I left GitHub for Forgejo, missed CodeRabbit, and asked Claude wh
 slug = "the-pr-reviewer-i-couldnt-buy"
 date = 2026-05-02
 
+[extra]
+cover = "/images/the-pr-reviewer-i-couldnt-buy.png"
+
 [taxonomies]
 tags = ["ai", "forgejo", "github", "rust", "open-source", "agentic-systems"]
 +++
