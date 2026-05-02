@@ -79,8 +79,6 @@ The system is alpha. Consider this a status update, not a marketing page. As of 
 
 There are around a thousand tests. The pipeline is reviewing its own PRs. The threat model and ADRs are in `docs/`.
 
-I'm writing this while `auto_review` is reviewing the PR for the article-publishing change behind it, which is the kind of recursive moment I'd ordinarily roll my eyes at. It is what it is.
-
 ## What Generalizes
 
 Here is the part I want to be careful about. The techniques below are not my insights. The CodeRabbit team got there first; their public engineering writing argues for each of them in some form, and the architectural shape of their system depends on them. What I did was reimplement enough of it to see why each piece is load-bearing. If anything, the value of the exercise was exactly that: composing these techniques in order to build something forced me to understand why each one is there. They generalize well beyond code review, and I think a lot of next-generation agentic systems are going to converge on roughly this shape. The list is what I noticed during reimplementation that I think is worth calling out as qualities of a good agentic architecture, with credit to the people who already had it figured out.
