@@ -4,6 +4,9 @@ description = "A practical approach to preventing AI assistants from fabricating
 slug = "make-fabrication-unrepresentable"
 date = 2026-06-04
 
+[extra]
+cover = "/images/blog/make-fabrication-unrepresentable.jpg"
+
 [taxonomies]
 tags = ["ai", "llm", "generative-ai", "software-engineering"]
 +++
