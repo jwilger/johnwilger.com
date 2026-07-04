@@ -63,7 +63,7 @@ excludes_pinned_non_contributor_repos() {
 uses_github_project_descriptions() {
     jq -e '
         any(.[]; .url == "https://github.com/slipstream-eng/eventcore"
-            and .description == "Experimental Rust event-sourcing library for commands that atomically read and write across multiple event streams.")
+            and .description == "Rust event-sourcing library for commands that atomically read and write across multiple event streams.")
     ' "$DATA_FILE" >/dev/null
 }
 
@@ -181,7 +181,7 @@ case "$url" in
   "owner": {
     "login": "slipstream-eng"
   },
-  "description": "Experimental Rust event-sourcing library for commands that atomically read and write across multiple event streams.",
+  "description": "Rust event-sourcing library for commands that atomically read and write across multiple event streams.",
   "html_url": "https://github.com/slipstream-eng/eventcore",
   "stargazers_count": 42,
   "language": "Rust"
