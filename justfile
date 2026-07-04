@@ -10,6 +10,10 @@ build:
 	@echo "Building site with Zola..."
 	zola build
 
+# Run test suite
+test:
+	bash tests/projects-page-repos-test.sh
+
 # Clean build artifacts
 clean:
 	rm -rf public/
