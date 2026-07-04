@@ -44,6 +44,34 @@ Output is generated in `public/`.
 - The site supports tags via Zola taxonomies.
 - Content is automatically built and deployed on push to `main`.
 
+### Blog Writing Voice
+
+When creating or editing blog posts, write for engineers first. The post should teach a concrete engineering lesson and demonstrate John's judgment through specific decisions, constraints, tradeoffs, and implementation details. Do not turn the post into generic marketing copy.
+
+Use a conversational, technically precise voice:
+- Prefer contractions in normal prose: "didn't", "don't", "isn't", "can't", "I'd", "I'm", "you're".
+- Use first person when the post is grounded in John's experience, implementation work, or decision-making.
+- Explain why a choice was made, what failed, what changed, and what evidence supports the claim.
+- Keep claims narrow and defensible. Name caveats, measurement limits, and scope boundaries instead of overstating outcomes.
+- Prefer concrete artifacts, commands, data, code snippets, dates, and repo behavior over abstract value claims.
+- Let expertise show through the work. Avoid telling the reader that something is innovative, robust, seamless, or important unless the post proves it.
+
+Avoid classic AI-generated-content tells:
+- Do not use stock punchline sentences such as "That last part matters."
+- Avoid generic transitions like "It is worth noting", "Importantly", "Moreover", "Furthermore", "In today's landscape", "The broader lesson", and "The omission is deliberate."
+- Avoid marketing filler such as "unlock", "leverage" when "use" is meant, "seamless", "robust" without specifics, "game-changer", "crucial", and "not only ... but also" constructions.
+- Avoid polished-but-empty summary paragraphs that could fit any technical topic.
+- Avoid formal-paper phrasing in blog prose, especially repeated "I did not", "I do not", "is not", "does not", "would not", and similar forms when a contraction would sound natural.
+
+Before considering a blog post finished, scan it for these tells and rewrite the surrounding sentence, not just the single phrase:
+
+```bash
+rg -n "That last part matters|It is worth noting|It's worth noting|Importantly|Moreover|Furthermore|In today|landscape|delve|unlock|seamless|robust|leverage|crucial|game-changer|not only|broader lesson|omission is deliberate" content/blog
+rg -n "\bI did not\b|\bI do not\b|\bI am\b|\bI would\b|\bI could not\b|\bI cannot\b|\bit is\b|\bIt is\b|\bdoes not\b|\bdo not\b|\bdid not\b|\bcannot\b|\bwould not\b|\bshould not\b|\bis not\b|\bare not\b|\bthey are\b|\bThere is\b|\bthere is\b|\byou are\b" content/blog
+```
+
+Treat these scans as prompts for review, not as absolute rules. Some matches may be correct in code, quotes, titles, or deliberately formal contexts.
+
 ## Deployment
 
 GitHub Actions workflow in `.github/workflows/deploy.yml` builds and deploys to GitHub Pages on every push to `main`.
