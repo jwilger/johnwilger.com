@@ -60,6 +60,21 @@ excludes_pinned_non_contributor_repos() {
     jq -e 'map(.url) | index("https://github.com/example/not-my-repo") | not' "$DATA_FILE" >/dev/null
 }
 
+uses_github_project_descriptions() {
+    jq -e '
+        any(.[]; .url == "https://github.com/slipstream-eng/eventcore"
+            and .description == "Experimental Rust event-sourcing library for commands that atomically read and write across multiple event streams.")
+    ' "$DATA_FILE" >/dev/null
+}
+
+project_cards_do_not_render_star_counts() {
+    local project_card_template
+
+    project_card_template="$(sed -n '/macro project_card/,/endmacro/p' "${ROOT_DIR}/templates/macros.html")"
+    does_not_contain 'stargazerCount' "$project_card_template" \
+        && does_not_contain '⭐' "$project_card_template"
+}
+
 run_fetch_projects_with_stubbed_github() {
     mkdir -p "${TMP_DIR}/bin"
 
@@ -166,7 +181,7 @@ case "$url" in
   "owner": {
     "login": "slipstream-eng"
   },
-  "description": "Event-sourced application toolkit.",
+  "description": "Experimental Rust event-sourcing library for commands that atomically read and write across multiple event streams.",
   "html_url": "https://github.com/slipstream-eng/eventcore",
   "stargazers_count": 42,
   "language": "Rust"
@@ -249,6 +264,9 @@ assert "fetch-projects resolves moved personal pins to slipstream-eng repos by n
 assert "fetch-projects keeps pinned repositories where jwilger is a contributor" \
     keeps_pinned_contributor_repos
 
+assert "fetch-projects uses GitHub project descriptions" \
+    uses_github_project_descriptions
+
 assert "fetch-projects excludes pinned repositories where jwilger is not a contributor" \
     excludes_pinned_non_contributor_repos
 
@@ -259,6 +277,9 @@ assert "Projects page links readers to the personal pinned GitHub profile" \
 
 assert "Projects page copy does not link readers to slipstream-eng as the source list" \
     does_not_contain '[GitHub](https://github.com/slipstream-eng)' "$projects_page"
+
+assert "Project cards do not render star counts" \
+    project_cards_do_not_render_star_counts
 
 run_fetch_projects_with_stubbed_github gh-token
 gh_auth_header="$(cat "${TMP_DIR}/auth-header.txt")"

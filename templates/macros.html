@@ -35,9 +35,6 @@
 <article class="project-card">
   <h3><a href="{{ project.url }}" target="_blank" rel="noopener noreferrer">{{ project.name }}</a></h3>
   <div class="project-meta">
-    {% if project.stargazerCount %}
-    <span>⭐ {{ project.stargazerCount }}</span>
-    {% endif %}
     {% if project.primaryLanguage %}
     <span>{{ project.primaryLanguage.name }}</span>
     {% endif %}
