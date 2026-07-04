@@ -26,7 +26,12 @@
 
   <header class="site-header">
     <div class="container">
-      <a href="{{ get_url(path='@/_index.md') | safe }}" class="site-title">{{ config.title }}</a>
+      <a href="{{ get_url(path='@/_index.md') | safe }}" class="site-title">
+        {% block site_title_media %}
+        <img src="/images/profile.jpg" alt="" class="site-title-avatar">
+        {% endblock site_title_media %}
+        <span>{{ config.title }}</span>
+      </a>
       <nav class="site-nav" aria-label="Main navigation">
         <a href="{{ get_url(path='@/blog/_index.md') | safe }}"
            class="{% if current_path and current_path is starting_with('/blog') %}current{% endif %}"
