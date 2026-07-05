@@ -62,11 +62,12 @@ Avoid classic AI-generated-content tells:
 - Avoid marketing filler such as "unlock", "leverage" when "use" is meant, "seamless", "robust" without specifics, "game-changer", "crucial", and "not only ... but also" constructions.
 - Avoid polished-but-empty summary paragraphs that could fit any technical topic.
 - Avoid formal-paper phrasing in blog prose, especially repeated "I did not", "I do not", "is not", "does not", "would not", and similar forms when a contraction would sound natural.
+- Avoid calling implementation pieces "intentionally boring", "deliberately simple", "mundane", or similar unless the phrase carries a concrete technical claim. These phrases become a recognizable AI-style tic when they only signal taste. Prefer naming the exact constraint or behavior instead: what the code avoids, what boundary it preserves, or what property the plain implementation gives you.
 
 Before considering a blog post finished, scan it for these tells and rewrite the surrounding sentence, not just the single phrase:
 
 ```bash
-rg -n "That last part matters|It is worth noting|It's worth noting|Importantly|Moreover|Furthermore|In today|landscape|delve|unlock|seamless|robust|leverage|crucial|game-changer|not only|broader lesson|omission is deliberate" content/blog
+rg -n "That last part matters|It is worth noting|It's worth noting|Importantly|Moreover|Furthermore|In today|landscape|delve|unlock|seamless|robust|leverage|crucial|game-changer|not only|broader lesson|omission is deliberate|intentionally boring|deliberately simple|deliberately boring|intentionally simple|mundane" content/blog
 rg -n "\bI did not\b|\bI do not\b|\bI am\b|\bI would\b|\bI could not\b|\bI cannot\b|\bit is\b|\bIt is\b|\bdoes not\b|\bdo not\b|\bdid not\b|\bcannot\b|\bwould not\b|\bshould not\b|\bis not\b|\bare not\b|\bthey are\b|\bThere is\b|\bthere is\b|\byou are\b" content/blog
 ```
 
