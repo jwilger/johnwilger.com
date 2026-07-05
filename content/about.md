@@ -26,4 +26,4 @@ I've found that the practices helping LLMs succeed at software engineering are t
 
 ## Technical Interests
 
-I work primarily in Rust, TypeScript, Elixir, and Nix. My [GitHub](https://github.com/jwilger) reflects my current obsessions: event-driven architectures, AI agent tooling, and infrastructure-as-code. Projects like [claude-code-plugins](https://github.com/jwilger/claude-code-plugins) encode my engineering methodology explicitly—partly for AI collaboration, but the discipline benefits my own practice too.
+I work primarily in Rust, TypeScript, Elixir, and Nix. My [GitHub](https://github.com/jwilger) reflects my current obsessions: event-driven architectures, AI agent tooling, and infrastructure-as-code. Projects like [ai-plugins](https://github.com/jwilger/ai-plugins) encode my engineering methodology explicitly—partly for AI collaboration, but the discipline benefits my own practice too.
