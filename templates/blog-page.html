@@ -52,45 +52,5 @@
   <div class="post-content">
     {{ page.content | safe }}
   </div>
-
-  <section class="comments-section">
-    <h2>Comments</h2>
-    <p style="color: var(--fg-3); margin-bottom: 1.5rem;">
-      Comments are powered by <a href="https://giscus.app" target="_blank" rel="noopener noreferrer">Giscus</a> via GitHub Discussions.
-      You must have a GitHub account to comment.
-    </p>
-    <div class="giscus"
-         x-data="{ theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'catppuccin_mocha' : 'catppuccin_latte' }"
-         x-init="
-           const observer = new MutationObserver((mutations) => {
-             mutations.forEach((mutation) => {
-               if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-                 const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'catppuccin_mocha' : 'catppuccin_latte';
-                 const iframe = document.querySelector('.giscus-frame');
-                 if (iframe) {
-                   iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: newTheme } } }, 'https://giscus.app');
-                 }
-               }
-             });
-           });
-           observer.observe(document.documentElement, { attributes: true });
-         "
-    ></div>
-    <script src="https://giscus.app/client.js"
-            data-repo="jwilger/johnwilger.com"
-            data-repo-id=""
-            data-category="Blog Comments"
-            data-category-id=""
-            data-mapping="pathname"
-            data-strict="0"
-            data-reactions-enabled="1"
-            data-emit-metadata="0"
-            data-input-position="bottom"
-            data-theme="catppuccin_latte"
-            data-lang="en"
-            crossorigin="anonymous"
-            async>
-    </script>
-  </section>
 </article>
 {% endblock content %}

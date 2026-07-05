@@ -34,7 +34,6 @@ Output is generated in `public/`.
 | Styling | Sass + CSS Custom Properties |
 | Themes | Catppuccin Latte (light) / Mocha (dark) |
 | Client JS | HTMX + Alpine.js |
-| Comments | Giscus (GitHub Discussions) |
 | Projects | GitHub pinned repos via GraphQL |
 | Hosting | GitHub Pages |
 

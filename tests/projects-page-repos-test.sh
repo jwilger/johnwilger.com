@@ -75,6 +75,19 @@ project_cards_do_not_render_star_counts() {
         && does_not_contain '⭐' "$project_card_template"
 }
 
+blog_posts_do_not_render_commenting() {
+    local blog_template
+    local component_styles
+
+    blog_template="$(cat "${ROOT_DIR}/templates/blog-page.html")"
+    component_styles="$(cat "${ROOT_DIR}/sass/_components.scss")"
+
+    does_not_contain 'giscus' "$blog_template" \
+        && does_not_contain 'Giscus' "$blog_template" \
+        && does_not_contain 'comments-section' "$blog_template" \
+        && does_not_contain 'comments-section' "$component_styles"
+}
+
 run_fetch_projects_with_stubbed_github() {
     mkdir -p "${TMP_DIR}/bin"
 
@@ -280,6 +293,9 @@ assert "Projects page copy does not link readers to slipstream-eng as the source
 
 assert "Project cards do not render star counts" \
     project_cards_do_not_render_star_counts
+
+assert "Blog posts do not render commenting UI" \
+    blog_posts_do_not_render_commenting
 
 run_fetch_projects_with_stubbed_github gh-token
 gh_auth_header="$(cat "${TMP_DIR}/auth-header.txt")"
