@@ -15,7 +15,7 @@ I didn't set out to build an eval system for my coding-assistant plugins. I star
 
 There was a worktree plugin because I kept wanting feature work isolated from the main checkout. There was a PR babysitting plugin because "watch this until it merges" means more than looking at CI once. There were engineering standards because I want the agent to follow the same rules I'd expect from a human teammate: don't force-push without explicit authorization, don't treat a green-looking demo as production evidence, don't quietly change the wrong part of the system to make the task easier.
 
-The collection now lives in [`ai-plugins`](https://github.com/slipstream-eng/ai-plugins), a small marketplace targeting both Codex and Claude Code. Calling it a "marketplace" makes it sound more general than it really is. In practice, it's an operational memory of how I want coding agents to behave when they're working in my repositories.
+The collection now lives in [`ai-plugins`](https://github.com/jwilger/ai-plugins), a small marketplace targeting both Codex and Claude Code. Calling it a "marketplace" makes it sound more general than it really is. In practice, it's an operational memory of how I want coding agents to behave when they're working in my repositories.
 
 Once I started using it that way, reviewing the Markdown stopped answering the question I cared about. A skill file can sound perfectly reasonable and still have no effect. Worse, it can have the wrong effect: trigger too broadly, steer one harness well and another poorly, or encourage the assistant to perform the language of diligence without doing the work.
 
