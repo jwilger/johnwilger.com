@@ -1,7 +1,7 @@
 # Development: run Zola serve (Sass is compiled automatically by Zola)
 dev:
 	@echo "Starting development server..."
-	zola serve
+	zola serve --drafts
 
 # Build for production
 build:

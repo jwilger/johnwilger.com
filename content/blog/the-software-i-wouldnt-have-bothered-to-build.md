@@ -5,6 +5,9 @@ slug = "the-software-i-wouldnt-have-bothered-to-build"
 date = 2026-07-19
 draft = true
 
+[extra]
+cover = "/images/blog/the-software-i-wouldnt-have-bothered-to-build-cover.png"
+
 [taxonomies]
 tags = ["ai", "llm", "software-engineering", "open-source", "rust"]
 +++
