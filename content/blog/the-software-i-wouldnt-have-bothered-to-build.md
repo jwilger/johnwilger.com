@@ -3,7 +3,6 @@ title = "The Software I Wouldn't Have Bothered to Build"
 description = "A small SSH-agent annoyance became a designed, tested, documented open-source tool in one morning. Agentic development changed which problems were worth solving."
 slug = "the-software-i-wouldnt-have-bothered-to-build"
 date = 2026-07-19
-draft = true
 
 [extra]
 cover = "/images/blog/the-software-i-wouldnt-have-bothered-to-build-cover.png"
@@ -35,8 +34,11 @@ sockets, or some startup hook whose behavior I'd forget six months later. It
 would mostly work. It would also fail in exactly the cases that made the problem
 interesting.
 
-Instead, I described the problem to a coding agent and spent the morning turning
-the annoyance into a product.
+Instead, I spent some time defining the problem with a coding agent. We worked
+through the architecture, wrote down the decisions that would be expensive to
+change later, and split the work into increments I could review independently.
+Then I left the computer and did other things with my life while the agent built
+it.
 
 ## The gap between a workaround and a tool
 
@@ -75,7 +77,7 @@ Once I wrote the problem down that way, the shape of Lanyard became clear:
 
 That's a small systems program, not a clever alias.
 
-## What the agent changed
+## The part I delegated
 
 I've been writing software long enough that I could have built this without an
 agent. Realistically, I wouldn't have.
@@ -86,27 +88,45 @@ socket server, writing integration tests with fake agents, packaging it, and
 documenting the result. I'd have spent twenty minutes on a brittle script,
 declared it good enough, and paid the annoyance tax indefinitely.
 
-Agentic development changed that calculation. I supplied the problem, the
-constraints, and the decisions that mattered. The agent handled enough of the
-mechanical middle that the full solution fit inside a morning.
+Agentic development changed that calculation, but not because an LLM can type
+Rust faster than I can. The useful part was being able to stop typing at all.
 
-We started by turning the idea into a Tiber backlog rather than immediately
-generating code. The work was split into semantic increments: repository and
-engineering harness, static proxy, discovery and identity aggregation, adaptive
-signing, end-to-end verification, Home Manager packaging, release automation,
-and the documentation site. Architectural decisions went into ADRs before the
-implementation made them expensive to reconsider.
+Before I stepped away, the agent and I turned the idea into a
+[Tiber](https://github.com/jwilger/ai-plugins/tree/main/plugins/tiber) backlog.
+We worked out the trust boundary and the failure policy. I approved the general
+architecture: a stable proxy socket, multiple dynamically discovered backends,
+identity aggregation, operation-specific failover, and a separate control
+socket. The work was divided into semantic increments covering the repository
+harness, proxy behavior, discovery, adaptive signing, packaging, releases, and
+documentation. Decisions with expensive consequences went into ADRs.
 
-The implementation proceeded test-first. Fake SSH agents exercised framed
-protocol messages over real Unix sockets. Black-box CLI tests launched the
-daemon, registered agents through its control socket, inspected JSON status,
-sent termination signals, and checked socket ownership and cleanup. Strict
-Clippy settings turned suspicious shortcuts into build failures. `cargo-deny`
-checked dependency policy. Mutation testing repeatedly rewrote the program and
-proved that the tests noticed.
+At that point, the work no longer needed me continuously. The agent could take
+the next ticket, write a failing test, implement the behavior, run the rest of
+the gates, review the diff, commit it, push it, watch CI, and move on. I didn't
+sit there approving every command or reading every intermediate patch. I went
+away.
 
-The reviews weren't ceremonial. They found bugs that would have survived a
-happy-path demo:
+That was possible because this wasn't a bare agent dropped into an empty
+repository with a prompt to "build an SSH proxy." I've spent a lot of time on
+the harness around it: test-first development, strict compiler and linter
+settings, mutation testing, architectural decision records, isolated
+worktrees, independent review passes, commit and push gates, and instructions
+for watching CI and deployed behavior. I'm currently consolidating that work in
+my [ai-plugins repository](https://github.com/jwilger/ai-plugins).
+
+Those guardrails are what let me trust the agent with long stretches of
+autonomous work. Trust here doesn't mean assuming it won't make mistakes. It
+means I know what evidence it has to produce before it can move on, and I know
+which decisions will make it stop and wait for me.
+
+For Lanyard, fake SSH agents exercised framed protocol messages over real Unix
+sockets. Black-box tests launched the daemon, registered agents through its
+control socket, inspected JSON status, sent termination signals, and checked
+socket ownership and cleanup. Strict Clippy settings turned suspicious
+shortcuts into build failures. `cargo-deny` checked dependency policy. Mutation
+testing changed the program and checked whether the tests noticed.
+
+The review passes found bugs that would have survived a demo:
 
 - A session binding could pin a client to the first agent and prevent signing
   with a key advertised by another.
@@ -123,15 +143,15 @@ happy-path demo:
 - The first GitHub Pages run started before Pages had been enabled on the
   repository and failed with a 404.
 
-Those aren't aesthetic disagreements. They're protocol, availability, and
-lifecycle defects. The value of the workflow wasn't that an LLM emitted Rust
-quickly. It was that the agent could stay in the loop through failing tests,
-surviving mutants, independent reviews, CI, deployment, and the fixes those
-gates demanded.
+I wasn't present when most of these were introduced or found. The agent worked
+through failing tests, surviving mutants, review findings, CI failures, and
+deployment checks on its own. It came back when a decision crossed a boundary
+we'd established or when the available evidence couldn't settle the question.
+That distinction took time to build into my workflow. Without it, "autonomous"
+usually means either reckless or exhausting: the agent barrels through choices
+it shouldn't make, or it interrupts so often that I may as well write the code.
 
-## Secure means choosing the boundary
-
-"Secure" is easy to sprinkle over a README and harder to make concrete.
+## Where I still had to be involved
 
 Lanyard handles signing credentials, so its trust boundary needed to be
 explicit. It accepts only same-user discovered sockets, creates a private
@@ -148,74 +168,52 @@ availability policy, but it won't resend the same request to the same backend.
 An ambiguous session-binding disconnect stops because duplicating that mutation
 crosses a different safety boundary.
 
-Release automation got the same treatment. The reusable release workflow I
-normally use turned out to pin its top-level revision while invoking nested
-actions by mutable tags in jobs that handle publishing credentials. Rather than
-wave that through because the morning was nearly over, Lanyard's caller stays
-fail-closed until the shared workflow is fixed and repinned. GitHub Pages can
-deploy; credential-bearing publication can't quietly opt into a weaker supply-
-chain policy.
+Release automation produced one of the decisions that did need me. The reusable
+release workflow I normally use pins its top-level revision but invokes nested
+actions by mutable tags in jobs that handle publishing credentials. The agent
+stopped rather than weakening the repository's supply-chain policy to get a
+green release. We left credential-bearing publication fail-closed until the
+shared workflow can be fixed and repinned. GitHub Pages could still deploy.
 
-None of these choices came from asking a model to "make it secure." They came
-from defining the actual deployment model, writing down the plausible failures,
-and making the tests and workflows enforce the decisions.
+The run still exposed holes in that setup. The agent initially missed my
+worktree plugin and made application changes in the primary checkout while two
+other tickets ran in worktrees. Publishing the documentation site revealed that
+the Pages workflow was stranded on another branch and Pages hadn't been enabled
+for the repository. A task-closing command exited successfully once without
+actually moving the task to `done`.
 
-## The agent was still an agent
-
-This wasn't a flawless autonomous run, and pretending otherwise would make the
-story useless.
-
-The agent initially missed my worktree plugin and made application changes in
-the primary checkout while two independent tickets ran in worktrees. That made
-branch integration needlessly awkward. When I asked it to publish the website,
-it pushed the site commit and reported success before noticing that the Pages
-workflow lived in another branch and Pages wasn't enabled on the repository.
-Later, the task-closing workflow exited successfully without actually moving a
-completed ticket to `done`.
-
-I caught some of those mistakes. Repository guards, tests, and independent
-review passes caught others. The workflow improved as failures appeared: move
-all ticket work into isolated worktrees, make primary-checkout commits and
-pushes fail, verify deployed URLs rather than equating a push with publication,
-and inspect task state instead of trusting a green automation run.
-
-This is the same standard I'd apply to any engineering system. A useful agent
-doesn't remove the need for observability and controls. It makes investing in
-them pay off across every subsequent task.
+Each failure became a change to the harness: require ticket work to happen in
+isolated worktrees, block primary-checkout commits and pushes, verify a deployed
+URL instead of treating a successful push as a deployment, and inspect the
+resulting task state instead of trusting an exit code. That's the investment
+that compounds. The next project starts with the failures from this one already
+encoded.
 
 ## The economics of caring
 
-The phrase "AI makes developers faster" still feels too shallow for what
-happened this morning.
-
-I didn't type Rust faster. I moved a problem across a threshold.
+The phrase "AI makes developers faster" doesn't describe what happened here. I
+didn't type Rust faster. For much of the implementation, I wasn't typing Rust
+at all.
 
 Yesterday, this annoyance belonged below the line: too small to deserve a real
 program, too fiddly to solve properly, not painful enough to consume a weekend.
 The available options were to tolerate it or build something I wouldn't be
 proud to share.
 
-Today, the line moved. I could afford to care about the protocol details. I
-could afford ADRs for a personal utility, mutation tests for a proxy with a
-tiny codebase, cross-architecture release artifacts, Home Manager integration,
-and documentation written for somebody who isn't me. I could afford to turn a
-local irritation into software another person can install and understand.
-
-The output is a tool, but the change I care about is the expanded set of
-problems worth solving well.
+This time I paid the part of the cost that needed my judgment: defining the
+problem, choosing the architecture, deciding how signing failures should behave,
+and setting the boundaries for credentials and release automation. The harness
+carried much of the remaining work while I spent my attention elsewhere. That
+made ADRs, mutation tests, cross-architecture artifacts, Home Manager
+integration, and documentation reasonable for a personal utility.
 
 There are thousands of annoyances like this in the gaps between general-purpose
 tools. Most never become software because the engineering cost is larger than
 the irritation. They become shell-history archaeology, half-remembered dotfile
 snippets, and habits built around bugs nobody had time to remove.
 
-Agentic development doesn't make those problems disappear. It makes a different
-response economically possible: define the problem precisely, choose an
-architecture, encode the safety boundaries, and let a disciplined system carry
-the work through implementation and verification.
-
-Sometimes the result is a company. Sometimes it's infrastructure. And sometimes
-it's just that Git can sign a commit whether I attached to Zellij from the chair
-in front of my desktop or from a laptop somewhere else.
-
-That was worth a morning.
+Now Git can sign a commit whether I attached to Zellij from the chair in front
+of my desktop or from a laptop somewhere else. I got the tool without donating
+the rest of my day to its implementation. I wouldn't have made that trade before
+I could trust the surrounding system to keep working, catch mistakes, and know
+when to call me back.
