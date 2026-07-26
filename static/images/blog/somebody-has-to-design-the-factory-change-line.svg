@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 864" role="img" aria-labelledby="title description">
+  <title id="title">Different software changes moving through the same validated sequence</title>
+  <desc id="description">A feature, fix, migration, and dependency bump converge on one line with stations for behavior, reversal risk, a failing test, making the test pass, review, integration, and live deployment evidence.</desc>
+
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#181825"/>
+      <stop offset="0.55" stop-color="#1e1e2e"/>
+      <stop offset="1" stop-color="#313244"/>
+    </linearGradient>
+    <linearGradient id="belt" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#cba6f7"/>
+      <stop offset="0.5" stop-color="#89b4fa"/>
+      <stop offset="1" stop-color="#94e2d5"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#080810" flood-opacity="0.45"/>
+    </filter>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#45475a" stroke-width="1" opacity="0.22"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M1 1l10 5-10 5z" fill="#89b4fa"/>
+    </marker>
+  </defs>
+
+  <rect width="1536" height="864" rx="28" fill="url(#background)"/>
+  <rect width="1536" height="864" rx="28" fill="url(#grid)"/>
+
+  <text x="76" y="90" fill="#cdd6f4" font-family="system-ui, sans-serif" font-size="36" font-weight="700">Different changes</text>
+  <text x="540" y="90" fill="#cdd6f4" font-family="system-ui, sans-serif" font-size="36" font-weight="700">One validated sequence</text>
+  <text x="76" y="128" fill="#a6adc8" font-family="system-ui, sans-serif" font-size="21">Every run carries different content.</text>
+  <text x="540" y="128" fill="#a6adc8" font-family="system-ui, sans-serif" font-size="21">The stations and evidence contract stay fixed.</text>
+
+  <g filter="url(#shadow)" font-family="system-ui, sans-serif">
+    <g transform="translate(76 190)">
+      <rect width="250" height="92" rx="22" fill="#313244" stroke="#cba6f7" stroke-width="3"/>
+      <circle cx="47" cy="46" r="22" fill="#cba6f7"/>
+      <path d="M47 34v24M35 46h24" stroke="#1e1e2e" stroke-width="6" stroke-linecap="round"/>
+      <text x="86" y="55" fill="#f5e0dc" font-size="25" font-weight="650">Feature</text>
+    </g>
+
+    <g transform="translate(76 306)">
+      <rect width="250" height="92" rx="22" fill="#313244" stroke="#f38ba8" stroke-width="3"/>
+      <circle cx="47" cy="46" r="22" fill="#f38ba8"/>
+      <path d="M34 57l25-25M37 32l22 25" stroke="#1e1e2e" stroke-width="5" stroke-linecap="round"/>
+      <text x="86" y="55" fill="#f5e0dc" font-size="25" font-weight="650">Fix</text>
+    </g>
+
+    <g transform="translate(76 422)">
+      <rect width="250" height="92" rx="22" fill="#313244" stroke="#fab387" stroke-width="3"/>
+      <ellipse cx="47" cy="34" rx="22" ry="10" fill="#fab387"/>
+      <path d="M25 34v24c0 6 10 10 22 10s22-4 22-10V34M25 46c0 6 10 10 22 10s22-4 22-10" fill="none" stroke="#fab387" stroke-width="5"/>
+      <text x="86" y="55" fill="#f5e0dc" font-size="25" font-weight="650">Migration</text>
+    </g>
+
+    <g transform="translate(76 538)">
+      <rect width="250" height="92" rx="22" fill="#313244" stroke="#94e2d5" stroke-width="3"/>
+      <path d="M47 24l22 12v23L47 71 25 59V36z" fill="#94e2d5"/>
+      <path d="M47 28v39M27 38l20 11 20-11" fill="none" stroke="#1e1e2e" stroke-width="4"/>
+      <path d="M77 59V35m0 0l-9 9m9-9l9 9" fill="none" stroke="#94e2d5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="98" y="42" fill="#f5e0dc" font-size="22" font-weight="650">Dependency</text>
+      <text x="98" y="68" fill="#f5e0dc" font-size="22" font-weight="650">bump</text>
+    </g>
+  </g>
+
+  <g fill="none" stroke-width="4" opacity="0.95">
+    <path d="M326 236h34c22 0 36 14 36 36v192" stroke="#cba6f7"/>
+    <path d="M326 352h34c22 0 36 14 36 36v76" stroke="#f38ba8"/>
+    <path d="M326 468h70" stroke="#fab387"/>
+    <path d="M326 584h34c22 0 36-14 36-36v-80" stroke="#94e2d5"/>
+  </g>
+  <circle cx="396" cy="468" r="15" fill="#89b4fa" stroke="#cdd6f4" stroke-width="4"/>
+
+  <path d="M396 468H1460" fill="none" stroke="#45475a" stroke-width="30" stroke-linecap="round"/>
+  <path d="M396 468H1460" fill="none" stroke="url(#belt)" stroke-width="8" stroke-linecap="round" marker-end="url(#arrow)"/>
+
+  <g font-family="system-ui, sans-serif" text-anchor="middle" filter="url(#shadow)">
+    <g transform="translate(438 340)">
+      <rect width="132" height="256" rx="24" fill="#313244" stroke="#cba6f7" stroke-width="3"/>
+      <circle cx="66" cy="66" r="31" fill="#45475a"/>
+      <circle cx="66" cy="66" r="17" fill="none" stroke="#cba6f7" stroke-width="5"/>
+      <path d="M66 38v12M66 82v12M38 66h12M82 66h12" stroke="#cba6f7" stroke-width="5" stroke-linecap="round"/>
+      <text x="66" y="174" fill="#f5e0dc" font-size="22" font-weight="700">Behavior</text>
+    </g>
+
+    <g transform="translate(584 340)">
+      <rect width="132" height="256" rx="24" fill="#313244" stroke="#fab387" stroke-width="3"/>
+      <circle cx="66" cy="66" r="31" fill="#45475a"/>
+      <path d="M42 72c6-22 33-31 49-15M91 57l-2-16M91 57l-16-2" fill="none" stroke="#fab387" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="66" y="168" fill="#f5e0dc" font-size="21" font-weight="700">Reversal</text>
+      <text x="66" y="194" fill="#f5e0dc" font-size="21" font-weight="700">risk</text>
+    </g>
+
+    <g transform="translate(730 340)">
+      <rect width="132" height="256" rx="24" fill="#313244" stroke="#f38ba8" stroke-width="3"/>
+      <circle cx="66" cy="66" r="31" fill="#45475a"/>
+      <path d="M48 48l36 36M84 48L48 84" stroke="#f38ba8" stroke-width="7" stroke-linecap="round"/>
+      <text x="66" y="168" fill="#f5e0dc" font-size="21" font-weight="700">Failing</text>
+      <text x="66" y="194" fill="#f5e0dc" font-size="21" font-weight="700">test</text>
+    </g>
+
+    <g transform="translate(876 340)">
+      <rect width="132" height="256" rx="24" fill="#313244" stroke="#a6e3a1" stroke-width="3"/>
+      <circle cx="66" cy="66" r="31" fill="#45475a"/>
+      <path d="M45 67l14 14 29-34" fill="none" stroke="#a6e3a1" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="66" y="168" fill="#f5e0dc" font-size="21" font-weight="700">Make</text>
+      <text x="66" y="194" fill="#f5e0dc" font-size="21" font-weight="700">pass</text>
+    </g>
+
+    <g transform="translate(1022 340)">
+      <rect width="132" height="256" rx="24" fill="#313244" stroke="#89b4fa" stroke-width="3"/>
+      <circle cx="66" cy="66" r="31" fill="#45475a"/>
+      <circle cx="58" cy="58" r="16" fill="none" stroke="#89b4fa" stroke-width="6"/>
+      <path d="M70 70l18 18" stroke="#89b4fa" stroke-width="7" stroke-linecap="round"/>
+      <text x="66" y="181" fill="#f5e0dc" font-size="22" font-weight="700">Review</text>
+    </g>
+
+    <g transform="translate(1168 340)">
+      <rect width="132" height="256" rx="24" fill="#313244" stroke="#cba6f7" stroke-width="3"/>
+      <circle cx="66" cy="66" r="31" fill="#45475a"/>
+      <path d="M45 47v38M45 58h20c13 0 22 10 22 22v5M87 47v38" fill="none" stroke="#cba6f7" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="45" cy="47" r="6" fill="#cba6f7"/>
+      <circle cx="87" cy="47" r="6" fill="#cba6f7"/>
+      <circle cx="45" cy="85" r="6" fill="#cba6f7"/>
+      <circle cx="87" cy="85" r="6" fill="#cba6f7"/>
+      <text x="66" y="181" fill="#f5e0dc" font-size="22" font-weight="700">Integrate</text>
+    </g>
+
+    <g transform="translate(1314 340)">
+      <rect width="132" height="256" rx="24" fill="#313244" stroke="#94e2d5" stroke-width="3"/>
+      <circle cx="66" cy="66" r="31" fill="#45475a"/>
+      <path d="M37 71h15l8-20 12 35 9-24h15" fill="none" stroke="#94e2d5" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="66" y="168" fill="#f5e0dc" font-size="21" font-weight="700">Live</text>
+      <text x="66" y="194" fill="#f5e0dc" font-size="21" font-weight="700">evidence</text>
+    </g>
+  </g>
+
+  <g transform="translate(414 686)" font-family="system-ui, sans-serif">
+    <rect width="1032" height="92" rx="22" fill="#11111b" stroke="#45475a" stroke-width="2"/>
+    <text x="34" y="40" fill="#a6adc8" font-size="20">The line produces a change, not another copy of the product.</text>
+    <text x="34" y="68" fill="#cdd6f4" font-size="21" font-weight="650">Throughput and rework improve at the system level.</text>
+    <circle cx="956" cy="46" r="22" fill="#94e2d5"/>
+    <path d="M944 46l9 9 17-20" fill="none" stroke="#1e1e2e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

@@ -938,6 +938,25 @@ main {
     box-shadow: var(--shadow-sm);
   }
 
+  .diagram-scroll {
+    overflow-x: auto;
+    margin: 2rem 0;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    scrollbar-width: thin;
+
+    img {
+      display: block;
+      min-width: 720px;
+      margin: 0;
+      box-shadow: none;
+
+      @media (max-width: 768px) {
+        min-width: 1100px;
+      }
+    }
+  }
+
   strong {
     font-weight: var(--fw-bold);
     color: var(--fg-1);

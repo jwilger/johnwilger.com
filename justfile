@@ -13,6 +13,7 @@ build:
 # Run test suite
 test:
 	bash tests/projects-page-repos-test.sh
+	bash tests/blog-social-metadata-test.sh
 
 # Clean build artifacts
 clean:
