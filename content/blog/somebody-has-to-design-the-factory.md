@@ -3,7 +3,7 @@ title = "Somebody Has to Design the Factory"
 description = "\"Dark factory\" software development doesn't mean typing an idea into a box. Automating assembly created a second engineering discipline, and that's where senior judgment goes."
 slug = "somebody-has-to-design-the-factory"
 date = 2026-07-26
-draft = true
+draft = false
 
 [extra]
 cover = "/images/blog/somebody-has-to-design-the-factory-cover.png"
