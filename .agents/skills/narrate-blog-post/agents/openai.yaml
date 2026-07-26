@@ -1,0 +1,4 @@
+interface:
+  display_name: "Narrate Blog Post"
+  short_description: "Render and publish narrated blog posts"
+  default_prompt: "Use $narrate-blog-post to create and publish narration for this blog post."

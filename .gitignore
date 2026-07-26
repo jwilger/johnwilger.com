@@ -1,5 +1,7 @@
 # Build output
 public/
+.build/
+.playwright-cli/
 
 # Generated data
 data/projects.json
