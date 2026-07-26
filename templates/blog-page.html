@@ -49,6 +49,26 @@
     </div>
   </header>
 
+  {% if page.extra.narration %}
+  <section class="post-narration" aria-labelledby="listen-to-this">
+    <div class="post-narration-player">
+      <h2 id="listen-to-this">Listen to this</h2>
+      <audio controls preload="metadata">
+        <source src="{{ page.extra.narration.src | safe }}" type="{{ page.extra.narration.type | default(value='audio/mpeg') }}">
+        <a href="{{ page.extra.narration.src | safe }}">Download the narrated article</a>.
+      </audio>
+    </div>
+    <small class="post-narration-fine-print">
+      <em>
+        This narration uses an AI-generated voice.
+        {% for credit in page.extra.narration.credits %}
+          <a href="{{ credit.source_url | safe }}">{{ credit.title }}</a> by {{ credit.creator }}{% if credit.license_url %}, available under <a href="{{ credit.license_url | safe }}">{{ credit.license }}</a>{% else %}, {{ credit.license }}{% endif %}{% if not loop.last %};{% else %}.{% endif %}
+        {% endfor %}
+      </em>
+    </small>
+  </section>
+  {% endif %}
+
   {% if page.toc and page.toc | length > 0 %}
   <nav class="toc" aria-label="Table of contents">
     <h2>Table of Contents</h2>
