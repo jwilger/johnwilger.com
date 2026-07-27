@@ -6,6 +6,24 @@ date = 2023-12-07
 
 [extra]
 cover = "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&q=80"
+
+[extra.narration]
+src = "/audio/blog/using-the-27-lg-ultrafine-5k-display-with-linux.mp3"
+type = "audio/mpeg"
+
+[[extra.narration.credits]]
+title = "Retro Audio Logo"
+creator = "Breviceps"
+source_url = "https://freesound.org/people/Breviceps/sounds/564237/"
+license = "CC0 1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
+
+[[extra.narration.credits]]
+title = "01 room tone low frequency hvac"
+creator = "pushkin"
+source_url = "https://freesound.org/people/pushkin/sounds/215293/"
+license = "CC0 1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
 +++
 
 <section class="updates">
