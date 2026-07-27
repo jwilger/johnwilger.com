@@ -30,8 +30,18 @@ def split_front_matter(source: str) -> tuple[dict[str, object], str]:
     return tomllib.loads(parts[1]), parts[2].strip()
 
 
+def replace_code_blocks(body: str) -> str:
+    """Replace source code with a concise spoken pointer, never source text."""
+    return re.sub(
+        r"```[^\n]*\n.*?```",
+        "\n\nThe relevant example code is available on my website.\n\n",
+        body,
+        flags=re.DOTALL,
+    )
+
+
 def strip_non_prose_blocks(body: str) -> str:
-    body = re.sub(r"```.*?```", "", body, flags=re.DOTALL)
+    body = replace_code_blocks(body)
     body = re.sub(r"<div\b.*?</div>", "", body, flags=re.DOTALL | re.IGNORECASE)
     body = re.sub(r"<figure\b.*?</figure>", "", body, flags=re.DOTALL | re.IGNORECASE)
     body = re.sub(r"^\s*<img\b[^>]*>\s*$", "", body, flags=re.MULTILINE | re.IGNORECASE)

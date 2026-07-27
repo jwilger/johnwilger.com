@@ -7,6 +7,24 @@ date = 2026-07-04
 [extra]
 cover = "/images/blog/coding-harness-plugins-agentic-systems.png"
 
+[extra.narration]
+src = "/audio/blog/coding-harness-plugins-are-agentic-systems.mp3"
+type = "audio/mpeg"
+
+[[extra.narration.credits]]
+title = "Retro Audio Logo"
+creator = "Breviceps"
+source_url = "https://freesound.org/people/Breviceps/sounds/564237/"
+license = "CC0 1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
+
+[[extra.narration.credits]]
+title = "01 room tone low frequency hvac"
+creator = "pushkin"
+source_url = "https://freesound.org/people/pushkin/sounds/215293/"
+license = "CC0 1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
+
 [taxonomies]
 tags = ["ai", "llm", "software-engineering", "evals", "plugins"]
 +++

@@ -19,6 +19,12 @@ date = 2026-07-26
 
 Opening prose with [useful link text](https://example.com).
 
+```rust
+fn implementation_detail() {
+    println!("never narrate this source code");
+}
+```
+
 ## A heading that is not spoken
 
 ![An image that is not spoken](/image.png)
@@ -57,6 +63,8 @@ printf 'ok - narration extraction clears stale rendered segments before a rerend
 
 expected_transcript='Opening prose with useful link text.
 
+The relevant example code is available on my website.
+
 Closing prose.'
 actual_transcript="$(cat "${TMP_DIR}/work/transcript.txt")"
 
@@ -65,7 +73,7 @@ if [[ "$actual_transcript" != "$expected_transcript" ]]; then
     exit 1
 fi
 
-printf 'ok - narration skill extracts prose while preserving spoken link text\n'
+printf 'ok - narration skill extracts prose, preserves spoken link text, and replaces code examples\n'
 
 expected_signoff="I'm John Wilger, and you've been listening to A Small Test, published on July 26, 2026, and copyright 2026, all rights reserved. You can read or listen to more of my work at johnwilger.com."
 actual_signoff="$(cat "${TMP_DIR}/work/signoff.txt")"
