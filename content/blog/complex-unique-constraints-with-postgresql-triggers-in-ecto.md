@@ -5,6 +5,24 @@ slug = "complex-unique-constraints-with-postgresql-triggers-in-ecto"
 date = 2020-02-16
 [extra]
 cover = "https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/lRoX0shwjUQ/upload/33be72f043a35f9b4b8257720d5a6a75.jpeg"
+
+[extra.narration]
+src = "/audio/blog/complex-unique-constraints-with-postgresql-triggers-in-ecto.mp3"
+type = "audio/mpeg"
+
+[[extra.narration.credits]]
+title = "Retro Audio Logo"
+creator = "Breviceps"
+source_url = "https://freesound.org/people/Breviceps/sounds/564237/"
+license = "CC0 1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
+
+[[extra.narration.credits]]
+title = "01 room tone low frequency hvac"
+creator = "pushkin"
+source_url = "https://freesound.org/people/pushkin/sounds/215293/"
+license = "CC0 1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
 [taxonomies]
 tags = ["postgresql", "database", "elixir", "ecto"]
 +++
