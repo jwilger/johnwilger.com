@@ -5,6 +5,24 @@ slug = "the-hidden-pitfalls-of-ai-software-development"
 date = 2025-03-11
 [extra]
 cover = "https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/mQTTDA_kY_8/upload/d7c503048890c755f33d92530c7d7736.jpeg"
+
+[extra.narration]
+src = "/audio/blog/the-hidden-pitfalls-of-ai-software-development.mp3"
+type = "audio/mpeg"
+
+[[extra.narration.credits]]
+title = "Retro Audio Logo"
+creator = "Breviceps"
+source_url = "https://freesound.org/people/Breviceps/sounds/564237/"
+license = "CC0 1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
+
+[[extra.narration.credits]]
+title = "01 room tone low frequency hvac"
+creator = "pushkin"
+source_url = "https://freesound.org/people/pushkin/sounds/215293/"
+license = "CC0 1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
 [taxonomies]
 tags = ["software", "ai", "software-engineering", "lessons-learned", "copilot"]
 +++
