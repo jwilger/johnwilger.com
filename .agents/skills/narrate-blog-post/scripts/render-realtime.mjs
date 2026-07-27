@@ -22,9 +22,10 @@ const signoff = (
 ).trim();
 
 const articleStyle = [
-  "Read the supplied article passage verbatim.",
-  "Begin immediately with its first word.",
-  "Do not add, remove, repeat, paraphrase, summarize, introduce, acknowledge, or comment on any words.",
+  "This is a verbatim audio rendering task, not a conversation.",
+  "Your entire spoken output must be exactly the supplied article passage, beginning with its first word and ending with its last word.",
+  "Do not add, remove, repeat, paraphrase, summarize, introduce, acknowledge, comment on, or frame the passage in any way.",
+  "Never say phrases such as 'let me read,' 'as written,' 'alright,' or anything before or after the passage.",
   "Use a deep, warm, soothing timbre and an intimate public-radio storytelling delivery.",
   "Sound engaged and thoughtful, with natural phrasing and subtle emotional shape.",
   "Avoid announcer cadence, sales cadence, sponsor-read rhythm, and synthetic monotony.",
@@ -33,9 +34,10 @@ const articleStyle = [
 ].join(" ");
 
 const signoffStyle = [
-  "Speak the supplied sign-off verbatim.",
-  "Begin immediately with its first word.",
-  "Do not add, remove, repeat, paraphrase, or acknowledge anything.",
+  "This is a verbatim audio rendering task, not a conversation.",
+  "Your entire spoken output must be exactly the supplied sign-off, beginning with its first word and ending with its last word.",
+  "Do not add, remove, repeat, paraphrase, acknowledge, or frame anything.",
+  "Never say phrases such as 'let me read,' 'as written,' 'alright,' or anything before or after the sign-off.",
   "Use the same deep, warm, soothing register and intimate storytelling tone as the article.",
 ].join(" ");
 
