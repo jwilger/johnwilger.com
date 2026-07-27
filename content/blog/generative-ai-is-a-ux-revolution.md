@@ -5,6 +5,24 @@ slug = "generative-ai-is-a-ux-revolution"
 date = 2024-03-12
 [extra]
 cover = "https://cdn.hashnode.com/res/hashnode/image/upload/v1709947871106/d67141a9-cb94-4a05-aaca-4cbade411abd.webp"
+
+[extra.narration]
+src = "/audio/blog/generative-ai-is-a-ux-revolution.mp3"
+type = "audio/mpeg"
+
+[[extra.narration.credits]]
+title = "Retro Audio Logo"
+creator = "Breviceps"
+source_url = "https://freesound.org/people/Breviceps/sounds/564237/"
+license = "CC0 1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
+
+[[extra.narration.credits]]
+title = "01 room tone low frequency hvac"
+creator = "pushkin"
+source_url = "https://freesound.org/people/pushkin/sounds/215293/"
+license = "CC0 1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
 [taxonomies]
 tags = ["ai", "ux", "generative-ai"]
 +++
