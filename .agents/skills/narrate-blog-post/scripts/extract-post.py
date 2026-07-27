@@ -42,6 +42,12 @@ def replace_code_blocks(body: str) -> str:
 
 def strip_non_prose_blocks(body: str) -> str:
     body = replace_code_blocks(body)
+    body = re.sub(
+        r"(?:^\|.*\|\n)+",
+        "\nA table referenced here is available on my website.\n",
+        body,
+        flags=re.MULTILINE,
+    )
     body = re.sub(r"<div\b.*?</div>", "", body, flags=re.DOTALL | re.IGNORECASE)
     body = re.sub(r"<figure\b.*?</figure>", "", body, flags=re.DOTALL | re.IGNORECASE)
     body = re.sub(r"^\s*<img\b[^>]*>\s*$", "", body, flags=re.MULTILINE | re.IGNORECASE)
