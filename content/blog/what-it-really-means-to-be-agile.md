@@ -6,6 +6,24 @@ date = 2010-12-15
 
 [extra]
 cover = "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=800&q=80"
+
+[extra.narration]
+src = "/audio/blog/what-it-really-means-to-be-agile.mp3"
+type = "audio/mpeg"
+
+[[extra.narration.credits]]
+title = "Retro Audio Logo"
+creator = "Breviceps"
+source_url = "https://freesound.org/people/Breviceps/sounds/564237/"
+license = "CC0 1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
+
+[[extra.narration.credits]]
+title = "01 room tone low frequency hvac"
+creator = "pushkin"
+source_url = "https://freesound.org/people/pushkin/sounds/215293/"
+license = "CC0 1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
 +++
 
 Yesterday, Elizabeth Hendrickson posted her [Agile Acid
