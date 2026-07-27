@@ -6,6 +6,24 @@ date = 2012-05-15
 
 [extra]
 cover = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80"
+
+[extra.narration]
+src = "/audio/blog/kookaburra-0240-released-exorcised-activesupport.mp3"
+type = "audio/mpeg"
+
+[[extra.narration.credits]]
+title = "Retro Audio Logo"
+creator = "Breviceps"
+source_url = "https://freesound.org/people/Breviceps/sounds/564237/"
+license = "CC0 1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
+
+[[extra.narration.credits]]
+title = "01 room tone low frequency hvac"
+creator = "pushkin"
+source_url = "https://freesound.org/people/pushkin/sounds/215293/"
+license = "CC0 1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
 +++
 
 I just released version 0.24.0 of [Kookaburra][K] to
