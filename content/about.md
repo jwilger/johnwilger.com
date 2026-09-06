@@ -1,18 +1,18 @@
 +++
 title = "About Me"
-description = "Principal Engineering Consultant at Artium. Senior Engineering Leader with 25+ years of experience."
+description = "Head of Engineering at 10KR. Engineering leader with 25+ years of experience."
 template = "page.html"
 +++
 
 ![John Wilger](/images/profile.jpg)
 
-I'm John Wilger, Principal Engineering Consultant at [Artium](https://artium.ai/), where I help teams build exceptional software through disciplined engineering practices and thoughtful AI integration.
+I'm John Wilger, Head of Engineering at [10KR](https://10kr.co/), where we build AI products and experiences. I help teams build software through disciplined engineering practices and thoughtful AI integration.
 
 ## What I Do
 
-I've spent over 25 years building software and leading engineering teams. After several years in engineering management—most recently as VP of Engineering—I've returned my focus to technical leadership and hands-on craft. I find my greatest impact comes from shaping technical direction, working directly with clients on hard problems, and mentoring engineers in the practices that make software teams thrive.
+I've spent over 25 years building software and leading engineering teams. My work brings together engineering leadership and hands-on technical practice: shaping technical direction, working directly with teams on hard problems, and mentoring engineers in the practices that make software teams thrive.
 
-At Artium, I focus on evolving how we approach software development, helping clients build sustainable engineering cultures, and growing the next generation of consultants.
+Before joining 10KR, I was a Principal Engineering Consultant at [Artium](https://artium.ai/), where I helped clients build sustainable engineering cultures and mentored fellow consultants. I've also served as VP of Engineering.
 
 ## How I Think About Software
 
