@@ -12,7 +12,7 @@ I'm John Wilger, Head of Engineering at [10KR](https://10kr.co/), where we build
 
 I've spent over 25 years building software and leading engineering teams. My work brings together engineering leadership and hands-on technical practice: shaping technical direction, working directly with teams on hard problems, and mentoring engineers in the practices that make software teams thrive.
 
-Before joining 10KR, I was a Principal Engineering Consultant at [Artium](https://artium.ai/), where I helped clients build sustainable engineering cultures and mentored fellow consultants. I've also served as VP of Engineering.
+Before joining 10KR, I was VP of Engineering and a Principal Engineering Consultant at [Artium](https://artium.ai/), where I helped clients build sustainable engineering cultures and mentored fellow consultants.
 
 ## How I Think About Software
 
