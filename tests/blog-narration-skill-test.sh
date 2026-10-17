@@ -104,7 +104,7 @@ ffmpeg \
     -y \
     -loglevel error \
     -f lavfi \
-    -i 'anullsrc=sample_rate=24000:channel_layout=mono:duration=4' \
+    -i 'anullsrc=sample_rate=24000:channel_layout=mono:duration=40' \
     -f s16le \
     -ac 1 \
     "${TMP_DIR}/work/signoff.pcm"
@@ -122,7 +122,7 @@ duration="$(
         "${TMP_DIR}/a-small-test.mp3"
 )"
 
-if ! awk "BEGIN { exit !(${duration} > 19) }"; then
+if ! awk "BEGIN { exit !(${duration} > 55) }"; then
     printf 'not ok - narration skill assembles both stingers, narration, and sign-off\n' >&2
     exit 1
 fi
@@ -145,4 +145,4 @@ if ! awk "BEGIN { exit !(${signoff_tail_mean_db} > -75) }"; then
     exit 1
 fi
 
-printf 'ok - room tone remains audible through a sign-off longer than the article\n'
+printf 'ok - room tone repeats and remains audible through a sign-off longer than the article and source bed\n'

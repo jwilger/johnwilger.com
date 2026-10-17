@@ -104,8 +104,9 @@ while awk "BEGIN { exit !(${bed_duration} < ${bed_target_duration}) }"; do
         -y \
         -loglevel error \
         -i "$bed_file" \
+        -i "$bed_file" \
         -filter_complex \
-        '[0:a]asplit=2[a][b];[a][b]acrossfade=d=2:c1=tri:c2=tri[out]' \
+        '[0:a][1:a]acrossfade=d=2:c1=tri:c2=tri[out]' \
         -map '[out]' \
         -c:a pcm_s16le \
         "$next_bed"
