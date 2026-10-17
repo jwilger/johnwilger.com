@@ -14,6 +14,34 @@ if (!process.env.OPENAI_API_KEY) {
 const model = process.env.NARRATION_MODEL || "gpt-realtime-2";
 const voice = process.env.NARRATION_VOICE || "cedar";
 const maxAttempts = Number(process.env.NARRATION_MAX_ATTEMPTS || "5");
+// Optional bounds for a paid batch. Leave existing local defaults unchanged.
+const maxRequests = process.env.NARRATION_MAX_REQUESTS === undefined
+  ? Infinity
+  : Number(process.env.NARRATION_MAX_REQUESTS);
+const maxOutputTokens = process.env.NARRATION_MAX_OUTPUT_TOKENS === undefined
+  ? undefined
+  : Number(process.env.NARRATION_MAX_OUTPUT_TOKENS);
+if (process.env.NARRATION_MAX_REQUESTS !== undefined &&
+    (!Number.isSafeInteger(maxRequests) || maxRequests < 1)) {
+  throw new Error("NARRATION_MAX_REQUESTS must be a positive integer");
+}
+if (maxOutputTokens !== undefined &&
+    (!Number.isInteger(maxOutputTokens) || maxOutputTokens < 1 || maxOutputTokens > 4096)) {
+  throw new Error("NARRATION_MAX_OUTPUT_TOKENS must be an integer from 1 to 4096");
+}
+if (maxRequests !== Infinity && maxOutputTokens === undefined) {
+  throw new Error("Bounded batches require NARRATION_MAX_OUTPUT_TOKENS");
+}
+const requestLedger = path.join(workDir, "request-reservations.jsonl");
+let requestCount = 0;
+if (maxRequests !== Infinity) {
+  try {
+    const records = (await fs.readFile(requestLedger, "utf8")).trim();
+    requestCount = records ? records.split("\n").map((line) => JSON.parse(line)).length : 0;
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+  }
+}
 const segments = JSON.parse(
   await fs.readFile(path.join(workDir, "segments.json"), "utf8"),
 );
@@ -59,7 +87,17 @@ function transcriptMatches(source, spoken) {
   );
 }
 
-function render(text, instructions, label) {
+async function render(text, instructions, label) {
+  if (requestCount >= maxRequests) {
+    throw new Error(`Request budget exhausted after ${requestCount} reserved requests`);
+  }
+  requestCount += 1;
+  if (maxRequests !== Infinity) {
+    // Reserve before opening the connection; failed/uncertain requests still count.
+    await fs.appendFile(requestLedger, `${JSON.stringify({
+      request: requestCount, label, model, max_output_tokens: maxOutputTokens,
+    })}\n`);
+  }
   return new Promise((resolve, reject) => {
     const audio = [];
     const transcript = [];
@@ -106,7 +144,7 @@ function render(text, instructions, label) {
       );
     });
 
-    ws.on("message", (raw) => {
+    ws.on("message", async (raw) => {
       const event = JSON.parse(raw.toString());
       if (event.type === "session.updated" && !sessionConfigured) {
         sessionConfigured = true;
@@ -126,6 +164,7 @@ function render(text, instructions, label) {
             response: {
               output_modalities: ["audio"],
               instructions,
+              ...(maxOutputTokens === undefined ? {} : { max_output_tokens: maxOutputTokens }),
             },
           }),
         );
@@ -134,6 +173,20 @@ function render(text, instructions, label) {
       } else if (event.type === "response.output_audio_transcript.delta") {
         transcript.push(event.delta);
       } else if (event.type === "response.done") {
+        if (maxRequests !== Infinity) {
+          try {
+            await fs.appendFile(path.join(workDir, "response-usage.jsonl"), `${JSON.stringify({
+              request: requestCount,
+              label,
+              status: event.response?.status,
+              usage: event.response?.usage ?? null,
+            })}\n`);
+          } catch (error) {
+            ws.terminate();
+            finish(error);
+            return;
+          }
+        }
         if (event.response?.status !== "completed") {
           finish(
             new Error(

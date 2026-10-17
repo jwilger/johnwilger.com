@@ -1,0 +1,127 @@
+name: Narrate approved blog post
+
+on:
+  workflow_dispatch:
+    inputs:
+      post:
+        description: Approved article to narrate (OpenAI API charges apply)
+        required: true
+        type: choice
+        default: content/blog/what-political-promises-are-worth.md
+        options:
+          - content/blog/what-political-promises-are-worth.md
+
+permissions:
+  contents: read
+
+concurrency:
+  group: blog-narration
+  cancel-in-progress: false
+
+jobs:
+  narrate:
+    if: github.ref == 'refs/heads/main' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the selected revision
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+
+      - name: Install audio tools from Ubuntu packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends ffmpeg
+
+      - name: Verify prerequisites and approved input
+        env:
+          POST_PATH: ${{ inputs.post }}
+        run: |
+          set -euo pipefail
+          test "$POST_PATH" = 'content/blog/what-political-promises-are-worth.md'
+          test -f "$POST_PATH"
+          test ! -L "$POST_PATH"
+          # Bind this paid run to the approved, unpublished article revision.
+          printf '%s  %s\n' '20f14f1bbb6407ca6f3cfa90fab2794ad3f127f491bceb9b9cc9b0f8854969f1' "$POST_PATH" | sha256sum --check --status
+          python3 -c 'import sys; assert sys.version_info >= (3, 11)'
+          for tool in node npm ffmpeg ffprobe; do
+            command -v "$tool" > /dev/null
+          done
+          slug="$(python3 .agents/skills/narrate-blog-post/scripts/extract-post.py "$POST_PATH" --print-slug)"
+          test "$slug" = 'what-political-promises-are-worth'
+
+      - name: Render and verify narration with the existing pipeline
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          POST_PATH: ${{ inputs.post }}
+          NARRATION_MODEL: gpt-realtime-2
+          NARRATION_VOICE: cedar
+          NARRATION_MAX_ATTEMPTS: '5'
+          # 12 * ((128000 * $4 + 4096 * $64) / 1000000) = $9.289728.
+          # Text-only input; use the full context limit and highest output rate.
+          # Do not rerun a paid batch without reconciling the remaining budget.
+          NARRATION_MAX_REQUESTS: '12'
+          NARRATION_MAX_OUTPUT_TOKENS: '4096'
+        run: |
+          set -euo pipefail
+          if [[ -z "${OPENAI_API_KEY:-}" ]]; then
+            printf 'Configure the OPENAI_API_KEY repository secret before running this workflow.\n' >&2
+            exit 1
+          fi
+          test "$POST_PATH" = 'content/blog/what-political-promises-are-worth.md'
+          bash .agents/skills/narrate-blog-post/scripts/render-blog-narration.sh "$POST_PATH"
+
+      - name: Preserve accounting and completed segments even if rendering fails
+        if: always()
+        run: |
+          set -euo pipefail
+          work='.build/narration/what-political-promises-are-worth'
+          if [[ -f "$work/request-reservations.jsonl" ]]; then
+            mkdir -p narration-artifact/completed-segments
+            cp "$work/request-reservations.jsonl" narration-artifact/
+            shopt -s nullglob
+            for file in "$work"/response-usage.jsonl "$work"/segment-*.pcm \
+              "$work"/signoff.pcm "$work"/segment-*-transcript.txt \
+              "$work"/signoff-transcript.txt "$work"/transcript.txt \
+              "$work"/segments.json "$work"/signoff.txt "$work"/metadata.json; do
+              if [[ -f "$file" ]]; then
+                cp "$file" narration-artifact/completed-segments/
+              fi
+            done
+          fi
+
+      - name: Package audio and verification metadata
+        run: |
+          set -euo pipefail
+          work='.build/narration/what-political-promises-are-worth'
+          output='narration-artifact'
+          mkdir -p "$output"
+          cp static/audio/blog/what-political-promises-are-worth.mp3 "$output/"
+          cp "$work/narration-frontmatter.toml" "$work/metadata.json" \
+            "$work/transcript.txt" "$work/segments.json" "$work/signoff.txt" "$output/"
+          cp "$work"/segment-*-transcript.txt "$work/signoff-transcript.txt" "$output/"
+          ffprobe -v error -show_format -show_streams -of json \
+            "$output/what-political-promises-are-worth.mp3" > "$output/audio-probe.json"
+          sha256sum content/blog/what-political-promises-are-worth.md \
+            "$output/what-political-promises-are-worth.mp3" > "$output/SHA256SUMS"
+          printf 'source_commit=%s\nmodel=gpt-realtime-2\nvoice=cedar\n' "$GITHUB_SHA" \
+            > "$output/render-provenance.txt"
+
+      - name: Upload audio or request ledger for review (does not publish)
+        if: always() && hashFiles('narration-artifact/**') != ''
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: what-political-promises-are-worth-narration-${{ github.run_id }}
+          path: narration-artifact/
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
