@@ -1,3 +1,9 @@
 {
-  "packages": ["./packages/reload-and-continue"]
+  "packages": [
+    "./packages/reload-and-continue",
+    {
+      "source": "./packages/pi-codex-image-gen",
+      "skills": []
+    }
+  ]
 }

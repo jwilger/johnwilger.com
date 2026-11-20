@@ -19,4 +19,5 @@
 
 - `nix develop`, then `just dev` serves Zola at `http://127.0.0.1:1111`. `just test` runs local checks; `just build` writes `public/`. Content lives in `content/blog/` and uses Zola tags.
 - Preserve keyboard navigation and visible focus, semantic landmarks and the skip link, sufficient contrast, and support for users' motion and color-scheme preferences.
+- For Impeccable raster assets in Pi, see [subscription image generation](docs/image-generation.md) for the tool, sign-in, and transparency limits.
 - Leave future architecture, the redesign's visual system, additional data rules, and reputation measurement open until there's a concrete decision. Check available models before choosing one and weigh quality, cost, latency, and data handling.
