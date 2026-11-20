@@ -1,6 +1,6 @@
 +++
 title = "What Political Promises Are Worth"
-description = "The gap between political words and deeds is an old frustration. Votes, compromises, and follow-through help us judge what a public promise is worth."
+description = "Legislation leaves a record you can check: the text, the amendments, and the votes. Three cases show how I use it to decide what a political promise was worth."
 slug = "what-political-promises-are-worth"
 date = 2026-10-17
 draft = false
@@ -8,96 +8,74 @@ draft = false
 [extra]
 cover = "/images/blog/what-political-promises-are-worth-cover.png"
 
-[extra.narration]
-src = "/audio/blog/what-political-promises-are-worth.mp3"
-type = "audio/mpeg"
-
-[[extra.narration.credits]]
-title = "Retro Audio Logo"
-creator = "Breviceps"
-source_url = "https://freesound.org/people/Breviceps/sounds/564237/"
-license = "CC0 1.0"
-license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
-
-[[extra.narration.credits]]
-title = "01 room tone low frequency hvac"
-creator = "pushkin"
-source_url = "https://freesound.org/people/pushkin/sounds/215293/"
-license = "CC0 1.0"
-license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
-
 [taxonomies]
 tags = ["accountability", "public-policy", "institutions"]
 +++
 
-As I started off my day with a quick look at the AP headlines, [one article](https://apnews.com/article/trump-sanctions-waiver-russa-putin-ukraine-war-3cc9740c39e9e9eb713b1c553b5709e6) caught my attention and nearly made me spit my latte through my nose. Members of Congress were expressing outrage over President Trump's decision to waive new Russia sanctions, using authority written into a law Congress had passed.
+I nearly lost a mouthful of latte over [an AP story](https://apnews.com/article/trump-sanctions-waiver-russa-putin-ukraine-war-3cc9740c39e9e9eb713b1c553b5709e6) this morning. Members of Congress were outraged that President Trump had waived new sanctions on Russia. He'd done it with a waiver that Congress wrote into the law it had just passed.
 
-I want to know what a politician is prepared to do with the position they announce. A promise can be sincere and still give way in a negotiation. What bothers me, and has for a long time, is when officials keep claiming credit for it after accepting a decision that weakens what it delivers.
+Complaining that politicians say one thing and do another is about as old as politics, and I don't have anything new to add to the general case. My complaint is narrower. A promise can be sincere and still lose ground in a negotiation, because that's how legislation gets made. What bothers me, and has for a long time, is the official who trades away part of what a promise delivered and goes on collecting credit for all of it.
 
-That's especially frustrating when I agree with the promise. I want financial disclosures people can actually use. I want safeguards around institutions that depend on public support. Hearing an official endorse those things gives me a reason to examine their work, rather than a reason to stop paying attention.
+It bothers me most when I agree with the promise. I want financial disclosures that ordinary people can use. I want limits on which bank risks the public ends up backing. When an official says they want those things too, I take it as a reason to go read what they did about it.
 
-Legislation gives us a useful place to look. There are texts to compare, amendments to examine, and votes to follow. Sometimes the record shows someone accepting a tradeoff they ought to explain. Sometimes it shows someone defending a position at a cost, or continuing to work after a defeat. I care about those differences. Otherwise we're left judging people by how convincingly they say what we want to hear.
+I build software for a living, and I think that's where the habit comes from. An announcement tells you what somebody meant to ship. The diff tells you what shipped. Legislation is one of the few places in politics where you get something like a diff. You can compare the text, read the amendments, and look up the votes. Sometimes the record shows a tradeoff that somebody ought to explain. Sometimes it shows a person holding a position when it cost them something, or going back to work after losing. Without the record, all I can judge is how well someone says what I want to hear.
 
-## A promise has to be usable
+When President Obama signed the STOCK Act in April 2012, the [White House fact sheet](https://obamawhitehouse.archives.gov/the-press-office/2012/04/04/fact-sheet-stock-act-bans-members-congress-insider-trading) promised electronic filing of financial disclosures, public access to them online, and databases the public could search and sort.
 
-When President Obama signed the STOCK Act in April 2012, the [White House fact sheet](https://obamawhitehouse.archives.gov/the-press-office/2012/04/04/fact-sheet-stock-act-bans-members-congress-insider-trading) described electronic financial disclosures, online public access, and searchable, sortable databases.
+The databases were the part that would have changed who could do the work. Finding a pattern in an official's trades means locating and comparing entries across years of filings. With a searchable database, a curious person with a free evening can try. Form by form, it's a job for someone with time and a research budget.
 
-Think about what those tools, promised in 2012, would have let someone do. A person looking for a pattern across years of financial disclosures needed to find and compare entries. Working through individual forms took more effort than searching a database. The promised search and sort tools would have made that work easier for people without the time or resources for a lengthy investigation. You shouldn't have needed a research grant to make use of a disclosure requirement.
+A year later, [Public Law 113-7](https://www.govinfo.gov/content/pkg/PLAW-113publ7/html/PLAW-113publ7.htm) removed the new online-posting requirements for congressional staff and most executive-branch employees. It kept online access for members of Congress, congressional candidates, the president, the vice president, and certain senior officials. It also dropped the statutory requirement that the records be searchable, sortable, and downloadable. The ban on insider trading stayed, and so did the underlying requirement to report transactions. What Congress cut back was the obligation to make those reports easy to find and use.
 
-A year later, [Public Law 113-7](https://www.govinfo.gov/content/pkg/PLAW-113publ7/html/PLAW-113publ7.htm) removed the new online-posting requirements for congressional staff and most executive-branch employees. It retained online access for members of Congress, congressional candidates, the president, vice president, and certain senior officials. It also removed the statutory requirement for search, sort, and download functionality. The insider-trading prohibitions and underlying transaction-reporting requirements stayed in place. Congress pared back the obligation to make the records easier to find and use.
+The [bill, S. 716](https://www.congress.gov/bill/113th-congress/senate-bill/716), was introduced by Harry Reid. It passed the Senate by unanimous consent and the House without objection, and Obama signed it. Nobody in either chamber had to cast a recorded vote on passage.
 
-The [legislative record for S. 716](https://www.congress.gov/bill/113th-congress/senate-bill/716) shows a measure introduced by Harry Reid, passed by unanimous consent in the Senate and without objection in the House, then signed by Obama. It cleared both chambers without an individual recorded passage vote.
+There was an argument for the change. The [Office of Government Ethics endorsed a study's warning](https://www.oge.gov/Web/oge.nsf/0/92E4558723598F5F852585B6005A1311/$FILE/Reid%20and%20others%20letter.pdf) that putting employees' financial information online in aggregate could endanger their families and national-security work. It argued that the existing disclosure and ethics-review processes could serve the law's goals without that risk.
 
-There were reasons offered for the change. The [Office of Government Ethics endorsed a study's warning](https://www.oge.gov/Web/oge.nsf/0/92E4558723598F5F852585B6005A1311/$FILE/Reid%20and%20others%20letter.pdf) that aggregating employees' financial information online could endanger families and national-security work. It argued that existing disclosure and ethics-review processes could serve the law's goals without those risks.
+I take that concern seriously. I also notice that the search tools were advertised as part of the reform and withdrawn with far less ceremony than they were announced. If dropping them was the right call, the public was owed an explanation of what it lost, made as plainly as the original promise.
 
-Those concerns deserve an answer. So does the loss of a tool that would have made public scrutiny easier. Officials had advertised that capability as part of the reform. If removing it was the better decision, I'd expect them to explain the lost public benefit as clearly as they had explained the original promise.
+Two years earlier, at the July 2010 signing of Dodd-Frank, Obama had said the reforms would ["put a stop to taxpayer bailouts once and for all"](https://obamawhitehouse.archives.gov/the-press-office/remarks-president-signing-dodd-frank-wall-street-reform-and-consumer-protection-act).
 
-## A compromise changes what was promised
+One of the mechanisms behind that sentence was Section 716, the swaps push-out rule. It limited federal financial assistance to banks that conducted certain kinds of derivatives trading. A bank that wanted to stay eligible could move that trading into an affiliate that wasn't a bank. The point was to keep some trading risks outside the institutions the public stands behind.
 
-At the July 2010 signing of Dodd-Frank, Obama said the reforms would ["put a stop to taxpayer bailouts once and for all"](https://obamawhitehouse.archives.gov/the-press-office/remarks-president-signing-dodd-frank-wall-street-reform-and-consumer-protection-act).
+Four years later, [Section 630 of the December 2014 funding law](https://www.govinfo.gov/content/pkg/PLAW-113publ235/html/PLAW-113publ235.htm) narrowed the rule so that it covered only certain swaps based on asset-backed securities. More of the trading could stay inside federally supported banks.
 
-One of the mechanisms was Section 716, the swaps push-out rule. It limited federal financial assistance for banks conducting certain derivatives activities. Banks could move those activities to nonbank affiliates to preserve eligibility. The idea was to keep certain trading risks outside banks eligible for public support.
+[GAO later measured how far the rule had shrunk](https://www.gao.gov/products/gao-17-607). Using September 2016 data, it estimated that the original provision could have affected $10.5 trillion in notional swaps value at 11 banks. The amended provision affected about $265 billion at four banks. Notional value is the face amount the contracts are written against, not what anyone stands to lose on them, so neither number tells you the size of a bailout. Put them side by side, though, and the amended rule reaches about a fortieth of what the original did.
 
-Four years later, [Section 630 of the December 2014 funding law](https://www.govinfo.gov/content/pkg/PLAW-113publ235/html/PLAW-113publ235.htm) narrowed that rule to certain swaps based on asset-backed securities, allowing more of the trading to remain inside federally supported banks.
+GAO also found that pushing activities into affiliates could raise costs and some risks, and that other parts of Dodd-Frank helped limit banks' exposures. The original rule had costs of its own, and they belong in any judgment about whether it should have been kept.
 
-[GAO later measured how much the change narrowed the rule](https://www.gao.gov/products/gao-17-607). Using September 2016 data, it estimated that the original provision could have affected $10.5 trillion in notional swaps value at 11 banks; the amended provision affected about $265 billion at four banks. Those are contractual reference amounts, useful for comparing the rule's reach. They aren't estimates of losses, public spending, or a future bailout.
+The administration did state the price. In its [December 11 briefing](https://obamawhitehouse.archives.gov/the-press-office/2014/12/11/press-briefing-press-secretary-josh-earnest-121114), the White House said Obama opposed the rollback and supported the overall funding deal anyway. Its reasons included avoiding a shutdown, paying for other priorities, and getting more resources for financial regulators.
 
-GAO also found that pushing activities into affiliates could increase costs and some risks, and that other Dodd-Frank provisions helped mitigate banks' exposures. The original rule had costs of its own, which have to figure into the judgment about whether to keep it.
+That's a choice voters can evaluate. An official is entitled to decide a compromise is worth making, and the rest of us get to judge whether what was gained justified what was given up. We can only do that if the cost is in the announcement along with the win.
 
-The administration explained its tradeoff publicly. In its [December 11 briefing](https://obamawhitehouse.archives.gov/the-press-office/2014/12/11/press-briefing-press-secretary-josh-earnest-121114), the White House said Obama opposed the rollback but supported the overall funding compromise. Its reasons included avoiding a shutdown, financing other priorities, and increasing resources for financial regulators.
+Elizabeth Warren made a different choice. She [publicly called for stripping the rollback](https://www.warren.senate.gov/newsroom/press-releases/senator-warren-calls-on-house-to-strike-repeal-of-dodd-frank-provision-from-government-spending-bill/) and then [voted against the funding package](https://www.senate.gov/legislative/LIS/roll_call_votes/vote1132/vote_113_2_00354.htm), which a president of her own party supported. In 2015, she and Elijah Cummings [investigated the rollback and pressed regulators for stronger rules](https://oversightdemocrats.house.gov/imo/media/doc/2015-11-10.%20EEC%20Warren%20to%20Massad%20White%20re%20Swaps.compressed.pdf). She voted against her own side's bill over this provision, lost, and kept working on it. You can think she was wrong about the push-out rule and still see that she did what she said she'd do.
 
-That was a choice voters could evaluate. The administration's opposition to the rollback and its acceptance of the package both belong in the account of what happened. An official can decide that a compromise is worth making. The rest of us get to judge whether what was gained justified what was given up. If we're being asked to celebrate the deal, the price should make it into the announcement.
+Both of those laws were weakened after they passed. The Russia sanctions law that has Congress upset this week didn't need to be, because the waiver was in it on the day it was signed. [Section 115 of Public Law 119-111](https://www.govinfo.gov/content/pkg/PLAW-119publ111/html/PLAW-119publ111.htm) gives the president broad power to waive the law's new Russia-sanctions provisions. Before issuing a waiver, he has to certify that it's in the national interest and send Congress a report explaining why.
 
-Elizabeth Warren made a different choice. She [publicly called for removing the rollback](https://www.warren.senate.gov/newsroom/press-releases/senator-warren-calls-on-house-to-strike-repeal-of-dodd-frank-provision-from-government-spending-bill/) and then [voted against the funding package](https://www.senate.gov/legislative/LIS/roll_call_votes/vote1132/vote_113_2_00354.htm), despite the support of a president from her own party. In 2015, she and Elijah Cummings [pressed regulators for stronger rules after investigating the rollback](https://oversightdemocrats.house.gov/imo/media/doc/2015-11-10.%20EEC%20Warren%20to%20Massad%20White%20re%20Swaps.compressed.pdf). She was willing to vote against an Obama-backed bill over this provision, and she kept working on the issue after losing that fight. That should earn her credit for following through on her stated position, even if you disagree with her on the push-out rule.
+The [October 16 executive order](https://www.whitehouse.gov/presidential-actions/2026/10/implementing-the-lindsey-o-graham-sanctioning-russia-and-iran-act-of-2026/) uses that authority across much of the new law and says the required submissions were made. I haven't seen those submissions myself. The waivers last until the president, or the secretary of state acting on his behalf, decides further action is appropriate. Earlier Russia sanctions imposed by executive order remain in place.
 
-## Look at who had the choice
+A voter who expected the new law to require economic pressure on Russia would want to know how much of it had been left to the president's judgment. There may be a good diplomatic reason for that flexibility. Lawmakers who take credit for the law should still have to explain why they made it so broad.
 
-Sometimes the gap is built into the original law. [Section 115 of Public Law 119-111](https://www.govinfo.gov/content/pkg/PLAW-119publ111/html/PLAW-119publ111.htm) gives the president broad power to waive the law's new Russia-sanctions provisions. It requires a national-interest certification and an explanatory report to Congress before a waiver is issued.
+Representative Gregory Meeks [warned about the discretion in July](https://democrats-foreignaffairs.house.gov/2026/7/meeks-issues-statement-opposing-tariff-powers-in-senate-russia-bill). In September, he proposed tightening the waiver standard for Russia and its enablers, so that a waiver would have to be vital to U.S. national security. The House Rules Committee [rejected a motion to allow his amendment to be considered, 3–7](https://www.govinfo.gov/content/pkg/CRPT-119hrpt825/pdf/CRPT-119hrpt825.pdf#page=4), which kept it from a floor vote under the rule. Meeks then [voted against the final bill](https://clerk.house.gov/Votes/2026308?Page=2).
 
-The [October 16 executive order](https://www.whitehouse.gov/presidential-actions/2026/10/implementing-the-lindsey-o-graham-sanctioning-russia-and-iran-act-of-2026/) invokes that authority across much of the new law and says the required submissions were made. I haven't seen those submissions myself. The waivers continue until the president or delegated secretary of state determines further action is appropriate, while earlier Russia sanctions imposed by executive order remain in place.
+So when Meeks criticizes the waiver now, he's criticizing something he tried to change. The members who blocked his attempt are in a different position, even though they're saying much the same thing this week. I'd rather judge each of them on their own record than on the chorus.
 
-A voter expecting the new law to require economic pressure on Russia would need to know how much of it was left to the president's judgment. There may be a good diplomatic reason for that flexibility. Its breadth is still a choice lawmakers should explain when they take credit for the law.
+Before we give anyone credit, we should start with what the law requires and whom it covers, because that tells us whether the promise reaches the people and activities we assumed it did.
 
-Representative Gregory Meeks [warned about the discretion in July](https://democrats-foreignaffairs.house.gov/2026/7/meeks-issues-statement-opposing-tariff-powers-in-senate-russia-bill). In September, he proposed tightening the waiver standard for Russia and its enablers to actions vital to U.S. national security. The House Rules Committee [rejected a motion to allow consideration, 3–7](https://www.govinfo.gov/content/pkg/CRPT-119hrpt825/pdf/CRPT-119hrpt825.pdf#page=4), keeping the proposed constraint from a floor vote under the rule. Meeks then [voted against the final legislation](https://clerk.house.gov/Votes/2026308?Page=2).
+Then we should look for the override. Somebody can usually waive the requirement, and we need to know who, on what conditions, and for how long. A broad waiver can hand most of the decision back to the official the law looked like it was constraining.
 
-His later criticism followed an attempt to change the relevant provision. Judging him together with the members who blocked that attempt would get the story wrong. Each critic's own record matters more than the fact that several of them are now saying similar things.
+Next come the amendments. We need to know which ones would have changed those conditions, and who let them be considered or kept them off the floor. The Meeks amendment is why. A final vote on a large bill hides the earlier decision to leave a particular safeguard out of it.
 
-## What I want to know before giving credit
+If a safeguard was traded away, we should ask what the trade bought. We can't judge a compromise without knowing both sides of it.
 
-I start with what the law actually requires and whom it covers. That's how we find out whether the promise reaches the people and activities we thought it did. Then, who can waive the requirement, under what conditions, and for how long? Those details tell us who has the final say. A broad override can leave a great deal of discretion with the official the law appeared to constrain.
+Last, we should look at what happened after the public objection. Something ought to have changed in the law, the funding, the enforcement, or the oversight. A statement can sound like action and leave everything where it was. Amendments fail and investigations get stonewalled. That isn't the fault of the official who tried, and they should still be able to point at the work and tell us what became of it.
 
-Which amendments would have changed those conditions, and who allowed or blocked consideration? The Meeks amendment shows why I'd ask. A final vote on a large bill can obscure the earlier choice to keep a particular safeguard out of it. If a safeguard was traded away, what did the bargain obtain in return? We need that answer to judge the compromise on its terms, including the cost officials accepted to get something else passed.
+Rand Paul's record on surveillance of Americans passes that last test. In 2015, he and Ron Wyden [proposed amendments to further restrict surveillance](https://www.paul.senate.gov/news-sens-paul-wyden-release-joint-amendments-call-votes-proposals-expand-surveillance-reforms/), including protections against warrantless review of Americans' communications. In April 2024, Paul [offered and voted for an amendment restricting FISA surveillance and queries involving U.S. persons](https://www.senate.gov/legislative/LIS/roll_call_votes/vote1182/vote_118_2_00147.htm). It lost, 11–81. In July 2026, he [introduced S. 4998](https://www.govinfo.gov/content/pkg/BILLS-119s4998is/html/BILLS-119s4998is.htm), which again sought limits on surveillance and on access to Americans' communications.
 
-After the public objection, what changed in the law, funding, enforcement, or oversight? A statement can sound like action while leaving the underlying situation untouched. An amendment can fail; an investigation can meet resistance. The official should still be able to point to the work and explain what happened to it.
+The proposals weren't identical, and some went further than a warrant requirement. But he kept at it under presidents of both parties, and after losing 11–81 he wrote another bill. I disagree with Paul about plenty, and I respect that.
 
-Rand Paul's record on surveillance of Americans is useful here. In 2015, he and Ron Wyden [proposed amendments to expand surveillance restrictions](https://www.paul.senate.gov/news-sens-paul-wyden-release-joint-amendments-call-votes-proposals-expand-surveillance-reforms/), including protections against warrantless review of Americans' communications. In April 2024, Paul [offered and voted for an amendment restricting FISA surveillance and queries involving U.S. persons](https://www.senate.gov/legislative/LIS/roll_call_votes/vote1182/vote_118_2_00147.htm). It lost, 11–81. In July 2026, he [introduced S. 4998](https://www.govinfo.gov/content/pkg/BILLS-119s4998is/html/BILLS-119s4998is.htm), again pursuing limits on surveillance and access to Americans' communications.
+It would be easier to decide that everyone in politics is equally untrustworthy. I don't want to, because the differences between these records are the whole reason to look. Holding both parties to one standard means following the evidence where it goes. If the responsibility in some case falls mostly on one party, or on a few people within it, I'm not going to spread it around evenly so the conclusion looks balanced.
 
-The proposals varied, sometimes going beyond a warrant requirement, but he kept pursuing restrictions across different administrations. The defeat followed by another bill shows continued work to get those changes enacted. I can disagree with someone's broader politics and still respect that kind of persistence on a stated position.
+The rest of us live under whatever comes out of these bargains. How a surveillance restriction is scoped decides how much room the government has to read private communications. How a waiver is written decides whether a sanctions law requires anything. People should be able to understand those terms and challenge them without attending every committee hearing.
 
-I don't want to settle for assuming that everyone in politics is equally untrustworthy. That would make the differences between these records pointless, and they're exactly what I want to be able to judge. Applying the same standard across parties means following the evidence wherever it leads. If responsibility falls mostly on one party, or a few people within it, there's no reason to distribute it more evenly for appearances.
+We hand people the authority to make these choices, and they owe us an honest account of what they did with it. I'd much rather hear "we gave this up to get the bill passed" than be asked to pretend the original promise came through intact.
 
-People outside government have to live with the rules that come out of these bargains. The scope of a surveillance restriction determines how much room the government has to examine private communications. These are things people need to be able to understand and challenge, even if they don't have time to follow every committee hearing.
-
-That's why the disconnect bothers me. We give people authority to make consequential choices, and we need an honest account of what they did with it. I'd rather hear "We gave this up to get the bill passed" than be asked to pretend the original promise survived intact. 
-
-Before sharing the next statement that makes you nod along, check what its author actually did. Did they vote for the safeguard, try to strengthen it, or help remove it? Ask them to explain the difference. And when someone follows through—even someone you rarely agree with—give them credit. We should make it harder to earn our support with words alone.
+The next time a statement from an official has you nodding along, look up what its author did before you share it. Find out whether they voted for the safeguard, tried to strengthen it, or helped take it out, and ask them to explain any difference between that and what they're saying now. When someone follows through, give them the credit, including when it's someone you rarely agree with. Words alone shouldn't be enough to earn our support.
