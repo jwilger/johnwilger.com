@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% import "macros.html" as macros %}
 
 {% block title %}{{ term.name }} — {{ config.title }}{% endblock title %}
 
@@ -12,7 +11,7 @@
 
   <div class="article-list">
     {% for page in term.pages %}
-      {{ macros::article_card(page=page) }}
+      {{ <article_card page={page} /> }}
     {% endfor %}
   </div>
 </div>

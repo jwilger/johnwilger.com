@@ -10,7 +10,6 @@
   <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml">
   <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/atom.xml">
   {% block extra_head %}{% endblock extra_head %}
-  <script defer src="/js/htmx.min.js"></script>
   <script defer src="/js/alpine.min.js"></script>
   <script>
     // Theme initialization - runs before page renders to prevent flash
@@ -35,8 +34,8 @@
       </a>
       <nav class="site-nav" aria-label="Main navigation">
         <a href="{{ get_url(path='@/blog/_index.md') | safe }}"
-           class="{% if current_path and current_path is starting_with('/blog') %}current{% endif %}"
-           {% if current_path and current_path is starting_with('/blog') %}aria-current="page"{% endif %}>Blog</a>
+           class="{% if current_path and current_path is starting_with(pat='/blog') %}current{% endif %}"
+           {% if current_path and current_path is starting_with(pat='/blog') %}aria-current="page"{% endif %}>Blog</a>
         <a href="{{ get_url(path='@/about.md') | safe }}"
            class="{% if current_path == '/about/' %}current{% endif %}"
            {% if current_path == '/about/' %}aria-current="page"{% endif %}>About</a>

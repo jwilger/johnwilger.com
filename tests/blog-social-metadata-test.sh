@@ -39,24 +39,45 @@ fi
 
 printf 'ok - external post cover remains the social preview image URL\n'
 
-social_metadata=(
-    '<meta property="og:type" content="article">'
-    '<meta property="og:site_name" content="John Wilger">'
-    '<meta property="og:title" content="Somebody Has to Design the Factory">'
-    '<meta property="og:description" content="&quot;Dark factory&quot; software development doesn&#x27;t mean typing an idea into a box. Automating assembly created a second engineering discipline, and that&#x27;s where senior judgment goes.">'
-    '<meta property="og:url" content="https://johnwilger.com/blog/somebody-has-to-design-the-factory/">'
-    '<meta name="twitter:card" content="summary_large_image">'
-    '<meta name="twitter:title" content="Somebody Has to Design the Factory">'
-    '<meta name="twitter:description" content="&quot;Dark factory&quot; software development doesn&#x27;t mean typing an idea into a box. Automating assembly created a second engineering discipline, and that&#x27;s where senior judgment goes.">'
-    '<meta name="twitter:image" content="https://johnwilger.com/images/blog/somebody-has-to-design-the-factory-cover.png">'
-)
+python3 - "${TMP_DIR}/site/blog/somebody-has-to-design-the-factory/index.html" <<'PY'
+from html.parser import HTMLParser
+from pathlib import Path
+import sys
 
-for metadata in "${social_metadata[@]}"; do
-    if [[ "$post_html" != *"$metadata"* ]]; then
-        printf 'not ok - blog post exposes a complete social preview contract\n' >&2
-        exit 1
-    fi
-done
+
+class MetadataParser(HTMLParser):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.values = {}
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "meta":
+            fields = dict(attrs)
+            key = fields.get("property") or fields.get("name")
+            if key:
+                self.values.setdefault(key, []).append(fields.get("content"))
+
+
+title = "Somebody Has to Design the Factory"
+description = ('"Dark factory" software development doesn\'t mean typing an idea into a box. '
+               "Automating assembly created a second engineering discipline, and that's where senior judgment goes.")
+expected = {
+    "og:type": "article",
+    "og:site_name": "John Wilger",
+    "og:title": title,
+    "og:description": description,
+    "og:url": "https://johnwilger.com/blog/somebody-has-to-design-the-factory/",
+    "twitter:card": "summary_large_image",
+    "twitter:title": title,
+    "twitter:description": description,
+    "twitter:image": "https://johnwilger.com/images/blog/somebody-has-to-design-the-factory-cover.png",
+}
+parser = MetadataParser()
+parser.feed(Path(sys.argv[1]).read_text(encoding="utf-8"))
+for key, value in expected.items():
+    if parser.values.get(key) != [value]:
+        sys.exit(f"not ok - {key}: expected {[value]!r}, got {parser.values.get(key)!r}")
+PY
 
 printf 'ok - blog post exposes a complete social preview contract\n'
 

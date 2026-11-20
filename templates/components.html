@@ -1,5 +1,5 @@
-{# Article card macro — horizontal layout with cover image #}
-{% macro article_card(page) %}
+{# Article card — horizontal layout with cover image #}
+{% component article_card(page) %}
 <article class="article-card">
   <a href="{{ page.permalink | safe }}" class="article-card-link">
     {% if page.extra.cover %}
@@ -10,7 +10,7 @@
     <div class="article-card-body">
       <h3>{{ page.title }}</h3>
       <div class="article-meta">
-        <time datetime="{{ page.date | date(format='%+') }}">{{ page.date | date(format='%B %e, %Y') }}</time>
+        <time datetime="{{ page.date }}">{{ page.date | date(format='%B %e, %Y') }}</time>
         {% if page.reading_time %}
         <span>{{ page.reading_time }} min read</span>
         {% endif %}
@@ -28,10 +28,9 @@
     </div>
   </a>
 </article>
-{% endmacro %}
+{% endcomponent article_card %}
 
-{# Project card macro #}
-{% macro project_card(project) %}
+{% component project_card(project) %}
 <article class="project-card">
   <h3><a href="{{ project.url }}" target="_blank" rel="noopener noreferrer">{{ project.name }}</a></h3>
   <div class="project-meta">
@@ -41,18 +40,4 @@
   </div>
   <p class="project-description">{{ project.description | default(value='No description available.') }}</p>
 </article>
-{% endmacro %}
-
-{# Tag pill macro #}
-{% macro tag_pill(tag) %}
-<a href="{{ get_taxonomy_url(kind='tags', name=tag) | safe }}" class="tag">{{ tag }}</a>
-{% endmacro %}
-
-{# Social icon macro #}
-{% macro social_icon(href, label, svg_path) %}
-<a href="{{ href }}" target="_blank" rel="noopener noreferrer" aria-label="{{ label }}">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-    {{ svg_path | safe }}
-  </svg>
-</a>
-{% endmacro %}
+{% endcomponent project_card %}

@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% import "macros.html" as macros %}
 
 {% block title %}{{ config.title }} — {{ config.description }}{% endblock title %}
 {% block site_title_media %}{% endblock site_title_media %}
@@ -31,7 +30,7 @@
     </div>
 
     {% set section = get_section(path="blog/_index.md") %}
-    {% set featured = section.pages | slice(end=6) %}
+    {% set featured = section.pages[:6] %}
 
     <div class="carousel" x-data="{ active: 0, total: {{ featured | length }} }" x-init="setInterval(() => active = (active + 1) % total, 6000)">
       <div class="carousel-track" :style="'transform: translateX(-' + (active * 100) + '%)'">
@@ -51,7 +50,7 @@
             <div class="featured-content">
               <h3>{{ page.title }}</h3>
               <div class="featured-meta">
-                <time datetime="{{ page.date | date(format='%+') }}">{{ page.date | date(format='%B %e, %Y') }}</time>
+                <time datetime="{{ page.date }}">{{ page.date | date(format='%B %e, %Y') }}</time>
                 {% if page.reading_time %}
                 <span>{{ page.reading_time }} min read</span>
                 {% endif %}

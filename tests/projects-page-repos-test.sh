@@ -70,8 +70,9 @@ uses_github_project_descriptions() {
 project_cards_do_not_render_star_counts() {
     local project_card_template
 
-    project_card_template="$(sed -n '/macro project_card/,/endmacro/p' "${ROOT_DIR}/templates/macros.html")"
-    does_not_contain 'stargazerCount' "$project_card_template" \
+    project_card_template="$(sed -n '/{% component project_card(/,/{% endcomponent project_card %}/p' "${ROOT_DIR}/templates/components.html")"
+    [[ -n "$project_card_template" ]] \
+        && does_not_contain 'stargazerCount' "$project_card_template" \
         && does_not_contain '⭐' "$project_card_template"
 }
 
