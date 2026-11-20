@@ -1,67 +1,22 @@
 {% extends "base.html" %}
 
 {% block title %}{{ section.title }} — {{ config.title }}{% endblock title %}
+{% block description %}{{ section.description or config.description }}{% endblock description %}
 
 {% block content %}
-<section class="hero" style="padding: 4rem 2rem;">
-  <div class="hero-content">
-    <h1>{{ section.title }}</h1>
-    {% if section.description %}
-    <p class="hero-description">{{ section.description }}</p>
-    {% endif %}
-  </div>
-</section>
-
-<section class="container" style="padding-bottom: 5rem;">
-  {% if term %}
-  {# Tag listing page #}
-  <div class="section-header">
-    <h2>{{ term.name }}</h2>
-    <p>{{ term.pages | length }} article{{ term.pages | length | pluralize(singular='', plural='s') }}</p>
-  </div>
-  <div class="article-list">
-    {% for page in term.pages %}
-      {{ <article_card page={page} /> }}
-    {% endfor %}
-  </div>
-  {% else %}
-  {# Regular section listing #}
-  <div class="article-list">
-    {% set pages = paginator?.pages or section.pages %}
-    {% for page in pages %}
-      {{ <article_card page={page} /> }}
-    {% endfor %}
-  </div>
-
-  {% if paginator and paginator.number_pagers > 1 %}
-  <nav class="blog-pager" aria-label="Blog pagination">
-    <a
-      href="{% if paginator.previous %}{{ paginator.previous | safe }}{% else %}#{% endif %}"
-      class="blog-pager-side blog-pager-prev"
-      {% if not paginator.previous %}aria-disabled="true" style="opacity:0.3;cursor:not-allowed;"{% endif %}>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z" clip-rule="evenodd" /></svg>
-      <span class="blog-pager-label">
-        <span class="blog-pager-eyebrow">Previous</span>
-        <span class="blog-pager-title">Newer essays</span>
-      </span>
-    </a>
-    <div class="blog-pager-center" aria-hidden="true">
-      <span class="blog-pager-num">{% if paginator.current_index < 10 %}0{% endif %}{{ paginator.current_index }}</span>
-      <span class="blog-pager-sep"></span>
-      <span class="blog-pager-total">{% if paginator.number_pagers < 10 %}0{% endif %}{{ paginator.number_pagers }}</span>
+<div class="frame interior">
+  <header class="interior-heading">
+    <div>
+      <h1>{{ section.title }}</h1>
+      {{ section.content | safe }}
     </div>
-    <a
-      href="{% if paginator.next %}{{ paginator.next | safe }}{% else %}#{% endif %}"
-      class="blog-pager-side blog-pager-next"
-      {% if not paginator.next %}aria-disabled="true" style="opacity:0.3;cursor:not-allowed;"{% endif %}>
-      <span class="blog-pager-label">
-        <span class="blog-pager-eyebrow">Next</span>
-        <span class="blog-pager-title">Older essays</span>
-      </span>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" /></svg>
-    </a>
-  </nav>
-  {% endif %}
-  {% endif %}
-</section>
+    <a href="{{ get_url(path='tags/') | safe }}">Browse by topic <span aria-hidden="true">→</span></a>
+  </header>
+  <div class="article-list">
+    {% for post in paginator.pages %}
+      {{ <article_card page={post} /> }}
+    {% endfor %}
+  </div>
+  {{ <pager paginator={paginator} /> }}
+</div>
 {% endblock content %}

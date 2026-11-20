@@ -1,11 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="JW monogram">
-  <defs>
-    <linearGradient id="mk-grad" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="#8839ef"></stop>
-      <stop offset="55%" stop-color="#ea76cb"></stop>
-      <stop offset="100%" stop-color="#1e66f5"></stop>
-    </linearGradient>
-  </defs>
-  <rect x="4" y="4" width="120" height="120" rx="26" fill="url(#mk-grad)"></rect>
-  <text x="64" y="90" text-anchor="middle" font-family="Inter, -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, sans-serif" font-weight="800" font-size="72" letter-spacing="-4" fill="#ffffff">JW</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="JW monogram">
+  <path fill="#182f3b" d="M0 0h64v64H0z"/>
+  <path fill="#abc3cd" d="m0 57 12-4 9 3 13 2 12-5 9 1 9-5v15H0z"/>
+  <path fill="none" stroke="#e5edf0" stroke-linecap="square" stroke-linejoin="round" stroke-width="3.5" d="M23 18v17c0 5-2 7-6 7-2 0-4-1-5-3m17-21 5 24 6-16 6 16 6-24"/>
 </svg>

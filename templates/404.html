@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Page not found — {{ config.title }}{% endblock title %}
+
+{% block content %}
+<div class="frame interior">
+  <header class="interior-heading">
+    <div>
+      <h1>Page not found</h1>
+      <p>The address may have changed or been mistyped.</p>
+    </div>
+    <a href="{{ get_url(path='@/blog/_index.md') | safe }}">Browse Perspectives <span aria-hidden="true">→</span></a>
+  </header>
+</div>
+{% endblock content %}

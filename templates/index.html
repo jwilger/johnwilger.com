@@ -1,91 +1,57 @@
 {% extends "base.html" %}
 
-{% block title %}{{ config.title }} — {{ config.description }}{% endblock title %}
-{% block site_title_media %}{% endblock site_title_media %}
+{% block title %}{{ config.title }} — Head of Engineering at 10kR{% endblock title %}
 
 {% block content %}
-{# Hero Section #}
-<section class="hero">
-  <div class="hero-content">
-    <img src="/images/profile.jpg" alt="John Wilger" class="hero-avatar">
-    <h1>John Wilger</h1>
-    <p class="hero-subtitle">Principal Engineering Consultant</p>
-    <p class="hero-description">
-      25+ years shipping software. VP of Engineering. Now consulting on the edge of AI-assisted development.
-      I help teams build systems that actually work—and get extraordinary results from AI tools.
-    </p>
-    <div class="hero-cta">
-      <a href="{{ get_url(path='@/blog/_index.md') | safe }}" class="btn btn-primary">Read the Blog</a>
-      <a href="{{ get_url(path='@/about.md') | safe }}" class="btn btn-secondary">About Me</a>
+{% set lead = get_page(path='blog/somebody-has-to-design-the-factory.md') %}
+{% set archive = get_section(path='blog/_index.md') %}
+<div class="frame home">
+  <header class="home-intro" aria-labelledby="home-name">
+    <div class="home-intro-copy">
+      <h1 id="home-name">John Wilger</h1>
+      <p class="role">Head of Engineering at <a href="https://10kr.co/">10kR</a></p>
+      <p class="home-bio">I’ve spent more than 25 years building software and leading engineering teams.</p>
+      <p class="home-bio">I use AI to write code. The question I care about as an engineering leader is what evidence my team needs before we ship it.</p>
     </div>
-  </div>
-</section>
+    <img class="home-portrait" src="/images/profile.jpg" alt="John Wilger outdoors in the mountains" width="1024" height="1024" fetchpriority="high">
+    <svg class="ridgeline" aria-hidden="true" viewBox="0 0 640 78" fill="none" preserveAspectRatio="none">
+      <path class="ridge-far" d="M0 47 17 44 35 43 48 39 62 41 75 37 91 32 107 34 126 27 143 21 155 23 168 18 182 20 198 17 211 21 222 23 236 38 248 42 255 40 269 45 286 46 302 50 319 47 331 49 350 46 368 48 389 45 407 45 427 40 445 37 460 32 474 35 486 31 498 25 510 26 522 19 534 14 545 21 554 19 568 30 582 32 594 40 611 44 627 40 640 42V78H0Z"/>
+      <path class="ridge-near" d="m0 61 38-2 32-5 30-2 26-5 22 2 28 7 25 3 31 6 22 1 29 4 29-3 27 2 39-8 27-2 34-7 29-11 21-4 20-7 21-2 20-9 23-14 17-5L623 8 640 0V78H0Z"/>
+    </svg>
+  </header>
 
-{# Featured Articles Carousel #}
-<section class="featured-section">
-  <div class="container">
-    <div class="section-header">
-      <h2>Latest Writing</h2>
-      <p>On engineering, AI, and the craft of building software.</p>
-    </div>
-
-    {% set section = get_section(path="blog/_index.md") %}
-    {% set featured = section.pages[:6] %}
-
-    <div class="carousel" x-data="{ active: 0, total: {{ featured | length }} }" x-init="setInterval(() => active = (active + 1) % total, 6000)">
-      <div class="carousel-track" :style="'transform: translateX(-' + (active * 100) + '%)'">
-        {% for page in featured %}
-        <div class="carousel-slide">
-          <a href="{{ page.permalink | safe }}" class="featured-card">
-            {% if page.extra.cover %}
-            <div class="featured-image">
-              <div class="featured-image-inner" style="background-image: url('{{ page.extra.cover | safe }}');"></div>
-              <div class="featured-image-overlay"></div>
-            </div>
-            {% else %}
-            <div class="featured-image featured-image-placeholder">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" /></svg>
-            </div>
-            {% endif %}
-            <div class="featured-content">
-              <h3>{{ page.title }}</h3>
-              <div class="featured-meta">
-                <time datetime="{{ page.date }}">{{ page.date | date(format='%B %e, %Y') }}</time>
-                {% if page.reading_time %}
-                <span>{{ page.reading_time }} min read</span>
-                {% endif %}
-              </div>
-              <p class="featured-excerpt">{{ page.content | striptags | truncate(length=160) }}</p>
-              <span class="featured-read">Read article →</span>
-            </div>
-          </a>
-        </div>
-        {% endfor %}
+  <section class="home-feature" aria-labelledby="feature-heading">
+    <h2 id="feature-heading">Featured essay</h2>
+    <article aria-labelledby="lead-essay">
+      <h3 id="lead-essay">{{ lead.title }}</h3>
+      <div class="feature-meta">
+        <a class="read-action" href="{{ lead.permalink | safe }}" aria-label="Read the essay: {{ lead.title }}">Read the essay</a>
+        <span>{{ lead.reading_time }} min read</span>
       </div>
+      <p>If the code changes after review, what does the review still prove? A lesson from manufacturing about where senior engineering judgment belongs.</p>
+    </article>
+  </section>
 
-      <div class="carousel-dots">
-        {% for page in featured %}
-        <button
-          type="button"
-          class="carousel-dot"
-          :class="{ 'active': active === {{ loop.index0 }} }"
-          @click="active = {{ loop.index0 }}"
-          aria-label="Go to slide {{ loop.index }}"></button>
+  <div class="home-bottom">
+    <section aria-labelledby="recent-writing">
+      <header class="section-heading">
+        <h2 id="recent-writing">Latest posts</h2>
+        <a href="{{ archive.permalink | safe }}">Browse the archive <span aria-hidden="true">→</span></a>
+      </header>
+      <ul class="recent-list" role="list">
+        {% for post in archive.pages[:3] %}
+        <li>
+          <time datetime="{{ post.date }}">{{ post.date | date(format='%b %-d, %Y') }}</time>
+          <a href="{{ post.permalink | safe }}">{{ post.title }}</a>
+        </li>
         {% endfor %}
-      </div>
-
-      <button type="button" class="carousel-nav carousel-prev" @click="active = (active - 1 + total) % total" aria-label="Previous slide">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z" clip-rule="evenodd" /></svg>
-      </button>
-      <button type="button" class="carousel-nav carousel-next" @click="active = (active + 1) % total" aria-label="Next slide">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" /></svg>
-      </button>
-    </div>
-
-    <div style="text-align: center; margin-top: 2.5rem;">
-      <a href="{{ get_url(path='@/blog/_index.md') | safe }}" class="btn btn-secondary">View All Articles</a>
-    </div>
+      </ul>
+    </section>
+    <section class="current-work" aria-labelledby="at-10kr">
+      <h2 id="at-10kr">At 10kR</h2>
+      <p>I lead engineering at 10kR, where we build AI products and experiences.</p>
+      <a href="https://10kr.co/#work">See 10kR’s work <span aria-hidden="true">→</span></a>
+    </section>
   </div>
-</section>
-
+</div>
 {% endblock content %}

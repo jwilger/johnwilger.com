@@ -4,28 +4,31 @@
 {% block description %}{{ page.description or config.description }}{% endblock description %}
 
 {% block content %}
-<article class="container {% if page.title == 'About Me' %}about-page{% endif %}" style="max-width: 800px; margin: 0 auto;">
-  <header class="page-header">
+<article class="frame interior">
+  <header class="interior-heading">
     <h1>{{ page.title }}</h1>
-    {% if page.description %}
-    <p>{{ page.description }}</p>
-    {% endif %}
   </header>
-
-  <div class="post-content">
-    {{ page.content | safe }}
+  <div class="page-body{% if page.extra.portrait %} page-body-with-portrait{% endif %}">
+    <div class="post-content">
+      {{ page.content | safe }}
+    </div>
+    {% if page.extra.portrait %}
+    <img class="portrait" src="/images/profile.jpg" alt="Portrait of John Wilger" width="1024" height="1024">
+    {% endif %}
   </div>
 
   {% if page.extra.projects %}
-  <section style="margin-top: 3rem;">
-    <h2>Featured Projects</h2>
-    {% set data = load_data(path="data/projects.json", format="json", required=false) or [] %}
-    <div class="project-grid">
-      {% for project in data %}
+  {% set projects = load_data(path='data/projects.json', format='json', required=false) or [] %}
+  {% if projects %}
+  <section class="projects" aria-labelledby="projects-heading">
+    <h2 id="projects-heading">Pinned repositories</h2>
+    <div class="article-list">
+      {% for project in projects %}
         {{ <project_card project={project} /> }}
       {% endfor %}
     </div>
   </section>
+  {% endif %}
   {% endif %}
 </article>
 {% endblock content %}

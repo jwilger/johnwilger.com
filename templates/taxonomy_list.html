@@ -1,18 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}Tags — {{ config.title }}{% endblock title %}
+{% block title %}Topics — {{ config.title }}{% endblock title %}
+{% block description %}Browse John Wilger’s writing by topic.{% endblock description %}
 
 {% block content %}
-<div class="container" style="max-width: 800px; margin: 0 auto;">
-  <header class="page-header">
-    <h1>Tags</h1>
-    <p>All topics covered on the blog.</p>
+<div class="frame interior">
+  <header class="interior-heading">
+    <div>
+      <h1>Topics</h1>
+      <p>Browse the archive by subject.</p>
+    </div>
+    <a href="{{ get_url(path='@/blog/_index.md') | safe }}">All perspectives <span aria-hidden="true">→</span></a>
   </header>
-
-  <div class="tags-list" style="justify-content: center;">
+  <ul class="topic-list" role="list">
     {% for term in terms %}
-    <a href="{{ term.permalink | safe }}" class="tag">{{ term.name }} ({{ term.pages | length }})</a>
+    <li><a href="{{ term.permalink | safe }}">{{ term.name }}</a> <span>{{ term.pages | length }}</span></li>
     {% endfor %}
-  </div>
+  </ul>
 </div>
 {% endblock content %}

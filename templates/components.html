@@ -1,43 +1,34 @@
-{# Article card — horizontal layout with cover image #}
 {% component article_card(page) %}
-<article class="article-card">
-  <a href="{{ page.permalink | safe }}" class="article-card-link">
-    {% if page.extra.cover %}
-    <div class="article-card-image" style="background-image: url('{{ page.extra.cover | safe }}');">
-      <div class="article-card-image-overlay"></div>
-    </div>
-    {% endif %}
-    <div class="article-card-body">
-      <h3>{{ page.title }}</h3>
-      <div class="article-meta">
-        <time datetime="{{ page.date }}">{{ page.date | date(format='%B %e, %Y') }}</time>
-        {% if page.reading_time %}
-        <span>{{ page.reading_time }} min read</span>
-        {% endif %}
-      </div>
-      {% if page.description %}
-      <p class="article-excerpt">{{ page.description }}</p>
-      {% endif %}
-      {% if page.taxonomies.tags %}
-      <div class="tags-list">
-        {% for tag in page.taxonomies.tags %}
-        <span class="tag">{{ tag }}</span>
-        {% endfor %}
-      </div>
-      {% endif %}
-    </div>
-  </a>
+<article class="article-row">
+  <div class="article-meta">
+    <time datetime="{{ page.date }}">{{ page.date | date(format='%b %-d, %Y') }}</time>
+    {% if page.reading_time %}<span>{{ page.reading_time }} min read</span>{% endif %}
+  </div>
+  <div>
+    <h2><a href="{{ page.permalink | safe }}">{{ page.title }}</a></h2>
+    {% if page.description %}<p>{{ page.description }}</p>{% endif %}
+  </div>
 </article>
 {% endcomponent article_card %}
 
 {% component project_card(project) %}
-<article class="project-card">
-  <h3><a href="{{ project.url }}" target="_blank" rel="noopener noreferrer">{{ project.name }}</a></h3>
-  <div class="project-meta">
-    {% if project.primaryLanguage %}
-    <span>{{ project.primaryLanguage.name }}</span>
-    {% endif %}
+<article class="article-row project-row">
+  <p class="article-meta">{% if project.primaryLanguage %}{{ project.primaryLanguage.name }}{% endif %}</p>
+  <div>
+    <h3><a href="{{ project.url }}">{{ project.name }}</a></h3>
+    {% if project.description %}<p>{{ project.description }}</p>{% endif %}
   </div>
-  <p class="project-description">{{ project.description | default(value='No description available.') }}</p>
 </article>
 {% endcomponent project_card %}
+
+{% component pager(paginator) %}
+{% if paginator and (paginator.previous or paginator.next) %}
+<nav class="pager" aria-label="Article pages">
+  <span>Page {{ paginator.current_index }} of {{ paginator.number_pagers }}</span>
+  <div>
+    {% if paginator.previous %}<a href="{{ paginator.previous | safe }}"><span aria-hidden="true">←</span> Newer essays</a>{% endif %}
+    {% if paginator.next %}<a href="{{ paginator.next | safe }}">Older essays <span aria-hidden="true">→</span></a>{% endif %}
+  </div>
+</nav>
+{% endif %}
+{% endcomponent pager %}

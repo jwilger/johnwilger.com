@@ -24,73 +24,59 @@
 {% endblock extra_head %}
 
 {% block content %}
-{# Post hero with cover image #}
-{% if page.extra.cover %}
-<div class="post-hero" style="background-image: url('{{ page.extra.cover | safe }}');">
-  <div class="post-hero-overlay"></div>
-</div>
-{% endif %}
-
-<article class="container post-page" style="max-width: 800px; margin: 0 auto;">
-  <header class="post-header">
-    <h1>{{ page.title }}</h1>
-    <div class="post-meta">
-      <time datetime="{{ page.date }}">{{ page.date | date(format='%B %e, %Y') }}</time>
-      {% if page.reading_time %}
-      <span>{{ page.reading_time }} min read</span>
-      {% endif %}
-      {% if page.taxonomies.tags %}
-      <div class="tags-list" style="margin-bottom: 0;">
-        {% for tag in page.taxonomies.tags %}
-        <a href="{{ get_taxonomy_url(kind='tags', name=tag) | safe }}" class="tag interactive">{{ tag }}</a>
-        {% endfor %}
+{% set has_cover = page.extra.cover and not (page.extra.cover is starting_with(pat='http://') or page.extra.cover is starting_with(pat='https://')) %}
+<article class="frame interior post-page">
+  <a class="archive-return" href="{{ get_url(path='@/blog/_index.md') | safe }}"><span aria-hidden="true">←</span> All essays</a>
+  <header class="post-header{% if has_cover %} post-header-illustrated{% endif %}">
+    <div class="post-intro">
+      <h1>{{ page.title }}</h1>
+      {% if page.description %}<p class="post-deck">{{ page.description }}</p>{% endif %}
+      <div class="post-meta">
+        <time datetime="{{ page.date }}">{{ page.date | date(format='%B %-d, %Y') }}</time>
+        {% if page.reading_time %}<span>{{ page.reading_time }} min read</span>{% endif %}
       </div>
-      {% endif %}
     </div>
+    {% if has_cover %}
+    <img class="post-cover" src="{{ get_url(path=page.extra.cover) | safe }}" alt="{{ page.extra.cover_alt | default(value='') }}" decoding="async">
+    {% endif %}
   </header>
 
-  {% if page.extra.narration %}
-  <section class="post-narration" aria-labelledby="listen-to-this">
-    <div class="post-narration-player">
-      <h2 id="listen-to-this">Listen to this</h2>
-      <audio controls preload="metadata">
-        <source src="{{ page.extra.narration.src | safe }}" type="{{ page.extra.narration.type | default(value='audio/mpeg') }}">
-        <a href="{{ page.extra.narration.src | safe }}">Download the narrated article</a>.
-      </audio>
-    </div>
-    <small class="post-narration-fine-print">
-      <em>
-        This narration uses an AI-generated voice.
-        {% for credit in page.extra.narration.credits %}
-          <a href="{{ credit.source_url | safe }}">{{ credit.title }}</a> by {{ credit.creator }}{% if credit.license_url %}, available under <a href="{{ credit.license_url | safe }}">{{ credit.license }}</a>{% else %}, {{ credit.license }}{% endif %}{% if not loop.last %};{% else %}.{% endif %}
-        {% endfor %}
-      </em>
-    </small>
-  </section>
-  {% endif %}
-
-  {% if page.toc and page.toc | length > 0 %}
-  <nav class="toc" aria-label="Table of contents">
-    <h2>Table of Contents</h2>
-    <ul>
-      {% for h2 in page.toc %}
-      <li>
-        <a href="#{{ h2.id | safe }}">{{ h2.title }}</a>
-        {% if h2.children %}
-        <ul>
-          {% for h3 in h2.children %}
-          <li><a href="#{{ h3.id | safe }}">{{ h3.title }}</a></li>
+  <div class="post-layout">
+    {% if page.toc %}
+    <nav class="toc" aria-label="On this page">
+      <details>
+        <summary>On this page</summary>
+        <ul role="list">
+          {% for h2 in page.toc %}
+          <li>
+            <a href="#{{ h2.id | safe }}">{{ h2.title }}</a>
+            {% if h2.children %}
+            <ul role="list">
+              {% for h3 in h2.children %}
+              <li><a href="#{{ h3.id | safe }}">{{ h3.title }}</a></li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </li>
           {% endfor %}
         </ul>
-        {% endif %}
-      </li>
+      </details>
+    </nav>
+    {% endif %}
+    <div class="post-content">
+      {{ page.content | safe }}
+    </div>
+  </div>
+
+  {% if page.taxonomies.tags %}
+  <footer class="post-footer">
+    <p id="post-topics">Topics</p>
+    <ul class="tags-list" aria-labelledby="post-topics" role="list">
+      {% for tag in page.taxonomies.tags %}
+      <li><a href="{{ get_taxonomy_url(kind='tags', name=tag) | safe }}">{{ tag }}</a></li>
       {% endfor %}
     </ul>
-  </nav>
+  </footer>
   {% endif %}
-
-  <div class="post-content">
-    {{ page.content | safe }}
-  </div>
 </article>
 {% endblock content %}

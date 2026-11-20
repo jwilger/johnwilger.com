@@ -4,62 +4,26 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TMP_DIR="$(mktemp -d)"
 
-cleanup() {
-    rm -rf "$TMP_DIR"
-}
-trap cleanup EXIT
+trap 'rm -rf "$TMP_DIR"' EXIT
 
 (
     cd "$ROOT_DIR"
-    zola build \
-        --drafts \
-        --output-dir "${TMP_DIR}/site" \
-        >/dev/null
+    zola build --drafts --output-dir "${TMP_DIR}/site" >/dev/null
 )
 
-narrated_post_html="$(cat "${TMP_DIR}/site/blog/somebody-has-to-design-the-factory/index.html")"
+site="${TMP_DIR}/site"
+test -f "$site/index.html"
+test -f "$site/blog/somebody-has-to-design-the-factory/index.html"
 
-if [[ "$narrated_post_html" != *'<section class="post-narration" aria-labelledby="listen-to-this">'* ]]; then
-    printf 'not ok - a narrated post exposes its audio near the top of the article\n' >&2
+if grep -Eril --include='*.html' --include='*.xml' \
+    'post-narration|Listen to this|Audio available|/audio/blog/' "$site"; then
+    printf 'not ok - generated pages and feeds do not advertise synthetic narration\n' >&2
     exit 1
 fi
+printf 'ok - generated pages and feeds do not advertise synthetic narration\n'
 
-printf 'ok - a narrated post exposes its audio near the top of the article\n'
-
-rendered_audio_src="$(
-    printf '%s' "$narrated_post_html" |
-        sed -n 's/.*<source src="\([^"]*\)" type="[^"]*">.*/\1/p' |
-        head -n 1
-)"
-
-if [[ "$rendered_audio_src" != "/audio/blog/somebody-has-to-design-the-factory.mp3" ]]; then
-    printf 'not ok - the narrated post renders its configured audio URL\n' >&2
+if [[ -d "$site/audio/blog" ]] && [[ -n "$(find "$site/audio/blog" -type f -print -quit)" ]]; then
+    printf 'not ok - archived synthetic narration is not published as a static asset\n' >&2
     exit 1
 fi
-
-printf 'ok - the narrated post renders its configured audio URL\n'
-
-if [[ ! -s "${TMP_DIR}/site${rendered_audio_src}" ]]; then
-    printf 'not ok - the narrated post audio URL resolves to a non-empty published file\n' >&2
-    exit 1
-fi
-
-printf 'ok - the narrated post audio URL resolves to a non-empty published file\n'
-
-disclosure_contract=(
-    '<small class="post-narration-fine-print">'
-    '<em>'
-    'This narration uses an AI-generated voice.'
-    '<a href="https://freesound.org/people/Breviceps/sounds/564237/">Retro Audio Logo</a> by Breviceps'
-    '<a href="https://freesound.org/people/pushkin/sounds/215293/">01 room tone low frequency hvac</a> by pushkin'
-    '<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a>'
-)
-
-for disclosure_fragment in "${disclosure_contract[@]}"; do
-    if [[ "$narrated_post_html" != *"$disclosure_fragment"* ]]; then
-        printf 'not ok - narration disclosure identifies AI voice use and credits the sound designers\n' >&2
-        exit 1
-    fi
-done
-
-printf 'ok - narration disclosure identifies AI voice use and credits the sound designers\n'
+printf 'ok - archived synthetic narration is not published as a static asset\n'

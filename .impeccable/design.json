@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-20T19:03:25Z",
+  "title": "Design System: John Wilger",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Slate Blue Link",
+        "tonalRamp": ["oklch(15% 0.023 233.8)", "oklch(26% 0.047 233.8)", "oklch(38% 0.064 233.8)", "oklch(50% 0.067 233.8)", "oklch(62% 0.067 233.8)", "oklch(73% 0.057 233.8)", "oklch(84% 0.043 233.8)", "oklch(95% 0.016 233.8)"]
+      },
+      "link-hover": {
+        "role": "primary",
+        "displayName": "Link Hover",
+        "tonalRamp": ["oklch(15% 0.017 239.5)", "oklch(26% 0.033 239.5)", "oklch(38% 0.045 239.5)", "oklch(50% 0.047 239.5)", "oklch(62% 0.047 239.5)", "oklch(73% 0.040 239.5)", "oklch(84% 0.031 239.5)", "oklch(95% 0.011 239.5)"]
+      },
+      "sky": {
+        "role": "neutral",
+        "displayName": "Sky Ground",
+        "tonalRamp": ["oklch(15% 0.003 222.1)", "oklch(26% 0.007 222.1)", "oklch(38% 0.009 222.1)", "oklch(50% 0.009 222.1)", "oklch(62% 0.009 222.1)", "oklch(73% 0.008 222.1)", "oklch(84% 0.006 222.1)", "oklch(95% 0.002 222.1)"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Slate Ink",
+        "tonalRamp": ["oklch(15% 0.013 232.7)", "oklch(26% 0.025 232.7)", "oklch(38% 0.035 232.7)", "oklch(50% 0.036 232.7)", "oklch(62% 0.036 232.7)", "oklch(73% 0.031 232.7)", "oklch(84% 0.024 232.7)", "oklch(95% 0.009 232.7)"]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted Ink",
+        "tonalRamp": ["oklch(15% 0.011 228.6)", "oklch(26% 0.021 228.6)", "oklch(38% 0.029 228.6)", "oklch(50% 0.030 228.6)", "oklch(62% 0.030 228.6)", "oklch(73% 0.026 228.6)", "oklch(84% 0.020 228.6)", "oklch(95% 0.007 228.6)"]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Editorial Rule",
+        "tonalRamp": ["oklch(15% 0.008 224.4)", "oklch(26% 0.015 224.4)", "oklch(38% 0.021 224.4)", "oklch(50% 0.022 224.4)", "oklch(62% 0.022 224.4)", "oklch(73% 0.019 224.4)", "oklch(84% 0.014 224.4)", "oklch(95% 0.005 224.4)"]
+      },
+      "sheet": {
+        "role": "neutral",
+        "displayName": "Supporting Sheet",
+        "tonalRamp": ["oklch(15% 0.003 222.1)", "oklch(26% 0.007 222.1)", "oklch(38% 0.009 222.1)", "oklch(50% 0.009 222.1)", "oklch(62% 0.009 222.1)", "oklch(73% 0.008 222.1)", "oklch(84% 0.006 222.1)", "oklch(95% 0.002 222.1)"]
+      },
+      "mark": {
+        "role": "neutral",
+        "displayName": "Selection Ground",
+        "tonalRamp": ["oklch(15% 0.018 228.9)", "oklch(26% 0.037 228.9)", "oklch(38% 0.050 228.9)", "oklch(50% 0.053 228.9)", "oklch(62% 0.053 228.9)", "oklch(73% 0.045 228.9)", "oklch(84% 0.034 228.9)", "oklch(95% 0.013 228.9)"]
+      },
+      "mark-ink": {
+        "role": "neutral",
+        "displayName": "Selection Text",
+        "tonalRamp": ["oklch(15% 0.000 0.0)", "oklch(26% 0.000 0.0)", "oklch(38% 0.000 0.0)", "oklch(50% 0.000 0.0)", "oklch(62% 0.000 0.0)", "oklch(73% 0.000 0.0)", "oklch(84% 0.000 0.0)", "oklch(95% 0.000 0.0)"]
+      },
+      "code": {
+        "role": "neutral",
+        "displayName": "Code Tint",
+        "tonalRamp": ["oklch(15% 0.003 225.1)", "oklch(26% 0.006 225.1)", "oklch(38% 0.008 225.1)", "oklch(50% 0.009 225.1)", "oklch(62% 0.009 225.1)", "oklch(73% 0.007 225.1)", "oklch(84% 0.006 225.1)", "oklch(95% 0.002 225.1)"]
+      },
+      "focus": {
+        "role": "primary",
+        "displayName": "Keyboard Focus",
+        "tonalRamp": ["oklch(15% 0.023 233.8)", "oklch(26% 0.047 233.8)", "oklch(38% 0.064 233.8)", "oklch(50% 0.067 233.8)", "oklch(62% 0.067 233.8)", "oklch(73% 0.057 233.8)", "oklch(84% 0.043 233.8)", "oklch(95% 0.016 233.8)"]
+      },
+      "ridge-far": {
+        "role": "neutral",
+        "displayName": "Far Ridge",
+        "tonalRamp": ["oklch(15% 0.007 224.3)", "oklch(26% 0.015 224.3)", "oklch(38% 0.020 224.3)", "oklch(50% 0.021 224.3)", "oklch(62% 0.021 224.3)", "oklch(73% 0.018 224.3)", "oklch(84% 0.013 224.3)", "oklch(95% 0.005 224.3)"]
+      },
+      "ridge-near": {
+        "role": "neutral",
+        "displayName": "Near Ridge",
+        "tonalRamp": ["oklch(15% 0.010 224.8)", "oklch(26% 0.021 224.8)", "oklch(38% 0.028 224.8)", "oklch(50% 0.030 224.8)", "oklch(62% 0.030 224.8)", "oklch(73% 0.025 224.8)", "oklch(84% 0.019 224.8)", "oklch(95% 0.007 224.8)"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Masthead",
+        "purpose": "The homepage name."
+      },
+      "headline": {
+        "displayName": "Editorial Headings",
+        "purpose": "Page, section, and article headings."
+      },
+      "body": {
+        "displayName": "Interface and Introduction",
+        "purpose": "Navigation and general site copy."
+      },
+      "reading": {
+        "displayName": "Reading",
+        "purpose": "Article prose and editorial excerpts."
+      },
+      "label": {
+        "displayName": "Metadata",
+        "purpose": "Article metadata and recent publication dates."
+      },
+      "code": {
+        "displayName": "Code",
+        "purpose": "Inline code and code blocks."
+      }
+    },
+    "breakpoints": [
+      {
+        "name": "selected-writing-compresses",
+        "value": "58rem"
+      },
+      {
+        "name": "intro-type-tightens",
+        "value": "54rem"
+      },
+      {
+        "name": "portrait-stacks",
+        "value": "45rem"
+      },
+      {
+        "name": "secondary-columns-stack",
+        "value": "43rem"
+      },
+      {
+        "name": "writing-rows-stack",
+        "value": "32rem"
+      },
+      {
+        "name": "intro-type-compact",
+        "value": "22rem"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Editorial Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Wrap bold text links and underline the current location.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main navigation\"><a href=\"/blog/\" aria-current=\"page\">Writing</a><a href=\"/about/\" aria-current=\"false\">About</a><a href=\"/projects/\" aria-current=\"false\">Projects</a></nav>",
+      "css": ".ds-nav { display: flex; flex-wrap: wrap; gap: 0 clamp(0.85rem, 2.25vw, 1.75rem); font: 700 1.0625rem/1.55 var(--sans, \"Hanken Grotesk\", system-ui, sans-serif); } .ds-nav a { display: inline-flex; align-items: center; min-block-size: 2.75rem; color: var(--ink, #182f3b); text-decoration-line: underline; text-decoration-thickness: 0.09em; text-underline-offset: 0.2em; } .ds-nav a:hover { text-decoration-thickness: 0.14em; } .ds-nav a[aria-current=\"page\"] { text-decoration-thickness: 0.16em; } .ds-nav a[aria-current=\"false\"]:not(:hover) { text-decoration: none; } .ds-nav a:focus-visible { outline: 3px solid var(--focus, #22536c); outline-offset: 4px; } @media (forced-colors: active) { .ds-nav a:focus-visible { outline-color: Highlight; } }"
+    },
+    {
+      "name": "Reading Action",
+      "kind": "custom",
+      "refersTo": "read-action",
+      "description": "A prominent action is an underlined link, not a filled button.",
+      "html": "<a class=\"ds-read-action\" href=\"/blog/somebody-has-to-design-the-factory/\">Read the essay</a>",
+      "css": ".ds-read-action { display: inline-flex; align-items: center; min-block-size: 2.75rem; color: var(--link, #22536c); font: 700 1.0625rem/1.55 var(--sans, \"Hanken Grotesk\", system-ui, sans-serif); text-decoration-line: underline; text-decoration-thickness: 0.09em; text-underline-offset: 0.2em; } .ds-read-action:hover { color: var(--link-hover, #122e40); text-decoration-thickness: 0.14em; } .ds-read-action:focus-visible { outline: 3px solid var(--focus, #22536c); outline-offset: 4px; } @media (forced-colors: active) { .ds-read-action:focus-visible { outline-color: Highlight; } }"
+    },
+    {
+      "name": "Editorial Sheet",
+      "kind": "card",
+      "refersTo": "editorial-sheet",
+      "description": "A flat tinted surface for supporting context.",
+      "html": "<section class=\"ds-sheet\"><h2>At 10kR</h2><p>I lead engineering at 10kR, where we build AI products and experiences.</p><a href=\"https://10kr.co/#work\">See 10kR’s work <span aria-hidden=\"true\">→</span></a></section>",
+      "css": ".ds-sheet { padding: var(--space-3, 1.5rem); color: var(--ink, #182f3b); background: var(--sheet, #e5edf0); font: 400 1.0625rem/1.55 var(--sans, \"Hanken Grotesk\", system-ui, sans-serif); } .ds-sheet h2 { margin: 0; font: 500 clamp(1.5rem, 2.5vw, 2rem)/1.12 var(--display, \"Bodoni Moda\", Georgia, \"Times New Roman\", serif); letter-spacing: -0.032em; text-wrap: balance; } .ds-sheet p { margin-block: 0.75rem; } .ds-sheet a { color: var(--link, #22536c); font-weight: 750; text-decoration-line: underline; text-decoration-thickness: 0.09em; text-underline-offset: 0.2em; } .ds-sheet a:hover { color: var(--link-hover, #122e40); text-decoration-thickness: 0.14em; } .ds-sheet a:focus-visible { outline: 3px solid var(--focus, #22536c); outline-offset: 4px; } @media (forced-colors: active) { .ds-sheet a:focus-visible { outline-color: Highlight; } }"
+    },
+    {
+      "name": "Compact Ridgeline",
+      "kind": "custom",
+      "refersTo": "ridgeline-compact",
+      "description": "Two static silhouettes fade into the sky ground below the introduction.",
+      "html": "<div class=\"ds-terrain\"><svg class=\"ds-ridgeline\" aria-hidden=\"true\" viewBox=\"0 0 640 78\" fill=\"none\" preserveAspectRatio=\"none\"><path class=\"ds-ridge-far\" d=\"M0 47 17 44 35 43 48 39 62 41 75 37 91 32 107 34 126 27 143 21 155 23 168 18 182 20 198 17 211 21 222 23 236 38 248 42 255 40 269 45 286 46 302 50 319 47 331 49 350 46 368 48 389 45 407 45 427 40 445 37 460 32 474 35 486 31 498 25 510 26 522 19 534 14 545 21 554 19 568 30 582 32 594 40 611 44 627 40 640 42V78H0Z\"/><path class=\"ds-ridge-near\" d=\"m0 61 38-2 32-5 30-2 26-5 22 2 28 7 25 3 31 6 22 1 29 4 29-3 27 2 39-8 27-2 34-7 29-11 21-4 20-7 21-2 20-9 23-14 17-5L623 8 640 0V78H0Z\"/></svg></div>",
+      "css": ".ds-terrain { background: var(--sky, #e5edf0); } .ds-ridgeline { display: block; margin-inline-start: auto; inline-size: 84%; block-size: 1.85rem; mask-image: linear-gradient(90deg, transparent, #000 26%, #000 93%, transparent); pointer-events: none; } .ds-ridge-far { fill: var(--ridge-far, #c7d8df); } .ds-ridge-near { fill: var(--ridge-near, #abc3cd); } @media (forced-colors: active) { .ds-ridgeline { display: none; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Portrait and Ridgeline",
+    "overview": "A natural portrait introduces the person behind the writing. A low, two-layer ridge echoes the terrain in the photo: distinct enough to see, quiet enough to leave the words and portrait in charge. This is a personal publication for engineers and engineering leaders, not an engineering console or an extension of 10kR’s brand.",
+    "keyCharacteristics": [
+      "Natural portrait and minimal terrain.",
+      "One blue-gray ground, slate ink, and thin rules across the site.",
+      "Editorial headlines, plainspoken copy, and a quiet reading column."
+    ],
+    "dos": [
+      "Do keep the portrait natural, the ridge legible but subordinate, and the reading ground free of decoration.",
+      "Do use plain labels, visible link states, and a clear keyboard focus indicator."
+    ],
+    "donts": [
+      "Don't imitate 10kR or dress the publication as an engineering console.",
+      "Don't turn the portrait into a costume, the terrain into a spectacle, or the copy into editorial affectation."
+    ]
+  }
+}

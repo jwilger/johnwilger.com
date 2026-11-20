@@ -1,0 +1,119 @@
+.home-intro {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.13fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 6vw, 6rem);
+  padding-block: clamp(1.25rem, 3vw, 3rem) clamp(3rem, 4vw, 4rem);
+}
+
+.home-intro h1 {
+  font-size: clamp(3.2rem, 6.65vw, 6rem);
+  letter-spacing: -0.038em;
+  line-height: 1.04;
+}
+
+.role {
+  margin-block: 0.65rem clamp(1.15rem, 2vw, 2.1rem);
+  font-weight: 700;
+}
+
+.home-bio {
+  max-inline-size: 34ch;
+  font-size: clamp(1.22rem, 1.8vw, 1.72rem);
+  line-height: 1.38;
+  text-wrap: pretty;
+}
+
+.home-bio + .home-bio { margin-block-start: 0.65em; }
+
+.home-portrait {
+  inline-size: 100%;
+  aspect-ratio: 1 / 1.04;
+  object-fit: cover;
+}
+
+.ridgeline {
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-end: 0;
+  inline-size: 56%;
+  block-size: clamp(1.9rem, 4.8vw, 4.25rem);
+  mask-image: linear-gradient(90deg, transparent, #000 26%, #000 93%, transparent);
+  pointer-events: none;
+}
+
+.ridge-far { fill: var(--ridge-far); }
+.ridge-near { fill: var(--ridge-near); }
+
+.home-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2.35fr);
+  align-items: baseline;
+  gap: 0.45rem 1rem;
+  margin-block-start: var(--space-2);
+  padding-block: clamp(1.35rem, 2.4vw, 2rem) var(--space-3);
+  border-block-start: 1px solid var(--rule);
+}
+
+.home-feature h2 { font-size: clamp(1.3rem, 2.2vw, 1.65rem); }
+.home-feature h3 { font-size: clamp(1.8rem, 3.4vw, 3rem); }
+.home-feature p { max-inline-size: 53ch; text-wrap: pretty; }
+
+.feature-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 1rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.read-action {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 2.75rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+@media (max-width: 54rem) {
+  .home-intro h1 { font-size: clamp(3rem, 6.65vw, 4.5rem); }
+  .home-bio { font-size: 1.18rem; }
+}
+
+@media (max-width: 45rem) {
+  .home-intro {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    padding-block: 0.8rem 0;
+  }
+
+  .home-intro h1 { font-size: clamp(2.8rem, 10vw, 4.5rem); }
+  .role { margin-block: 0.45rem 0.8rem; }
+  .home-portrait {
+    grid-row: 1;
+    max-block-size: 13.75rem;
+    aspect-ratio: 1.68;
+    object-position: 50% 38%;
+  }
+
+  .ridgeline {
+    position: static;
+    justify-self: end;
+    inline-size: 84%;
+    block-size: 1.85rem;
+    margin-block-start: -0.3rem;
+  }
+
+  .home-feature { grid-template-columns: minmax(0, 1fr); margin-block-start: 0.8rem; }
+}
+
+@media (max-width: 22rem) {
+  .home-intro h1 { font-size: 2.6rem; }
+  .home-bio { font-size: 1.08rem; }
+}
+
+@media (forced-colors: active) {
+  .ridgeline { display: none; }
+}
