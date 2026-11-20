@@ -60,6 +60,10 @@ export default function (pi: ExtensionAPI) {
 	pi.on("agent_start", () => {
 		if (pending?.dispatch) cancelPending();
 	});
+	pi.on("message_start", (event) => {
+		// Pi can drain queued input in the same run after a terminating tool batch.
+		if (event.message.role === "user") cancelPending();
+	});
 	pi.on("session_before_switch", cancelPending);
 	pi.on("session_before_fork", cancelPending);
 	pi.on("session_before_tree", cancelPending);
@@ -104,15 +108,19 @@ export default function (pi: ExtensionAPI) {
 			}
 
 			const id = ctx.sessionManager.getSessionId();
+			// Keep the terminal notifier, not the old runner's error channel.
+			const ui = ctx.ui;
 			const handoff: Handoff = { leafId };
 			handoffs.set(id, handoff);
 			try {
 				await ctx.reload();
+				if (!handoff.resume) throw new Error("Reload did not load the continuation extension; resume the task manually.");
+				handoff.resume(request.continuation);
+			} catch (error) {
+				ui.notify(error instanceof Error ? error.message : String(error), "error");
 			} finally {
 				handoffs.delete(id);
 			}
-			if (!handoff.resume) throw new Error("Reload did not load the continuation extension; resume the task manually.");
-			handoff.resume(request.continuation);
 		},
 	});
 }
