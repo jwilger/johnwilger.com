@@ -9,28 +9,22 @@ cover = "https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=800&q=80
 
 +++
 
-I started using [tmux][tmux] recently after a) I was informed that GNU screen is
-basically an outdated POS, and b) an [excellent book][tmuxbook] on the subject
-was published. I'm glad to have made the switch, as tmux is a wonderful
-improvement over screen. However, on OSX, I found that the `pbcopy` and
-`pbpaste` commands (among other things) would no longer work from within a tmux
-session.
+On OS X, the `pbcopy` and `pbpaste` commands stop working inside a [tmux][tmux] session, along with a few other things. I ran into this soon after switching to tmux from GNU screen. I'd been told that screen was badly outdated, and an [excellent book][tmuxbook] on tmux had just been published. I'm glad I switched, because tmux is a clear improvement.
 
-After a bit of searching, I found [this post][rtoc] that explains how to make
-things right again.
-
-TL;DR:
+[This post][rtoc] explains the clipboard fix. In short, install `reattach-to-user-namespace`:
 
 ``` sh run this
 brew install reattach-to-user-namespace
 ```
+
+and add this to `~/.tmux.conf`:
 
 ``` sh add this to ~/.tmux.conf
 # Reattach to user namespace so that clipboard integration with OSX works again
 set-option -g default-command "reattach-to-user-namespace -l zsh"
 ```
 
-Obviously, replace `zsh` above with whatever you use for your shell.
+Replace `zsh` with whatever shell you use.
 
 [tmux]: http://tmux.sourceforge.net/ "tmux"
 [tmuxbook]: http://pragprog.com/book/bhtmux/tmux "tmux: Productive Mouse-Free Development"
