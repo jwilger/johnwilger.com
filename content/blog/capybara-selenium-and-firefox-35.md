@@ -9,20 +9,11 @@ cover = "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=800&q=80"
 
 +++
 
-I banged my head against this one while setting up our CI build for a new
-project at work and just now figured it out. I added an example integration
-spec that just visits the default Rails homepage, clicks the "About your
-application's environment" link, and verifies the Rails version. This link
-uses an AJAX action to load the environment details, so I marked it as a
-JavaScript test, which would cause it to use Capybara's Selenium driver.
+If Capybara's Selenium driver fails on Firefox 3.5 with `Capybara::TimeoutError: failed to resynchronize, AJAX request timed out`, turning off the driver's `resynchronize` option gets past it. I found that while setting up the CI build for a new project at work, after being stuck on it for a while.
 
-The test passed fine on my machine (with Firefox 4 installed), but it failed
-consistently on CI, which has Firefox 3.5. It kept failing with the exception
-`Capybara::TimeoutError: failed to resynchronize, AJAX request timed out`. I
-didn't dig enough into the guts of Selenium/Firefox to find out exactly what
-is going on (and a Google search for that error message turned up nothing that
-really explained it) but I did at least find a workable fix. Just add the
-following line to `spec/support/capybara.rb`:
+I'd added an example integration spec that visits the default Rails homepage, clicks the "About your application's environment" link, and verifies the Rails version. The link loads the environment details with an AJAX action, so I marked the spec as a JavaScript test, which makes it use Capybara's Selenium driver. It passed on my machine, which has Firefox 4, and failed consistently on CI, which has Firefox 3.5, with the exception above.
+
+I didn't dig far enough into Selenium and Firefox to learn what's going on, and a search for the error message turned up nothing that explained it. The fix is one line in `spec/support/capybara.rb`:
 
 ```
 Capybara::Selenium::Driver::DEFAULT_OPTIONS[:resynchronize] = false
@@ -30,17 +21,8 @@ Capybara::Selenium::Driver::DEFAULT_OPTIONS[:resynchronize] = false
 
 <!-- more -->
 
-Now, I can't guarantee that this won't have a negative effect further down the
-line, but it works for my smoke-test. The `resynchronize` option must be using
-something that is only available in later versions of Firefox.
+I can't promise this has no bad effect further on, but it works for my smoke test. My guess is that `resynchronize` relies on something available only in later versions of Firefox.
 
-Obviously the better solution would be to upgrade Firefox on our build-agents.
-Unfortunately there isn't a Firefox 4 RPM available for the Linux
-distribution/version that those machines are using, and our sysadmin doesn't
-have any room on his plate to come up with a custom solution. Also, we have an
-older application that still uses Webrat/selenium-rc, and I don't believe that
-supports Firefox 4 yet.
+Upgrading Firefox on the build agents would be the better solution. There's no Firefox 4 RPM for the Linux distribution those machines run, and our sysadmin doesn't have time to build a custom one. We also have an older application that still uses Webrat and selenium-rc, which I don't believe supports Firefox 4 yet.
 
-I'd love to see any comments or pointers to information that would help me
-understand exactly what that resynchronize option is doing, especially if
-someone knows why turning it off could be a Very Bad Thing™.
+If you know what the `resynchronize` option does, and especially why turning it off might be a bad idea, I'd like to hear from you.
