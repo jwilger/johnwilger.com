@@ -9,51 +9,32 @@ cover = "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80
 
 +++
 
-The [Renewable Funding](http://renewfund.com) technology team is moving into
-some new office space in a few months, and now that we'll have our own space,
-I'd like to start up a variation on an apprenticeship program at work.  I'm
-still in the early stages of designing this, and I want to gather some input
-from the community before deciding how we might run the program.
+The [Renewable Funding](http://renewfund.com) technology team moves into new office space in a few months. Once we have our own space, I'd like to start a kind of apprenticeship program there. I'm early in designing it, and I want input from the community before deciding how to run it.
 
 <!-- more -->
 
-My goals for this program are as follows:
+I have four goals for the program:
 
-  * Contribute back to the local and global software development communities by
-    providing mentoring, a place to work, and stewardship of one or more
-    open-source projects.
+  * Give back to the local and wider software development communities through mentoring, a place to work, and stewardship of one or more open-source projects.
 
-  * Provide a safe, open, fun environment for people of all backgrounds to
-    improve their skill in a non-competitive, supportive learning environment.
+  * Provide a safe, open, and fun place for people of all backgrounds to improve their skills, where the learning is supportive and not competitive.
 
-  * Increase local knowledge about Renewable Funding's software development
-    team, so that when we post job openings, you all know who we are.
+  * Make Renewable Funding's software development team better known locally, so that when we post a job opening, people know who we are.
 
-  * Identify local developers who—while they may not have a lot of
-    experience—have a lot of talent and passion, so that we know who to talk to
-    when we have appropriate positions open up.
+  * Find local developers who have talent and passion but not much experience, so that we know whom to talk to when a suitable position opens.
 
-Here's what I'm thinking as a starting point, please let me know what might not
-work, and what might work better:
+Here is my starting point. Tell me what won't work and what would work better.
 
-  * Recruit a group of between 2 and 6 local developers who are interested in
-    participating in the program for N months. (What is an appropriate time
-    period?)
+  * Recruit a group of two to six local developers who want to take part for N months. (What's an appropriate length of time?)
 
-  * The group gets together at our office one evening per week for the duration
-    of the term. (Thursdays from 4pm-8pm? Is once per week the right frequency?)
+  * The group meets at our office one evening a week for the term. (Thursdays from 4pm to 8pm? Is once a week the right frequency?)
 
-  * At least one senior developer from my team will be at each session to coach
-    and mentor the team. Renewable Funding will pay for dinner and/or snacks.
+  * At least one experienced developer from my team attends each session to coach and mentor the group. Renewable Funding pays for dinner or snacks.
 
-  * The group will decide on an open source project to work on. It could be a
-    new creation or contributions to an existing project.
+  * The group chooses an open-source project to work on, either a new one or contributions to an existing one.
 
-  * The group will work on project following an agile methodology similar to
-    what we employ during our daily work at Renewable Funding.
+  * The group works on the project using an agile process similar to the one we use in our daily work at Renewable Funding.
 
-  * We *may* be able to open our office to participants during regular work
-    hours to provide a space to work and access to individual mentoring.
+  * We may be able to open our office to participants during regular work hours, as a place to work and for access to individual mentoring.
 
-So, is this a good idea? Would anyone be interested in this? Am I overlooking
-some obvious and potentially disastrous outcome?
+Is this a good idea? Would anyone be interested? Am I overlooking an obvious and possibly disastrous outcome?
