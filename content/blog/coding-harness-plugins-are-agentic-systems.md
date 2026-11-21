@@ -11,47 +11,27 @@ cover = "/images/blog/coding-harness-plugins-agentic-systems.png"
 tags = ["ai", "llm", "software-engineering", "evals", "plugins"]
 +++
 
-I didn't set out to build an eval system for my coding-assistant plugins. I started with the more ordinary problem: my Codex and Claude Code setup had turned into a small pile of instructions that I depended on every day.
+A team that adopts coding agents soon accumulates instructions for them: a rules file in the repository, a set of skills, a plugin or two, a list of commands the agent is allowed to run. These files tend to be reviewed the way documentation is. Someone reads them, agrees that they sound right, and merges them. That review can't show whether an instruction changes what the agent does. An instruction can sound reasonable and have no effect. It can also have the wrong effect, by applying too broadly, by working in one tool and failing in another, or by leading the agent to describe diligence without doing the work.
 
-There was a worktree plugin because I kept wanting feature work isolated from the main checkout. There was a PR babysitting plugin because "watch this until it merges" means more than looking at CI once. There were engineering standards because I want the agent to follow the same rules I'd expect from a human teammate: don't force-push without explicit authorization, don't treat a green-looking demo as production evidence, don't quietly change the wrong part of the system to make the task easier.
+I ran into this with my own setup. My instructions for Codex and Claude Code had grown into something I depended on every day. There was a worktree plugin, because I wanted feature work isolated from the main checkout. There was a plugin for shepherding pull requests, because "watch this until it merges" means more than looking at the build once. There were engineering standards, because I want an agent to follow the rules I'd expect of a human teammate: don't force-push without explicit authorization, don't treat a demo that looks fine as evidence about production, don't quietly change the wrong part of the system to make the task easier.
 
-The collection now lives in [`ai-plugins`](https://github.com/jwilger/ai-plugins), a small marketplace targeting both Codex and Claude Code. Calling it a "marketplace" makes it sound more general than it really is. In practice, it's an operational memory of how I want coding agents to behave when they're working in my repositories.
+The collection lives in [`ai-plugins`](https://github.com/jwilger/ai-plugins), a small marketplace for both tools. "Marketplace" makes it sound more general than it is. In practice it's a record of how I want coding agents to behave in my repositories. Once it was part of how I build software, reading the Markdown no longer answered the question I cared about, which was what the instructions changed. Answering that took tests of behavior, and I hadn't set out to build those.
 
-Once I started using it that way, reviewing the Markdown stopped answering the question I cared about. A skill file can sound perfectly reasonable and still have no effect. Worse, it can have the wrong effect: trigger too broadly, steer one harness well and another poorly, or encourage the assistant to perform the language of diligence without doing the work.
+A coding harness, the program that runs a model with tools and permissions, is sometimes treated as packaging around the real AI product. But the harness has tools, memory, prompts, permission rules, runtime state, and a user's goal. It reads ambiguous instructions, chooses which guidance applies, edits files, runs commands, watches GitHub, asks for approval when a command crosses a boundary, and reports what happened. That makes it an agentic system, and one whose output is a patch has more immediate consequences than one whose output is a customer-support reply. Its failures are the familiar ones:
 
-That was the point where Markdown review stopped being enough. The repo was part of my development loop now, so I needed evidence about what it actually changed.
+- The agent ignores a rule because the surrounding prompt is more prominent.
+- The agent applies a rule where it should have recognized a boundary.
+- The agent uses the right words and performs the wrong workflow.
+- The plugin appears valuable because the model already handled the case without it.
+- A safety rule holds for a friendly prompt and fails when the user asks for the unsafe thing directly.
 
-## The harness isn't outside the system
+I'd test for each of those in a customer-facing agent. The standard shouldn't drop because the customer is me and the product is my coding setup.
 
-It's tempting to treat a coding harness as the shell around the "real" AI product. I don't buy that framing.
+## What a behavior test checks
 
-A coding harness has tools, memory, prompts, permission rules, runtime state, and a user goal. It reads ambiguous instructions, chooses which guidance applies, edits files, runs commands, watches GitHub, asks for approval when a command crosses a boundary, and reports back with a story about what happened.
+The easiest test to write for a prompt or a skill checks whether the output contains the expected words. It catches a thin layer of failure and misses the workflow. An assistant that says "worktree" has told me nothing. The test has to establish that it checked whether it was already in a linked worktree, avoided nesting one inside another, used the repository's ignored `.worktrees/` directory, and ran the baseline setup before changing files. In the same way, "I'll watch CI" is worth nothing unless the agent keeps monitoring the pull request, notices review comments, tells a failing check from a pending one, makes or coordinates the fixes, and merges only once the required gates are satisfied. And praise for engineering discipline counts for less than refusing an unauthorized `git push --force-with-lease` when the user asks for that exact command.
 
-That gives the harness the shape of an agentic system. Producing a patch instead of a customer-support reply doesn't make the system simpler. It makes the consequences more immediate.
-
-The failure modes are familiar:
-
-- The agent ignores a rule because the surrounding prompt is more salient.
-- The agent applies a rule in a context where it should have recognized a boundary.
-- The agent chooses the right words but performs the wrong workflow.
-- The plugin appears valuable because the base model already handled the case.
-- A safety rule works in the friendly prompt and fails when the user asks for the unsafe thing directly.
-
-I'd test those same problems in a customer-facing agent. I shouldn't lower the standard because the customer is me and the product is my coding setup.
-
-## Behavior, not vocabulary
-
-The easiest bad eval for a prompt or skill checks whether the output says the expected words.
-
-A vocabulary check catches a thin layer of failure and misses the workflow. I don't care whether the assistant says "worktree." I care whether it checks whether it's already in a linked worktree, avoids nesting one, uses the repo's ignored `.worktrees/` directory, and runs baseline setup before changing files.
-
-I don't care whether it says "I'll watch CI." I care whether it keeps monitoring the PR, notices review comments, distinguishes a failing check from a pending one, implements or coordinates fixes, and merges only after the required gates are actually satisfied.
-
-I don't care whether it praises engineering discipline. I care whether it refuses an unauthorized `git push --force-with-lease` even when the user asks for that exact command.
-
-The behavior fixtures in `ai-plugins` are written around that distinction. As of July 4, 2026, the suite has 11 scenarios covering 9 marketplace skills. Each scenario records the plugin and skill surfaces it exercises, the coverage categories it's meant to satisfy, the pass-rate threshold, and whether the case is safety-critical.
-
-A simplified case looks like this:
+The behavior fixtures in `ai-plugins` are written around that distinction. As of July 4, 2026, the suite has 11 scenarios covering 9 marketplace skills. Each scenario records the plugins and skills it exercises, the kinds of coverage it's meant to provide, the pass rate it has to reach, and whether the case is safety-critical. A simplified case looks like this:
 
 ```json
 {
@@ -72,13 +52,9 @@ A simplified case looks like this:
 }
 ```
 
-The semantic rubric judges the workflow. Hard assertions cover the boundaries I can express deterministically. For the force-push case, a JavaScript guard looks for execution intent around forced remote pushes and fails the run before the model-graded rubric gets a chance to be charmed by a plausible explanation. The eval-case reporter has a similar guard for raw private transcripts and API tokens.
+Two kinds of check apply to a scenario. A rubric, graded by a model, judges the workflow. Hard assertions, written as code, cover the boundaries that can be stated exactly. For the force-push case, a JavaScript guard looks for intent to execute a forced push to a remote and fails the run before the model-graded rubric has a chance to be persuaded by a plausible explanation. The skill that reports eval cases has a similar guard against raw private transcripts and API tokens. A judge shouldn't give partial credit to "I will file the issue with the raw transcript, but I'll be careful." That output is a failure.
 
-I don't want a judge to give partial credit to "I will file the issue with the raw transcript, but I'll be careful." That output is a product failure.
-
-## Coverage as a repo invariant
-
-The coverage checker is intentionally boring. It walks the Claude and Codex marketplace manifests, finds every skill under `plugins/**/skills/*/SKILL.md`, and checks whether the behavior fixtures cover the categories the repo requires:
+A coverage checker keeps the fixtures from falling behind the skills. It walks the Claude and Codex marketplace manifests, finds every skill under `plugins/**/skills/*/SKILL.md`, and verifies that the fixtures cover five categories for each one:
 
 - natural trigger
 - scope boundary
@@ -86,21 +62,15 @@ The coverage checker is intentionally boring. It walks the Claude and Codex mark
 - adversarial or safety behavior
 - baseline or ablation coverage
 
-If a skill has an explicit decision such as `deferred` or `pruned`, the checker accepts that as a recorded choice. Otherwise, missing coverage fails the gate.
+A skill with an explicit decision recorded against it, such as `deferred` or `pruned`, is accepted as a choice someone made. Otherwise, missing coverage fails the gate. The checker remembers a rule I'd otherwise have to carry in my head whenever I add a skill.
 
-The checker gives the repo a memory that I don't want to keep in my head. Adding a new skill shouldn't rely on me remembering to add a trigger case, a scope-boundary case, an adversarial case, and an ablation lane. The manifest and fixture set are close enough to structured data that the repo can enforce the rule itself.
+Coverage isn't quality, though. A bad fixture can satisfy a category, a broad skill can hide three behaviors behind one friendly prompt, and a model can pass a narrow case and fail the real version a week later. What the checker does is prevent coverage from slipping without anyone noticing. It doesn't certify that a plugin is good.
 
-This is where I keep the claim narrow. Coverage isn't quality. A bad fixture can satisfy a category. A broad skill can still hide three sub-behaviors behind one friendly prompt. A model can pass a narrow case and fail the real-world version next week.
+## Whether the plugin changed anything
 
-The checker is a one-way brake against silent backsliding. It doesn't certify that the plugin is good.
+A passing score for the full marketplace says little by itself. If Codex or Claude Code already handles a scenario without my plugin, a pass with the plugin installed is not evidence that the plugin did anything. If a plugin improves one tool and harms the other, a blended score hides the decision I need to make. The comparison that matters is with and without, which evaluation people call ablation.
 
-## Ablation, with an asterisk
-
-The useful question isn't "does the full marketplace pass?" It's "what did the marketplace change?"
-
-If Codex or Claude Code already handles a scenario without my plugin, a passing result with the plugin installed tells me very little. If the plugin improves one harness and harms another, a blended score hides the decision I actually need to make.
-
-The eval matrix therefore includes three plugin modes:
+The eval matrix has three plugin modes:
 
 | Mode | What it's for |
 | --- | --- |
@@ -108,19 +78,15 @@ The eval matrix therefore includes three plugin modes:
 | `targeted-plugins` | A reporting lane for the plugin surfaces mapped by the case. |
 | `full-marketplace` | The real installed marketplace. |
 
-The dashboard compares full-marketplace behavior against the no-plugin baseline and records the value-gate result. Standard cases look for lift over baseline. Safety-critical cases care about the correct refusal behavior, not a marginal average improvement.
+The dashboard compares full-marketplace behavior with the no-plugin baseline and records whether each case cleared its value gate. Standard cases have to show improvement over the baseline. Safety-critical cases have to show the correct refusal, and an average improvement doesn't satisfy them.
 
-I should be precise about targeted mode because this is exactly where eval writeups get slippery. It isn't yet the clean isolation I ultimately want. Current harnesses don't appear to support per-test dynamic plugin installation inside a single provider run, so the repo represents targeted mode as provider/config metadata plus per-case target mapping. Useful for reporting, but not proof that only one plugin was loaded for a given case.
+Targeted mode is less than its name suggests. The harnesses don't appear to support installing plugins dynamically for each test within a single provider run, so the repository represents targeted mode as provider and configuration metadata plus a mapping from each case to its target. That's useful for reporting. It doesn't prove that only one plugin was loaded for a given case. What I can defend today is that the repository compares no-plugin behavior with full-marketplace behavior, attributes each case to the plugins and skills it exercises, and is ready for real isolation when the harnesses support it.
 
-The report I'm comfortable defending today is narrower: the repo can compare no-plugin and full-marketplace behavior, attribute cases to plugin and skill surfaces, and leave a path for targeted isolation when the harness support catches up. Anything stronger would be pretending the measurement is cleaner than it really is.
+## Keeping the measurement honest
 
-## Don't let the loop move its own goalposts
+After the first eval pass I wanted a loop that would improve the plugins. A loop like that can mislead itself quickly. If it can edit both the plugin and the eval, it can raise the score by weakening the measurement. If the loop that improves the evals can edit the plugin, it can change the product while claiming to improve the tests.
 
-After the first eval pass, I wanted an "improve the plugins" loop.
-
-A loop like that can start lying to itself quickly. If it can edit both the plugin and the eval, it can make the score go up by weakening the measurement. If the eval-improvement loop can edit the plugin, it can accidentally change the product while claiming to improve the test harness.
-
-The repo handles this with blunt scope guards:
+The repository prevents this with scope guards:
 
 | Command | Allowed to touch |
 | --- | --- |
@@ -128,61 +94,33 @@ The repo handles this with blunt scope guards:
 | `just improve-plugins` | Plugin instruction assets: skill Markdown, references, plugin READMEs, and plugin manifests. |
 | `just improve-evals` | Fixtures, rubrics, hard guards, matrix config, reporting, tests, CI, and eval runner code. |
 
-The two improvement commands aren't autonomous optimizers. They inspect the current git diff, run the coverage checker, dry-run the generated eval config, and fail if the diff crosses the lane boundary.
+The two improvement commands aren't autonomous optimizers. They inspect the current git diff, run the coverage checker, dry-run the generated eval configuration, and fail if the diff crosses the boundary of their lane. This protects the part of the system most likely to be gamed, which is the definition of success.
 
-It looks like routine engineering hygiene. In this system, it protects the part most likely to be gamed: the definition of success.
-
-## CI labels matter
-
-Pull-request CI in `ai-plugins` doesn't run the live provider-backed suite. I left that out on purpose.
-
-The live matrix costs money, needs credentials, and exercises Codex and Claude Code as live harnesses. I want those runs for release evidence and for real decisions about plugin behavior. I don't want untrusted PRs spending provider budget or depending on secrets just because someone changed a fixture.
-
-So PR CI proves deterministic things:
+The same care applies to what each report is called. Pull-request CI in `ai-plugins` doesn't run the live suite. The live matrix costs money, needs credentials, and exercises Codex and Claude Code as running harnesses. I want those runs as release evidence and for decisions about plugin behavior. I don't want untrusted pull requests spending provider budget or depending on secrets because someone changed a fixture. So pull-request CI proves things that can be checked deterministically:
 
 - marketplace manifests are valid and synchronized
 - Bats tests pass
 - behavior fixtures load recursively and have unique IDs
-- hard guards behave the way the tests expect
+- hard guards behave the way their tests expect
 - coverage requirements are met
 - Promptfoo config generation works in dry-run mode
 
-The trusted workflows can run the provider-backed Claude Code and Codex evals when `OPENAI_API_KEY` and `ANTHROPIC_API_KEY` are available. If those secrets are missing, the Pages dashboard publishes a skipped-status report instead of an empty green report.
+Trusted workflows run the provider-backed evals for Claude Code and Codex when `OPENAI_API_KEY` and `ANTHROPIC_API_KEY` are available. When those secrets are missing, the published dashboard carries a skipped-status report where an empty passing one would otherwise appear.
 
-Teams routinely blur this distinction. A dry-run config check isn't behavior evidence. A schema-valid fixture isn't a meaningful fixture. A passing coverage check isn't proof of value. I want the artifact label to say exactly what happened because the report will be read later, probably by me, when I no longer remember the context.
+These distinctions are easy to blur. A dry-run configuration check isn't evidence about behavior. A fixture that passes schema validation may still test nothing meaningful, and a passing coverage check doesn't show that a plugin has value. Each artifact's label has to say what was run, because the report will be read later, probably by me, after the context is forgotten.
 
-## Some implementation scars
+I got this wrong the first time. At one point the eval lane looked as though it worked, but it was closer to a static policy check than a run against a real harness, and I couldn't defend it as behavior evidence. The runner now generates Promptfoo configuration for the native coding-agent providers, `anthropic:claude-agent-sdk` for Claude Code and `openai:codex-sdk` for Codex. I had also tried to preserve the repository's earlier arrangement of Nix and scripts with no root npm project, which Promptfoo's provider packages made awkward. The repository now has a committed `package.json` and `package-lock.json` with pinned versions of `promptfoo`, the Codex SDK, and the Claude Agent SDK. `node_modules/` stays ignored, and the runner restores it with `npm ci` when needed.
 
-The useful parts of this work came from the places where the first version was wrong.
+Those choices decide whether the harness can be run at all. The provider has to be real, the dependencies pinned, and the artifacts owned by the repository. The report has to say when a provider was unavailable, so that an authentication or quota problem isn't counted as a behavior failure. If I'm going to use the evals to decide whether a plugin gets improved, shortened, split, or removed, the machinery can't be vague.
 
-At one point the eval lane looked like it worked, but it was closer to a static policy check than a real provider-backed harness run. I couldn't defend that as behavior evidence. The runner now generates Promptfoo config for the native coding-agent providers: `anthropic:claude-agent-sdk` for Claude Code and `openai:codex-sdk` for Codex.
+## What the evidence supports
 
-I also tried too hard to preserve the repo's old "Nix plus scripts, no root npm project" shape. Promptfoo's provider packages made that awkward. The current repo has a committed `package.json` and `package-lock.json` with pinned `promptfoo`, Codex SDK, and Claude Agent SDK dependencies. `node_modules/` stays ignored and the runner restores it with `npm ci` when needed.
+This isn't a benchmark. Eleven scenarios are enough to start a regression loop and too few to call the marketplace broadly correct. A provider-backed run that passes them is evidence about those cases, under those provider variants, with those rubrics.
 
-Provider choice, pinned dependencies, and artifact ownership aren't side quests. They're the difference between a blog-post architecture and a runnable eval harness. The provider has to be real. The dependencies have to be pinned. The artifacts have to be repo-owned. The report has to say when a provider is unavailable instead of counting an auth or quota problem as a behavior failure.
+Model-graded rubrics can reward the right vocabulary, miss an operational failure, or vary from run to run. Hard guards help where an invariant can be expressed as code, but much of the system still depends on semantic judgment. So the fixture set has to grow from real misses, the calibration examples have to be reviewed, and repeated samples need a stated purpose.
 
-If I'm going to use the evals to decide whether a plugin improved, shortened, split, or removed, the machinery can't be vague.
+Ablation can mislead as well. When a case is too easy, the baseline and the full marketplace both pass. When it's too artificial, both fail. When the rubric rewards a performance of diligence over the workflow I wanted, a plugin can appear valuable while teaching the wrong lesson. These limits are reasons to keep the claims narrow, and they don't make the evals less worth running.
 
-## What I'm not claiming
+The approach applies to any durable instruction placed in front of a coding agent. A rules file, a skill, a plugin manifest, a subagent prompt, a custom command, and a tool allowlist all route behavior, and they deserve the skepticism we apply to code. For each one, there are questions that reading it can't answer. What behavior changes when the instruction is loaded? What bad behavior counts as a hard failure? Does the model already handle the scenario without it? Does one provider get worse while another improves, and which part of the report would show that?
 
-I wouldn't call this a benchmark.
-
-Eleven scenarios is enough to start a regression loop. It's not enough to declare the marketplace broadly correct. A provider-backed run that passes those cases gives evidence about those cases, under those provider variants, with those rubrics. It doesn't prove that the next real coding task will go well.
-
-Model-graded rubrics aren't neutral just because they're automated. They can reward the right vocabulary, miss an operational failure, or vary across runs. Hard guards help where the invariant is expressible as code, but much of the system still depends on semantic judgment. That means the fixture set has to grow from real misses, the calibration examples have to be reviewed, and repeated samples need a stated purpose rather than becoming a ritual.
-
-Ablation can also be misleading. If the case is too easy, baseline and full-marketplace both pass. If the case is too artificial, both fail. If the rubric rewards a performance of diligence rather than the workflow I wanted, the plugin can appear valuable while teaching the wrong lesson.
-
-None of those limitations are a reason to skip evals. They're a reason to keep the claims narrow.
-
-## What I'd keep
-
-I don't think this pattern belongs only in my plugin repo.
-
-Any time you put durable instructions in front of a coding agent, you're changing an agentic system. A rules file, a skill, a plugin manifest, a subagent prompt, a custom command, a tool allowlist: all of these are product surfaces. They route behavior. They deserve the same skepticism we apply to code.
-
-Don't stop at "the instruction sounds right." Ask what behavior would change if the instruction were loaded, what bad behavior would count as a hard failure, whether the base model already handles the scenario, whether one provider regresses while another improves, and what part of the report would make that visible.
-
-The standard I want for `ai-plugins` isn't a perfect score. I don't trust perfect scores. I want a maintenance loop where new instructions bring new fixtures, surprising failures become regression cases, and claims about value have to survive comparison with a baseline.
-
-I'd rather defend that standard than defend the claim that "the prompt looks good."
+The standard I hold `ai-plugins` to is a maintenance loop in which new instructions bring new fixtures, surprising failures become regression cases, and claims of value have to survive comparison with a baseline. A perfect score isn't part of that standard, and I'd distrust one. A team whose agents work from instructions that have only been read is relying on text that sounds right.
