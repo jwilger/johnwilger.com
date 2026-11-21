@@ -11,11 +11,11 @@ cover = "/images/blog/chrome-profile-launching-niri-cover.png"
 tags = ["linux", "nixos", "home-manager", "niri", "desktop"]
 +++
 
-I use separate Chrome profiles for personal and work browsing. Chrome supports that, but its desktop integration didn't match the way I wanted to use profiles from a keyboard-first Linux desktop.
+Anyone who keeps separate browser profiles for work and personal use has clicked a link and watched it open in the wrong one. I'd had that problem for a while on my Linux desktop, along with a related one: "open Chrome" had stopped being a complete instruction. Sometimes I meant the personal profile and sometimes the work one. Sometimes I clicked a link while working on a task that already had a browser window beside it, and I wanted the link to open there and not pull me to a Chrome window somewhere else.
 
-The problem wasn't that Chrome lacked a profile picker. The problem was that "open Chrome" had become an underspecified action. Sometimes I meant personal. Sometimes I meant work. Sometimes I clicked a link from a focused Niri workspace that already had the right browser context, and I wanted the link to join that workspace instead of pulling me somewhere else.
+Chrome has a profile picker, and I could have tried to configure it into doing what I wanted. I chose a different approach, and it applies well beyond browsers. When one action means different things in different situations, give each meaning its own named command, and leave every piece of state with the program that already owns it. The implementation is a short piece of desktop configuration.
 
-So I stopped trying to make Chrome's generic launcher carry all of that policy. I made the actions explicit:
+My desktop runs Niri, a window manager that arranges windows on numbered workspaces, and I manage my user configuration declaratively with Home Manager, which builds it from Nix files. The three commands are:
 
 ```sh
 chrome-personal [URL...]
@@ -23,27 +23,27 @@ chrome-work [URL...]
 chrome-pick [URL...]
 ```
 
-Then I made a small URL router, `nignite`, and put it on both URL entry paths I use: XDG desktop handling and kitty URL clicks. The real implementation lives in my public NixOS config: [`modules/home/desktop/nignite.nix`](https://github.com/jwilger/nixos-config/blob/chrome-profile-launchers/modules/home/desktop/nignite.nix), with the terminal URL path configured in [`modules/home/kitty.nix`](https://github.com/jwilger/nixos-config/blob/chrome-profile-launchers/modules/home/kitty.nix).
+A small URL router called `nignite` sits on both of the paths by which a link reaches the browser: the desktop's default handler and clicks in the kitty terminal. The implementation is in my public NixOS configuration, in [`modules/home/desktop/nignite.nix`](https://github.com/jwilger/nixos-config/blob/chrome-profile-launchers/modules/home/desktop/nignite.nix), with the terminal path configured in [`modules/home/kitty.nix`](https://github.com/jwilger/nixos-config/blob/chrome-profile-launchers/modules/home/kitty.nix).
 
-The result is a split between two different entry points. Launcher search shows the human choices. URL handling uses the router. Chrome still owns Chrome state.
+Launcher search now shows the two choices a person would make. Links go through the router. Chrome's own state is left alone.
 
 ![Noctalia launcher search showing Chrome Personal and Chrome Work as separate launch targets.](/images/blog/chrome-profile-launching-noctalia.png)
 
 ## What was wrong
 
-There were three annoyances tangled together.
+Three annoyances were tangled together.
 
-First, launcher search was ambiguous. Searching for Chrome could surface the generic Google Chrome desktop entry, but that entry didn't encode the decision I usually needed to make: personal profile or work profile.
+Launcher search was ambiguous. Searching for Chrome brought up the generic Google Chrome entry, which says nothing about the decision I usually had to make, personal profile or work profile.
 
-Second, external links didn't always land in the context I expected. With Niri, workspace locality is part of how I think about work. If workspace 3 already has a browser window for a task, a link clicked from that workspace should usually join that browser window. Jumping to an existing Chrome window on another workspace breaks that flow.
+Links didn't reliably land where I expected. On Niri I organize work by workspace, so if workspace 3 already has a browser window for a task, a link clicked on workspace 3 should usually open in that window. Jumping to a Chrome window on another workspace interrupts the task.
 
-Third, Chrome's profile picker is mutable application state. I didn't want my Nix configuration to manage Chrome's `Local State` file just to influence the profile behind the generic launcher. Chrome owns that file. Declarative desktop configuration shouldn't have to pretend otherwise.
+Chrome's profile picker is also application state that Chrome changes as it runs. I didn't want my Nix configuration managing Chrome's `Local State` file to influence which profile sat behind the generic launcher. Chrome owns that file, and a declarative configuration that edits it will be fighting the application.
 
-That changed the framing. The question wasn't "how do I configure Chrome's picker?" It was "what browser actions do I actually want available from the desktop?"
+Seen that way, the question to answer was which browser actions I wanted available from the desktop, and configuring Chrome's picker stopped being part of it.
 
-## The small commands
+## The profile commands
 
-The profile-specific launchers don't inspect Chrome state or talk to the compositor. In Home Manager, they're `writeShellApplication` derivations that add exactly one Chrome flag:
+The profile launchers don't inspect Chrome's state or talk to the window manager. In Home Manager they're `writeShellApplication` derivations, each adding one Chrome flag:
 
 ```nix
 chromePersonal = pkgs.writeShellApplication {
@@ -63,9 +63,9 @@ chromeWork = pkgs.writeShellApplication {
 };
 ```
 
-Those profile directory names come from Chrome's local profile metadata. In my setup, `Default` is personal and `Profile 4` is work. That's not a portable truth about Chrome; it's a local fact that belongs in my machine configuration.
+The profile directory names come from Chrome's local profile metadata. On my machine `Default` is personal and `Profile 4` is work. Those names will differ on any other machine, which is why they belong in my machine's configuration.
 
-The picker is just as small:
+The picker is about as small:
 
 ```nix
 chromePick = pkgs.writeShellApplication {
@@ -93,13 +93,13 @@ chromePick = pkgs.writeShellApplication {
 };
 ```
 
-The `--new-window` is doing real work. When the picker appears, it's because the router didn't find a Chrome window on the current workspace. Selecting a profile should create a browser window in the current workspace, not let Chrome reuse a session somewhere else.
+The `--new-window` flag is there for a reason. The picker appears only when the router hasn't found a Chrome window on the current workspace, so choosing a profile should create a window on that workspace. Without the flag, Chrome could reuse a session on another one.
 
 ![Fuzzel profile chooser with Personal and Work options.](/images/blog/chrome-profile-launching-fuzzel.png)
 
 ## Routing links by workspace
 
-`nignite` is the default handler for URLs. Its policy is:
+`nignite` is the default handler for URLs, and its policy has five steps:
 
 1. Ask Niri which workspace is focused.
 2. Look for a Chrome or Chromium window on that workspace.
@@ -107,7 +107,7 @@ The `--new-window` is doing real work. When the picker appears, it's because the
 4. If none exists, ask which profile to use.
 5. If the chooser is canceled, do nothing.
 
-The focused workspace lookup uses Niri's JSON IPC:
+It finds the focused workspace through Niri's JSON IPC:
 
 ```sh
 focused_workspace_id="$(
@@ -119,9 +119,9 @@ focused_workspace_id="$(
 )"
 ```
 
-The fallback to `workspaces` is there because a workspace can be focused even when no window is focused. That's an easy case to miss if the script only asks for the focused window.
+The fallback to `workspaces` covers a case that's easy to miss: a workspace can be focused when no window on it is, and a script that asks only for the focused window gets nothing back.
 
-Once the router has a workspace ID, it searches Niri's window list:
+With a workspace ID in hand, the router searches Niri's window list:
 
 ```sh
 chrome_window_id="$(
@@ -156,11 +156,11 @@ fi
 exec chrome-pick "$@"
 ```
 
-This isn't trying to infer whether the current workspace is "personal" or "work." That would be a bigger claim than the desktop can support. It only says: if a browser context already exists on this workspace, reuse it. Otherwise ask me.
+The router doesn't try to work out whether the current workspace is "personal" or "work." The desktop has no reliable way to know that. It makes a narrower decision: if a browser window already exists on this workspace, reuse it, and otherwise ask me.
 
 ## Desktop entries and terminal clicks
 
-The visible launchers are normal XDG desktop entries:
+The launchers that appear in search are ordinary XDG desktop entries, the files a Linux desktop reads to list applications:
 
 ```nix
 xdg.desktopEntries = {
@@ -184,7 +184,7 @@ xdg.desktopEntries = {
 };
 ```
 
-The generic Chrome entry is still accounted for, but hidden:
+The generic Chrome entry is still declared, but hidden:
 
 ```nix
 google-chrome = {
@@ -193,7 +193,7 @@ google-chrome = {
 };
 ```
 
-The router is also hidden because I don't launch it directly:
+The router is hidden too, since I never launch it directly:
 
 ```nix
 nignite = {
@@ -205,7 +205,7 @@ nignite = {
 };
 ```
 
-Then MIME defaults point browser-ish things at `nignite.desktop`:
+The MIME defaults, which tell the desktop which application opens which kind of content, point links and HTML at `nignite.desktop`:
 
 ```nix
 xdg.mimeApps.defaultApplications = {
@@ -217,9 +217,9 @@ xdg.mimeApps.defaultApplications = {
 };
 ```
 
-That covers the normal desktop path, but kitty URL clicks needed one more step. Kitty's default clicked-URL handler is `xdg-open`. Even with MIME defaults pointing at `nignite.desktop`, that extra `xdg-open` and desktop-launch layer could make the active-workspace decision happen after focus had already shifted. In practice, shift-clicking a URL from a terminal could still reuse Chrome somewhere else instead of prompting from the terminal workspace.
+That covers links opened from desktop applications. Clicks in the kitty terminal needed one more step. Kitty's default handler for a clicked URL is `xdg-open`. Even with the MIME defaults pointing at `nignite.desktop`, that extra `xdg-open` and desktop-launch layer could delay the workspace check until after focus had moved. In practice, shift-clicking a URL in a terminal could still reuse Chrome on another workspace when it should have prompted on the terminal's own.
 
-The fix was to make kitty call the router directly:
+The fix was to have kitty call the router directly:
 
 ```nix
 programs.kitty.settings = {
@@ -227,28 +227,24 @@ programs.kitty.settings = {
 };
 ```
 
-That keeps the terminal click on the same path as every other routed URL, but without an extra launcher layer in front of the workspace check.
+Terminal clicks now take the same route as every other link, without a launcher layer in front of the workspace check.
 
-That split is the design:
+Taken together, the arrangement is:
 
 - Noctalia shows `Chrome Personal` and `Chrome Work`.
 - External links use `nignite.desktop`.
 - Kitty URL clicks call `nignite` directly.
 - The generic `Google Chrome` entry doesn't compete in launcher search.
 
-The desktop entries become the API between the shell, launcher, MIME database, and browser commands. Once I looked at it that way, the setup got much simpler.
+The desktop entries serve as the interface between the shell, the launcher, the MIME database, and the browser commands. Once I treated them that way, the setup became much simpler.
 
-I verified the live behavior where it actually matters: Noctalia offered the two profile-specific entries, Fuzzel prompted when the workspace didn't already have Chrome, kitty's parsed config contained `open_url_with nignite`, and links reused an existing Chrome window when one was present on the focused workspace.
+I checked the behavior on the running desktop. Noctalia offered the two profile entries, Fuzzel prompted when the workspace had no Chrome window, kitty's parsed configuration contained `open_url_with nignite`, and links reused an existing Chrome window when one was present on the focused workspace.
 
-## The useful boundary
+## Who owns what
 
-The part I like most is the ownership boundary.
+Each program in this arrangement owns one thing. Chrome owns profile state. Home Manager owns the commands, the desktop entries, the MIME defaults, and kitty's URL handler setting. Niri owns workspace information, Fuzzel owns the chooser, and Noctalia owns how the launcher presents its results.
 
-Chrome owns profile state. Home Manager owns commands, desktop entries, MIME defaults, and the kitty URL handler setting. Niri owns workspace information. Fuzzel owns the tiny chooser. Noctalia owns launcher presentation.
-
-I don't need Home Manager to edit Chrome's preferences. I don't need Chrome to understand my workspace policy. I don't need the launcher to infer intent from one generic browser entry.
-
-Small commands with explicit names were enough:
+Because of that, Home Manager doesn't edit Chrome's preferences, Chrome doesn't need to understand my workspace policy, and the launcher doesn't have to infer what I meant from one generic browser entry. Three commands with explicit names were enough:
 
 ```sh
 chrome-personal
@@ -256,6 +252,6 @@ chrome-work
 nignite https://example.com
 ```
 
-That gives me the desktop behavior I wanted: search for the profile I mean, click links normally, and keep browser actions local to the workspace whenever there's already a local browser context.
+I can search for the profile I mean, click links as usual, and have them open on the workspace I'm in whenever a browser window is already there.
 
-It's not a framework. It's just the desktop policy I kept wishing the generic launcher had, written down as commands.
+The same approach works on problems larger than a desktop. When a tool keeps guessing wrong about what someone meant, the usual instinct is to add configuration until it guesses better. Naming the distinct actions and leaving each program's state alone is often less work, and it leaves less to break when one of those programs changes.
