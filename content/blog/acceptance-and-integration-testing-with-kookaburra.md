@@ -9,64 +9,25 @@ cover = "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800&q=80
 
 +++
 
-**UPDATE (2012-01-22):** *I realized this morning that the credit I gave to [Sam
-Livingston-Gray](http://resume.livingston-gray.com/) below may not have
-adequately shown how instrumental he was in getting this project off the ground;
-especially since much of his work was done in the private repository from which
-this was extracted. So, thanks, Sam. This might not have gone anywhere if you
-hadn't worked to put the idea in practice in our application and helped everyone
-on our team learn how to use the approach. I made a few minor changes below to
-reflect this a bit better.*
+**UPDATE (2012-01-22):** *The credit I gave [Sam Livingston-Gray](http://resume.livingston-gray.com/) below didn't show how much he did to get this project off the ground, especially since much of his work was in the private repository this library was extracted from. Thanks, Sam. This might not have gone anywhere if you hadn't put the idea into practice in our application and helped everyone on our team learn the approach. I've made a few small changes below to reflect that.*
 
-We've been using [Cucumber](http://cukes.info/) for acceptance testing at
-[Renewable Funding](http://renewfund.com) since back when it was still part of
-the [RSpec](http://rspec.info) project (indeed, since before we were even
-Renewable Funding). While we've always liked the ability to have plain-language
-feature documentation that we could automatically test against, after years of
-adding to and maintaining a fairly large set of Cucumber scenarios, the cost of
-that maintenance was starting to really slow us down. The test suite began to
-grow fragile, and it seemed like every time one of our UX designers changed
-anything about the application's interface, the development team would spend a
-bunch of time just babysitting Cucumber tests to get them passing again.
+Automated acceptance tests written against the details of a user interface break when the interface changes, even when the behavior they describe hasn't. We ran into this at [Renewable Funding](http://renewfund.com). We've used [Cucumber](http://cukes.info/) for acceptance testing since it was still part of the [RSpec](http://rspec.info) project, which was before the company was called Renewable Funding. We've always liked having feature documentation in plain language that we could test against automatically. After years of adding to a fairly large set of scenarios, though, maintaining them was slowing us down. The suite had grown fragile, and it seemed that whenever one of our UX designers changed something in the interface, the development team spent a good deal of time getting Cucumber tests to pass again.
 
-Last year, as I was reading Jez Humble's excellent [Continuous
-Delivery](http://www.amazon.com/gp/product/0321601912?tag=contindelive-20) book,
-I was inspired when I came across the section titled "The Application Driver
-Layer" (p. 198). This section describes an approach to acceptance testing where
-the specification and the test implementation are isolated from the details of
-the application's user interface by inserting a layer between the two that uses
-good old OOP to abstract the user interface components. Martin Fowler describes
-it as the [Window Driver] [1] pattern on his website.
+Last year I was reading [Continuous Delivery](http://www.amazon.com/gp/product/0321601912?tag=contindelive-20), by Jez Humble and David Farley, and came to the section titled "The Application Driver Layer" (p. 198). It describes an approach in which the specification and the test implementation are isolated from the details of the user interface. A layer sits between them and uses ordinary object-oriented design to represent the interface's components. Martin Fowler describes it on his website as the [Window Driver][1] pattern.
 
-I started a proof-of-concept implementation of this pattern last summer, then my
-coworker, [Sam Livingston-Gray](http://resume.livingston-gray.com/) and I
-started pulling it into a new project at work. After Sam and the rest of the
-Renewable Funding team helped improve on my original attempt while putting it to
-use for the last six or so months, we extracted a library to make it easier for
-other Ruby developers to implement this pattern in their testing. I'm happy to
-introduce [Kookaburra](http://github.com/projectdx/kookaburra) to the world.
+I started a proof-of-concept implementation last summer, and then my coworker [Sam Livingston-Gray](http://resume.livingston-gray.com/) and I began pulling it into a new project at work. Sam and the rest of the Renewable Funding team improved on my original attempt as they used it over the following six months or so. We've now extracted a library so that other Ruby developers can use the pattern in their own testing. It's called [Kookaburra](http://github.com/projectdx/kookaburra).
 
 <!-- more -->
 
-The following comes from Kookaburra's README as of version 0.7.1.
+The rest of this post is adapted from Kookaburra's README as of version 0.7.1.
 
 ----
 
-# Kookaburra #
+Kookaburra is a framework for implementing the [Window Driver][1] pattern in order to keep acceptance tests maintainable.
 
-Kookaburra is a framework for implementing the [Window Driver] [1] pattern in
-order to keep acceptance tests maintainable.
+## Setup
 
-## Setup ##
-
-Kookaburra itself abstracts some common patterns for implementing the Window
-Driver pattern for tests of Ruby web applications built on [Rack] [2]. You will need
-to tell Kookaburra which classes contain the specific Domain Driver
-implementations for your application as well as which driver to use for running
-the tests (currently only tested with [Capybara] [3]). The details of setting up your
-Domain Driver layer are discussed below, but in general you will need the
-following in a locations such as `lib/my_application/kookaburra.rb` (replace
-`MyApplication` with a module name suitable to your actual application:
+Kookaburra abstracts some common patterns for implementing the Window Driver pattern in tests of Ruby web applications built on [Rack][2]. You tell it which classes contain the Domain Driver implementations for your application and which driver to use for running the tests (it has been tested only with [Capybara][3] so far). Setting up the Domain Driver layer is covered below. In general, you need something like the following in a location such as `lib/my_application/kookaburra.rb`, with `MyApplication` replaced by a module name that suits your application:
 
 ``` ruby
 module MyApplication
@@ -87,9 +48,9 @@ module MyApplication
 end
 ```
 
-### RSpec ###
+### RSpec
 
-For [RSpec] [4] integration tests, just add the following file to your project:
+For [RSpec][4] integration tests, add the following file to your project:
 
 ``` ruby spec/support/kookaburra_setup.rb
 require 'my_application/kookaburra'
@@ -99,9 +60,9 @@ RSpec.configure do |c|
 end
 ```
 
-### Cucumber ###
+### Cucumber
 
-For Cucumber, add the following file to your project
+For Cucumber, add the following file to your project:
 
 ``` ruby features/support/kookaburra_setup.rb
 require 'my_application/kookaburra'
@@ -115,29 +76,22 @@ Before do
 end
 ```
 
-This will cause the #api, #given and #ui methods will be available in your
-Cucumber step definitions.
+This makes the `#api`, `#given`, and `#ui` methods available in your Cucumber step definitions.
 
-## Defining Your Testing DSL ##
+## Defining your testing DSL
 
-Kookaburra attempts to extract some common patterns that make it easier to use
-the Window Driver pattern along with various Ruby testing frameworks, but you
-still need to define your own testing DSL. An acceptance testing stack using
-Kookaburra has the following four layers:
+Kookaburra extracts some common patterns that make the Window Driver pattern easier to use with various Ruby testing frameworks, but you still define your own testing DSL. An acceptance testing stack that uses Kookaburra has four layers:
 
 1. The **Business Specification Language** (Cucumber scenarios and step definitions)
 2. The **Domain Driver** (Kookaburra::GivenDriver and Kookaburra::UIDriver)
 3. The **Window Driver** (Kookaburra::UIDriver::UIComponent)
 4. The **Application Driver** (Capybara and Rack::Test)
 
-### The Business Specification Language ###
+### The Business Specification Language
 
-The business specification language consists of the highest-level descriptions
-of a feature that are suitable for sharing with the non/less-technical
-stakeholders on a project.
+The business specification language is the highest-level description of a feature, suitable for sharing with a project's less technical stakeholders.
 
-Gherkin is the external DSL used by Cucumber for this purpose, and you might
-have the following scenario defined for an e-commerce application:
+Gherkin is the external DSL that Cucumber uses for this. An e-commerce application might have the following scenario:
 
 ``` cucumber purchase_items_in_cart.feature
 Feature: Purchase Items in Cart
@@ -157,24 +111,13 @@ Feature: Purchase Items in Cart
     And I see that my default shipping options will be used
 ```
 
-Note that the scenario is focused on business concepts versus interface details,
-i.e. you "choose to check out" rather than "click on the checkout button". If
-for some reason your e-commerce system was going to be a terminal application
-rather than a web application, you would not need to change this scenario at
-all, because the actual business concepts described would not change.
+The scenario is written in business terms and leaves out interface details. You "choose to check out"; you don't "click on the checkout button." If the e-commerce system were a terminal application and not a web application, the scenario wouldn't need to change, because the business concepts it describes would be the same.
 
-### The Domain Driver ###
+### The Domain Driver
 
-The Domain Driver layer is where you build up an internal DSL that describes the
-business concepts of your application at a fairly high level. It consists of
-three top-level drivers: the `APIDriver` (available via `#api`) for interacting
-with your application's external API, the `GivenDriver` (available via `#given`)
-which really just wraps the `APIDriver` and is used to set up state for your
-tests, and the UIDriver (available via `#ui`) for describing the tasks that a
-user can accomplish with the application.
+The Domain Driver layer is where you build an internal DSL that describes your application's business concepts at a fairly high level. It has three top-level drivers. The `APIDriver` (available as `#api`) interacts with your application's external API. The `GivenDriver` (available as `#given`) wraps the `APIDriver` and sets up state for your tests. The `UIDriver` (available as `#ui`) describes the tasks a user can accomplish with the application.
 
-Given the Cucumber scenario above, the step definitions call into the Domain
-Driver layer to interact with your application:
+For the Cucumber scenario above, the step definitions call into the Domain Driver layer to interact with the application:
 
 ``` ruby step_definitions/various_steps.rb
 Given "I have an existing account" do
@@ -214,14 +157,9 @@ Then "I see that my default shipping options will be used" do
 end
 ```
 
-The step definitions contain neither explicitly shared state (instance
-variables) nor any logic branches; they are simply wrappers around calls into
-the Domain Driver layer. There are a couple of advantages to this approach.
-First, because step definitions are so simple, it isn't necessary to force *Very
-Specific Wording* on the business analyst/product owner who is writing the
-specs. For instance, if she writes "I see a summary of my order" in another
-scenario, it's not a big deal to have the following in your step definitions (as
-long as the author of the spec confirms that they really mean the same thing):
+The step definitions contain no explicitly shared state (instance variables) and no branching logic. They are wrappers around calls into the Domain Driver layer, and that has two advantages.
+
+The first is that, because step definitions are this simple, there's no need to force very specific wording on the business analyst or product owner who writes the specs. If she writes "I see a summary of my order" in another scenario, it's no trouble to have both of the following in your step definitions, as long as the author confirms that the two phrases mean the same thing:
 
 ``` ruby
     Then "I see my order summary" do
@@ -233,19 +171,9 @@ long as the author of the spec confirms that they really mean the same thing):
     end
 ```
 
-The step definitions are nothing more than a natural language reference to an
-action in the Domain Driver; there is no overwhelming maintenance cost to the
-slight duplication, and it opens up the capacity for more readable Gherkin
-specs. The fewer false road blocks you put between your product owner and a
-written specification, the easier it becomes to ensure her participation in this
-process.
+A step definition is a natural-language reference to an action in the Domain Driver. The slight duplication costs little to maintain, and it allows more readable Gherkin specs. The fewer artificial obstacles there are between your product owner and a written specification, the easier it is to keep her involved in the process.
 
-The second advantage is that by pushing all of the complexity down into the
-Domain Driver, it's now trivial to reuse the exact same code in
-developer-centric integration tests. This ensures you have parity between the
-way the automated acceptance tests run and any additional testing that the
-development team needs to add in. You could write the same test using just
-RSpec as follows:
+The second advantage is that, with the complexity pushed down into the Domain Driver, the same code can be reused in developer-centric integration tests. The automated acceptance tests and any additional tests the development team adds then run the same way. The same test written in RSpec alone looks like this:
 
 ``` ruby spec/integration/purchase_items_in_cart_spec.rb
 describe "Purchase Items in Cart" do
@@ -265,23 +193,13 @@ describe "Purchase Items in Cart" do
 end
 ```
 
-Whether in Cucumber step definitions or developer integration tests, you will
-usually interact only with the GivenDriver and the UIDriver.
+Whether you're writing Cucumber step definitions or developer integration tests, you will usually work only with the `GivenDriver` and the `UIDriver`.
 
-#### TestData ####
+#### TestData
 
-`Kookaburra::TestData` is the component via which the `GivenDriver` and the
-`UIDriver` share information. For instance, if you create a user account via the
-`GivenDriver`, you would store the login credentials for that account in the
-`TestData` instance, so the UIDriver knows what to use when you tell it to
-`#sign_in`. This is what allows the Cucumber step definitions to remain free
-from explicitly shared state.
+`Kookaburra::TestData` is the component through which the `GivenDriver` and the `UIDriver` share information. If you create a user account through the `GivenDriver`, for instance, you store that account's login credentials in the `TestData` instance, and the `UIDriver` knows what to use when you tell it to `#sign_in`. This is what keeps the Cucumber step definitions free of explicitly shared state.
 
-The `TestData` class can be configured to contain both collections of test data
-as well as default data that can be used as a starting point for creating new
-resources in the application. To configure `TestData`, call
-`Kookaburra.test_data_setup` with a block (usually in your
-`lib/my_application/kookaburra.rb` file):
+`TestData` can be configured to hold collections of test data and also default data to use as a starting point for creating new resources in the application. To configure it, call `Kookaburra.test_data_setup` with a block, usually in your `lib/my_application/kookaburra.rb` file:
 
 ``` ruby lib/my_application/kookaburra.rb
 module MyApplication
@@ -298,9 +216,7 @@ module MyApplication
 end
 ```
 
-Then, in any context where you have an instance of `TestData` (such as in
-`GivenDriver` or `UIDriver`), you can add/retrieve items to/from collections and
-access default data:
+Then, wherever you have an instance of `TestData` (in the `GivenDriver` or the `UIDriver`, for example), you can add items to collections, retrieve them, and read the default data:
 
 ``` ruby lib/my_application/kookaburra/given_driver.rb
 class MyApplication::Kookaburra::GivenDriver < Kookaburra::GivenDriver
@@ -325,11 +241,9 @@ class MyApplication::Kookaburra::UIDriver < Kookaburra::UIDriver
 end
 ```
 
-#### APIDriver ####
+#### APIDriver
 
-The `Kookaburra::APIDriver` is used to interact with an application's external
-web services API. You tell Kookaburra about your API by creating a subclass of
-`Kookaburra::APIDriver` for your application:
+`Kookaburra::APIDriver` interacts with an application's external web services API. You tell Kookaburra about your API by creating a subclass of `Kookaburra::APIDriver` for your application:
 
 ``` ruby lib/my_application/kookaburra/api_driver.rb
 class MyApplication::Kookaburra::APIDriver < Kookaburra::APIDriver
@@ -340,13 +254,9 @@ class MyApplication::Kookaburra::APIDriver < Kookaburra::APIDriver
 end
 ```
 
-#### GivenDriver ####
+#### GivenDriver
 
-The `Kookaburra::GivenDriver` is used to create a particular "preexisting"
-state within your application's data and ensure you have a handle to that data
-(when needed) prior to interacting with the UI. Like the `APIDriver`, you will
-create a subclass of `Kookaburra::GivenDriver` in which you will create part of
-the Domain Driver DSL for your application:
+`Kookaburra::GivenDriver` creates a particular preexisting state in your application's data and gives you a handle to that data, when you need one, before the test interacts with the UI. As with the `APIDriver`, you create a subclass of `Kookaburra::GivenDriver`, and in it you write part of the Domain Driver DSL for your application:
 
 ``` ruby lib/my_application/kookaburra/given_driver.rb
 class MyApplication::Kookaburra::GivenDriver < Kookaburra::GivenDriver
@@ -368,12 +278,9 @@ class MyApplication::Kookaburra::GivenDriver < Kookaburra::GivenDriver
 end
 ```
 
-#### UIDriver ####
+#### UIDriver
 
-`Kookaburra::UIDriver` provides the necessary tools for driving your
-application's user interface using the Window Driver pattern. You will subclass
-`Kookaburra::UIDriver` for your application and implement your testing DSL
-within your subclass:
+`Kookaburra::UIDriver` provides the tools for driving your application's user interface with the Window Driver pattern. You subclass `Kookaburra::UIDriver` for your application and implement your testing DSL in the subclass:
 
 ``` ruby lib/my_application/kookaburra/ui_driver.rb
 class MyApplication::Kookaburra::UIDriver < Kookaburra::UIDriver
@@ -389,19 +296,11 @@ class MyApplication::Kookaburra::UIDriver < Kookaburra::UIDriver
 end
 ```
 
-### The Window Driver Layer ###
+### The Window Driver layer
 
-While your `GivenDriver` and `UIDriver` provide a DSL that represents actions
-your users can perform in your application, the [Window Driver] [1] layer describes
-the individual user interface components that the user interacts with to perform
-these tasks. By describing each interface component using an OOP approach, it is
-much easier to maintain your acceptance/integration tests, because the
-implementation details of each component are captured in a single place. If/when
-that implementation changes, you can---for example---fix every single test that
-needs to log a user into the system just by updating the SignInScreen class.
+Your `GivenDriver` and `UIDriver` provide a DSL for the actions users can perform in your application. The [Window Driver][1] layer describes the individual interface components a user works with to perform them. Describing each component as an object makes acceptance and integration tests much easier to maintain, because the implementation details of a component are captured in one place. When that implementation changes, you can fix every test that logs a user in to the system by updating the `SignInScreen` class.
 
-You describe the various user interface components by sub-classing
-`Kookaburra::UIDriver::UIComponent`:
+You describe the user interface components by subclassing `Kookaburra::UIDriver::UIComponent`:
 
 ``` ruby lib/my_application/ui_driver/sign_in_screen.rb
 class MyApplication::Kookaburra::UIDriver::SignInScreen < Kookaburra::UIDriver::UIComponent
