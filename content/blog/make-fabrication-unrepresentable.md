@@ -11,39 +11,27 @@ cover = "/images/blog/make-fabrication-unrepresentable.jpg"
 tags = ["ai", "llm", "generative-ai", "software-engineering"]
 +++
 
-A while back I helped build an AI assistant that lived inside a business application and answered questions about the company's data. You'd ask it something, it would call the right tools, pull the real numbers, and hand you a clean little summary with a table and a recommendation at the bottom. Most of the time it was genuinely useful.
+A company that puts an AI assistant in front of its own data is trusting it with numbers that people will act on. I helped build one of these a while back. It lived inside a business application and answered questions about the company's data. You asked it something, it called the right tools, pulled the real figures, and returned a short summary with a table and a recommendation at the bottom. Most of the time it was useful. Every so often it reported a number that no tool had returned.
 
-And every so often, it made something up.
+The errors were small. A percentage would be a few points off, or a projected total would look plausible and match nothing in the tool results. The real data was in those results. On the way to writing its answer, the model had done some arithmetic of its own, got it wrong, and stated the outcome as confidently as it stated everything else.
 
-Nothing dramatic. It would report a percentage that was a few points off, or a projected total that looked entirely plausible and matched nothing any tool had returned. The real data was sitting right there in the tool results. The model just did a little arithmetic in its head on the way to writing the answer, got it wrong, and stated the result with the same calm confidence it used for everything else.
+We added a line to the prompt: *do not compute or invent numbers that didn't come back from a tool.* It helped a little. The next regression earned another paragraph, and then a bulleted list of the specific things the model wasn't allowed to make up. By the time I looked closely, the part of the system prompt devoted to asking the model not to lie ran to a couple hundred words, and we had a test whose only job was to assert that those words were still there.
 
-We added a line to the prompt: *do not compute or invent numbers that didn't come back from a tool.* It helped, a little. The next regression earned us another paragraph, then a bulleted list of the specific things it wasn't allowed to make up. By the time I started paying real attention, the part of the system prompt devoted to "please don't lie" ran a couple hundred words, and we had a test whose only job was to assert that those couple hundred words were still there.
+That test showed how little we had. A paragraph of English that a team is afraid to delete expresses a hope about the model's behavior and enforces nothing. The fix we arrived at was to change what the model was able to say, so that a number without a source couldn't appear in an answer.
 
-That test should have been the tell. When your defense against a category of bug is a paragraph of English you're afraid to delete, you don't have a defense. You have a wish.
+The weakness wasn't confined to one prompt. A system like this usually passes prose between its own parts. One component decides which sub-task should handle the question and writes it a brief in prose. That step calls some tools and returns an answer in prose. A final step composes the reply the user sees from those answers. Somewhere in the middle, code scrapes numbers and statuses back out of formatted text so that it can do something with them. Each handoff relies on the next reader working out what the last writer meant.
 
-## Markdown and pray
+We wouldn't accept that from our own code. A reviewer wouldn't approve a function whose signature was a comment reading `// returns the right number, promise`. We'd want the type to say what comes out. When a language model joins a system, that standard tends to be dropped.
 
-Here's how a system like this usually talks to itself.
+I've written before that [the language model is just another user](/blog/the-language-model-is-just-another-user/). It shouldn't be treated as a trusted internal component. It should be treated as a user at a keyboard sending input to the system. What it tries to change goes through the same commands the interface uses and is validated against the same rules, and when it gets something wrong it receives the plain-language error a person would see, so that it can correct itself. Unpredictable input becomes a matter of form validation.
 
-One component decides which sub-task should handle your question and writes it a prose brief. That step calls some tools and returns a prose answer. A final step takes those answers and composes the prose reply you actually see. Somewhere in the middle, code is scraping numbers and statuses back out of formatted text so it can do something with them.
-
-Every handoff has the same contract: I'll format something, and you'll figure out what I meant.
-
-We would never accept this from our own code. You wouldn't merge a function whose signature was a comment that read `// returns the right number, promise`; you'd want the type to say what comes out. But the moment a language model joins the system, we drop the standard, pass prose around, and hope the next reader recovers our intent from the formatting.
-
-## The model is just another user
-
-A while back I wrote that [the language model is just another user](https://johnwilger.com/blog/the-language-model-is-just-another-user/). The short version: don't treat it as a trusted internal component, treat it as a user at a keyboard sending inputs to your system. Route what it tries to change through the same commands your UI uses, validate against the same invariants, and when it gets something wrong, hand back the same plain-language error you'd show a person so it can correct itself. The unpredictable-input problem turns into form validation.
-
-I still believe that. But it only disciplines what the model tries to *do* to your system. It says nothing about what the model *says* to your user.
-
-The fabricated number never went through a command. It never tried to change any state I was validating. It went from the model's prose straight into a chat bubble in front of a user. We'd locked the door the model writes through and left the one it talks through wide open.
+That still holds, but it governs only what the model tries to do to the system. It doesn't cover what the model says to the user. The fabricated number never went through a command and never tried to change any state we were validating. It went from the model's prose into a chat bubble. We had put a check on what the model could write to the system and none on what it could tell the person using it.
 
 ## A number without a source is a guess
 
-The fix is to put a boundary on the output side too, and make it a real one: a type, not a plea.
+The output needs a boundary too, and it should be a type, which the system enforces, and not a request, which the model may or may not honor.
 
-The move is to stop letting the model write numbers down at all. It doesn't get to *report* a value; it gets to *reference* one. Either it cites a value (points at a specific tool call from this turn and the field to read) or it requests a computed one (names a formula from a closed set, plus the cited inputs to run it over). Roughly:
+The model is no longer allowed to write a number down. It can cite a value, by pointing at a specific tool call from the current turn and the field to read from its result. Or it can ask for a computed value, by naming a formula from a fixed set and citing the inputs to run it over. In outline:
 
 ```typescript
 type FormulaName = "rate" | "delta" | "rollup"; // a closed, named set
@@ -53,48 +41,36 @@ type Compute = { formula: FormulaName; inputs: Cite[] }; // "run this over these
 type Claim   = Cite | Compute;                           // all the model may emit
 ```
 
-Notice what's missing: a number. No variant of `Claim` carries a value, so the model has no way to hand you one. It can only tell you where a value should come from.
+No variant of `Claim` carries a value. The model can say where a value should come from, and it has no way to supply one.
 
-Your code does the rest. The step that turns the answer into prose walks every `Claim`: for a `Cite`, it reads the field out of the actual tool result; for a `Compute`, it runs the named formula over inputs it reads the same way. If a citation points at a tool call that didn't happen this turn, or a formula that doesn't exist, it won't resolve, and the answer doesn't ship. The bytes the user sees are produced by your code, every time. The model chose what to point at. It never got to write the number itself.
+Our code does the rest. The step that turns the answer into prose walks through every `Claim`. For a `Cite`, it reads the field out of the actual tool result. For a `Compute`, it runs the named formula over inputs that it reads the same way. A citation that points at a tool call that didn't happen in this turn, or a formula that doesn't exist, fails to resolve, and the answer doesn't go out. The characters the user sees are produced by code. The model chose what to point at.
 
-The `Compute` half matters as much as the `Cite` half. The model is bad at arithmetic and good at language, so stop asking it to do arithmetic. A rate, a rolling total, a percentage of a percentage: each is a function in your code with a name, and the model's only move is to ask for it over inputs that are themselves citations. The total at the bottom of the table comes out of the same function every time, instead of being re-derived in prose by a model that can't be relied on to add.
+The computed half matters as much as the cited half. A model is bad at arithmetic and good at language, so it shouldn't be asked to do arithmetic. A rate, a rolling total, and a percentage of a percentage are each a named function in the code, and all the model can do is ask for one over inputs that are themselves citations. The total at the bottom of the table then comes from the same function on every request, where before it was worked out again in prose each time.
 
-## Provenance is necessary, not sufficient
+## A sourced number can still be wrong
 
-This kills invented numbers. It does not, by itself, give you correct ones.
+This removes invented numbers. It doesn't guarantee correct ones.
 
-Ask how many items are overdue and the assistant would cite the right tool, read the right field, and still hand you a wrong number, because "overdue" isn't "past its due date." A finished item isn't overdue. A cancelled one isn't overdue. The tool was handing back a count that ignored status, the citation pointed at exactly that count, every value resolved cleanly. Provenance was satisfied. The answer was wrong.
+Asked how many items were overdue, the assistant would cite the right tool, read the right field, and still report a wrong number, because "overdue" doesn't mean "past its due date." A finished item isn't overdue, and neither is a cancelled one. The tool was returning a count that ignored status, the citation pointed at that count, and every value resolved. The answer had a source and was wrong.
 
-Two different mistakes hide in there. One is which field gets cited: ask for a total, cite the subtotal, and you've sourced a real number that answers a different question. The other is what the number means: the count was computed with the wrong definition of "overdue" before it ever reached the model. A citation proves a number is real. It says nothing about whether it's the number you meant.
+Two different mistakes are possible here. One is citing the wrong field: asked for a total, the model cites the subtotal, and a real number answers a different question. The other is a number that means something other than what was asked, as when the count was computed with the wrong definition of "overdue" before it reached the model. A citation shows that a number is real. It doesn't show that it's the number the user meant.
 
-That second mistake is old. Ten years ago I wrote about [enforcing an awkward uniqueness rule in Postgres](https://johnwilger.com/blog/complex-unique-constraints-with-postgresql-triggers-in-ecto/): a room can't be double-booked, but only against reservations that are confirmed, or on hold and less than a day old. The naive constraint is wrong because the rule has a status gate baked into it. Same shape, different decade. The instant a definition like "overdue" lives in two places (once in the tool, once in whatever the model reconstructs), they drift, and the copy the model is working from is the one that's wrong.
+The second mistake is an old one. Six years ago I wrote about [enforcing an awkward uniqueness rule in Postgres](/blog/complex-unique-constraints-with-postgresql-triggers-in-ecto/): a room can't be double-booked, but only against reservations that are confirmed, or that are on hold and less than a day old. The naive constraint is wrong because the rule depends on status, as "overdue" does. When a definition like that lives in two places, once in the tool and once in whatever the model reconstructs, the two drift apart, and the model's copy is the one that goes wrong.
 
-So "overdue" becomes a single function, defined once, that the tool and the formula registry both call. There is exactly one answer to what counts as overdue, and it's code.
+So "overdue" became a single function, defined once, which the tool and the formula registry both call. The question of what counts as overdue has one answer, and it's in code.
 
-## Make the bad state impossible, not discouraged
+None of this is particular to AI. It's established practice applied to a new kind of component. Engineers learned long ago to design types so that an invalid value can't be constructed, to parse untrusted input into trusted shapes at the edge of a system, and to put each rule where the system can't route around it. The short forms are "make illegal states unrepresentable" and "parse, don't validate." A language model is an untrustworthy caller: fluent, eager, and occasionally wrong without any sign of doubt. What we know about defending a system against bad input applies to it. The risk is that because it writes well, we forget it's a source of input like any other.
 
-None of this is an AI technique. It's the oldest move we have, pointed at a new kind of component. We've spent decades learning not to validate-and-pray: design the types so the invalid value can't be constructed, parse untrusted input into trusted shapes at the edge, put each invariant somewhere the system can't route around it. Make illegal states unrepresentable. Parse, don't validate.
+## Where to look in your own systems
 
-A language model is the least trustworthy caller you will ever integrate: fluent, eager, and every so often serenely wrong. Everything we already know about defending a system against bad input applies to it. We just have to actually apply it, instead of being so charmed that the thing writes paragraphs that we forget it's an input source like any other.
+Most companies that have built an assistant have some version of this problem. The prompt is the first place to look. Rules that amount to "please be accurate" or "don't make things up" each mark a property the team is hoping for and not enforcing. Some of those rules can't leave the prompt. Others can, and those are the ones failing in production without anyone noticing.
 
-## Where to look in your own stack
+The next place is the handoffs between your own components. If two parts of your system communicate in free text that a third part then parses, the model isn't at fault, and this is the easiest item here to fix. Give the handoff a typed contract so that the structure survives the trip.
 
-You probably don't have my assistant, but you likely have a cousin of it somewhere. A few places I'd check.
+Then let the model refer to values and not assert them. Anything that can be computed should be computed, with the model given a fixed menu of named operations over cited inputs and no opportunity to do the math in prose.
 
-Start with the prompt. Search your system prompts for the rules that boil down to "please be accurate" or "don't make things up." Each one marks a property you're hoping for instead of enforcing. Some of them can't leave the prompt. Some can, and those are the ones quietly failing in production.
+Finally, give the output a boundary it has to clear: a step that resolves every reference before the answer goes out, and that rejects an answer with an unresolved reference and tells the model in plain language why, so it can try again. That's the discipline already applied on the input side.
 
-**Stop passing prose between your own components.** If two parts of *your* system talk through free text that a third part then parses, that isn't the model's fault and it's the easiest thing on this list to fix. Put a typed contract on the wire and let the structure survive the trip.
+The limits of the approach are specific. It does nothing for a citation that points at the wrong field, or for a definition that was wrong before the model touched it, which is what a single shared function is for. It does nothing for a model that answers the same question two ways on two turns, which calls for consistency testing. And it does nothing about the sentence the model wraps around a correctly sourced number: a real `0` can sit inside "good news, everything's on track" when that `0` was a tool error. The structural fix shrinks the room for fabrication without eliminating it.
 
-**Let the model reference values, not assert them.** Anything you can compute, compute. Give it a closed menu of named operations over cited inputs rather than a blank check to do math in prose.
-
-**Give the output a boundary it has to clear**: something that resolves every reference before the answer ships, and when a reference doesn't resolve, rejects the answer and hands the model a plain-language reason to try again. The same discipline you already put on the input side.
-
-And be honest about what it doesn't buy you. Provenance kills invented numbers. It does nothing for a citation that points at the wrong field, or a definition that was already wrong before the model touched it. That's what single-source-of-truth functions are for. It does nothing for a model that answers the same question two ways on two turns; that's consistency testing, a different tool entirely. And it does nothing about the sentence the model wraps around a correctly-sourced number: a real `0` can still sit inside "good news, everything's on track" when that `0` was a tool error wearing a disguise. The structural fix shrinks the surface area for fabrication. It doesn't erase it.
-
-## The model doesn't get an exemption
-
-The practices that make human engineers reliable are the practices that make language models reliable. The model doesn't get a pass on any of them because it happens to be articulate.
-
-You can ask it to be honest, and it mostly will, right up until the day it doesn't. Or you can build a system where the dishonest answer has nowhere to go: where a number with no source was never something the model could say in the first place.
-
-Stop telling the model not to lie. Build the thing so the lie has nowhere to land.
+The practices that make human engineers' work reliable make a model's work reliable too, and the model shouldn't be excused from them because it writes well. An assistant that's asked to be accurate will be accurate most of the time. If people are going to act on its numbers, the system has to make the unsourced answer impossible to deliver, wherever that can be done in code.
