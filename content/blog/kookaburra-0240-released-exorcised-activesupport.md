@@ -9,35 +9,13 @@ cover = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80"
 
 +++
 
-I just released version 0.24.0 of [Kookaburra][K] to
-[Rubygems.org][RGO]. While there were no changes to *Kookaburra's* API
-with this release, it is a minor release rather than a patch release,
-because I removed [ActiveSupport][AS] from Kookaburra's dependencies.
-Previously, Kookaburra depended on ActiveSupport >= 3.0, and this
-prevented it from working smoothly with Rails 2.x applications (at least
-in the same Bundler bundle.) Since Kookaburra only used a small fraction
-of ActiveSupport, it seemed easiest just to break the dependency, so
-that your application can use whatever version of ActiveSupport it
-needs.
+[Kookaburra][K], a Ruby framework for acceptance and integration testing, used to depend on ActiveSupport 3.0 or later. That kept it from working smoothly with Rails 2.x applications, at least within the same Bundler bundle. Version 0.24.0, which I've just released to [Rubygems.org][RGO], removes the dependency. Kookaburra used only a small fraction of [ActiveSupport][AS], so breaking the dependency was the easiest way to let an application use whichever version of ActiveSupport it needs. Kookaburra's own API hasn't changed. This is a minor release and not a patch release because removing the dependency can change how your application behaves.
 
-Because of the fact that ActiveSupport makes a number of modifications
-to core Ruby classes, if your application does not otherwise explicitly
-require ActiveSupport, some of these core classes may now behave
-differently. Specifically, `Hash` and `String` core extensions were
-being used, as well as `ActiveSupport::CoreExt::Module::Delegation`.
+ActiveSupport modifies a number of core Ruby classes. If your application doesn't explicitly require ActiveSupport elsewhere, some of those classes may now behave differently. Kookaburra had been using the `Hash` and `String` core extensions and `ActiveSupport::CoreExt::Module::Delegation`.
 
-Also, where `Kookaburra::JsonApiDriver` used `ActiveSupport::JSON` for
-encoding and decoding of JSON data, it now uses `::JSON` as provided by
-*either* the [json][json] or the [json_pure][json_pure] gems. The tests
-on Kookaburra itself pass just by swapping out ActiveSupport JSON
-library for the new one, but these tests do not comprehensively test
-JSON usage, and there may be differences that impact your application.
+JSON handling has changed as well. `Kookaburra::JsonApiDriver` used `ActiveSupport::JSON` to encode and decode JSON data. It now uses `::JSON`, as provided by either the [json][json] gem or the [json_pure][json_pure] gem. Kookaburra's own tests pass with the new library swapped in, but they don't test JSON usage comprehensively, and there may be differences that affect your application.
 
-Kookaburra declares its dependency on the `json_pure` gem (a pure-ruby
-version) in order to ensure that it works cross-platform. However, both
-`json` and `json_pure` are written in such a way that, when you `require
-'json'`, it will detect if both libraries are installed and prefer the
-natively compiled `json` gem's version of the library.
+Kookaburra declares its dependency on `json_pure`, a pure-Ruby implementation, so that it works on every platform. Both gems are written so that `require 'json'` detects whether both are installed and prefers the natively compiled `json` version.
 
 [K]: http://github.com/jwilger/kookaburra
 [RGO]: http://rubygems.org/gems/kookaburra/versions/0.24.0
