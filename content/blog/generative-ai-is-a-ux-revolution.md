@@ -1,6 +1,6 @@
 +++
 title = "Generative AI is a UX Revolution"
-description = "How conversational AI interfaces are breaking the GUI vs. CLI dichotomy and creating a new paradigm for human-computer interaction."
+description = "An interface designed for beginners slows experts down, and one designed for experts loses beginners. A conversational assistant that operates the application can serve both."
 slug = "generative-ai-is-a-ux-revolution"
 date = 2024-03-12
 [extra]
@@ -10,60 +10,48 @@ cover = "https://cdn.hashnode.com/res/hashnode/image/upload/v1709947871106/d6714
 tags = ["ai", "ux", "generative-ai"]
 +++
 
-When I first engaged with computers, the landscape was predominantly shaped by command-line interfaces, a stark contrast to the GUI-based systems like Windows or MacOS that later emerged and democratized computing. This transformation was monumental, making technology accessible to a broader audience. Yet, it also introduced a dichotomy: while GUIs simplified interactions for the majority, they often fell short for expert users who valued the precision and efficiency of command-line interfaces. This divide underscored a technological gap where neither GUIs nor command-line interfaces could entirely meet the diverse needs of users. Attempts to redesign expert interfaces into graphical formats frequently resulted in a confusing mishmash of buttons and menus, complicating the user experience for novices without offering significant advantages to experts over the command line. Consequently, we find ourselves in a world where applications are often neither intuitive nor efficient, highlighting a significant challenge in the quest for inclusive and effective user interfaces.
+A team designing an interface usually has to choose whom to disappoint. An interface that a newcomer can use on the first day tends to slow down the people who use it all day, and one built for those people tends to leave the newcomer lost. Many applications end up somewhere in between and serve neither group well. A conversational assistant that can operate the application offers a way out of that choice, and I've watched it work for two very different users.
 
-In my role as a software engineer, I prefer using command-line and keyboard-driven tools. I avoid using the mouse while programming, not because I think "real programmers don't use mice," but because reaching for the mouse is significantly slower for tasks like navigating files, editing text, and running programs. Therefore, you'll often find me in a full-screen terminal window, using tmux (a tool for managing multiple terminal sessions in one window) and vim (a highly customizable text editor). Over time, I've developed a set of configuration tweaks and shell scripts that help me work efficiently. I use a minimalist UI that keeps the code I'm working on in focus, without the distraction of unnecessary UI elements that require mouse clicks.
+The choice is as old as the graphical interface. When I started using computers, the command line was the usual way to work with one. Windows and the Mac made computers usable by far more people, and they did it by putting everything on the screen where it could be found. Experts kept the command line because it's precise and quick. Attempts to give expert tools a graphical form often produced crowded screens of buttons and menus that confused beginners and gave experts nothing they didn't already have.
+
+I'm on the expert side of that divide in my own work. I prefer command-line and keyboard-driven tools, and I avoid the mouse while programming because reaching for it is slower for navigating files, editing text, and running programs. I usually work in a full-screen terminal with tmux, which manages several terminal sessions in one window, and vim, a highly customizable text editor. Over the years I've built up configuration and shell scripts that keep the code in view and everything else off the screen.
 
 ![This is my entire main screen when programming.](https://cdn.hashnode.com/res/hashnode/image/upload/v1709939093205/b1a60861-5844-4855-8ec2-84377132c4e2.png align="center")
 
-However, for those unfamiliar with these tools, becoming immediately productive in this environment can be quite challenging. I've been working this way for over 20 years, and I’m still finding new ways to boost my efficiency with vim. Given that I use this application almost daily for long hours as a crucial tool of my trade, the time invested in learning to use it as efficiently as possible is highly worthwhile. That said, I wouldn't suggest that all user interfaces should require this level of expertise to be effective. When I come across a system I'm not familiar with, I really value a simple, intuitive interface that helps me do the right thing.
+Someone unfamiliar with these tools wouldn't be productive in that environment for a long time. I've worked this way for more than twenty years and still find ways to be more efficient with vim. Because I use it for long hours nearly every day, the time spent learning it has been worth it. I wouldn't ask that of the users of most software. When I meet a system I don't know, I want a simple interface that helps me do the right thing.
 
-On the other side of the spectrum, there are people who aren't as familiar with computer technology and can get frustrated by systems, even when those systems are meant to be used with a mouse or trackpad. My wife is one such person. She's not computer illiterate, but she often gets frustrated with websites and applications when she knows what she wants to do but can't find the right buttons to press to make it happen.
+My wife is at the other end. She isn't computer illiterate, but websites and applications often frustrate her, because she knows what she wants to do and can't find the buttons that do it.
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1709941595065/2804c54e-2218-4d1d-928c-f38cdce625f0.webp align="center")
 
-Recently, at [Artium](https://artium.ai/), I've been involved in building [a new product called APEX](https://apex.artium.ai/), where we are exploring a new approach to how users interact with applications. APEX is a tool to help you take an idea for a software product and bring that idea to life by walking you through the process of defining the problem space, refining the product vision and value proposition, and then focusing on the key users of the application and how they will use it. The goal is to arrive at an actionable plan for building the initial version of your product and provide you with the information you need to create a proposal and business plan that will help you launch your product. The primary interaction with APEX involves exchanging messages with a generative AI assistant. However, this is not just an AI chatbot that is generating text in a chat window for you to copy and paste into your plan. Our assistant is actively updating the representation of your product on-screen as your conversation progresses.
+At [Artium](https://artium.ai/) I've been part of the team building [APEX](https://apex.artium.ai/), a tool that takes an idea for a software product and walks its owner through defining the problem, refining the vision and value proposition, and identifying the key users and how they'll use the product. The result is an actionable plan for a first version, with the information needed for a proposal and a business plan. The main way of using APEX is to exchange messages with a generative AI assistant. The assistant doesn't produce text for the user to copy into the plan. It updates the plan on the screen as the conversation goes on.
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1710267850978/5b83104c-e624-4469-99be-6325a60c1830.png align="center")
 
-This style of interaction represents a pivotal shift from the traditional dichotomy of GUI and command-line interfaces. By adopting a conversational, AI-driven approach, we can create a unified interface that intuitively adapts to the user's expertise level—simplifying the learning curve for novices while providing the depth and efficiency that experts crave. This adaptability showcases how generative AI can transcend the limitations of previous technologies, offering a seamless, inclusive user experience that traditional interfaces have struggled to provide.
+While we were preparing the open beta, I asked my wife to plan a product with it. She's a registered nurse, with no background in product design and no particular knowledge of computer systems. She got through the whole process, and I didn't hear her get frustrated once. She told me afterwards that she much preferred working this way because it was like having a conversation with another person. She wasn't overwhelmed by options or stuck looking for the way to change something. She talked with the assistant and watched the plan update. There were no wrong answers, either. When she misunderstood a question or chose to concentrate on a different part of the product, the assistant adjusted and steered her back toward finishing the task.
 
-While getting ready to launch our open beta for APEX, I asked my wife to try using the application to plan out a product. She was able to get through the entire process, and amazingly, I didn't hear her get frustrated with it even once. She is a registered nurse by trade, and as I mentioned before, she is often frustrated with computer programs; this is not someone who has experience with product design or comes to the table with a high level of knowledge about computer systems. When I asked her about the experience, she told me that she much preferred this way of interacting with a computer because it was just like having a conversation with another person. Rather than having to feel overwhelmed by options or frustrated that she couldn't figure out how to change something, she was able to simply converse with the assistant and watch the updates happen in the display of the product. And there are no "wrong answers" when talking to the assistant. If you misunderstand a question or simply choose to focus on a different aspect of the product, the assistant is able to adjust, guide, and redirect to help you complete your task.
+The same interface suits me as an expert. I understand the planning process and the information APEX manages, so I skip the guidance and give direct instructions, and I can build a product plan quickly without touching the mouse. If I say "set the product title to MyAwesomeProduct," the title changes. If I say "use Elixir, Phoenix, and LiveView with a Postgres data store," the Technology section is updated without my waiting to be asked about it. If I already have notes on a product idea, such as what I typed during a planning session with a client, I paste them in and tell the assistant to build the plan from them.
 
-What is amazing to me is that this style of interaction is equally appealing to me as an expert user of the system. While the conversation and guidance of the assistant can be essential for a novice user who doesn't necessarily understand how to approach product planning, as someone who does understand both the process and the types of information that APEX manages, I am able to very quickly create a product plan without ever touching my computer's mouse by simply being explicit with the assistant with my directions. I can directly say "set the product title to MyAwesomeProduct", and it does it. If I say "use Elixir, Phoenix, and LiveView with a Postgres data store", it updates the Technology section without me having to wait for the assistant to ask me about that. If I already have text-based documentation about a product idea (typed notes from a client planning session, for example), I can simply paste those notes into the assistant window and tell it to create a product plan based on those notes.
+One design served a nurse who dislikes most software and an engineer who avoids the mouse, and neither of us had to learn it. The assistant gave her as much guidance as she needed and stayed out of my way, which no arrangement of menus and buttons does.
 
-Despite the promise of generative AI in enhancing UX, several challenges loom. One significant concern is the potential for AI to misunderstand user intent, leading to frustrating experiences or, in worst-case scenarios, harmful outcomes. Ensuring that AI systems can accurately interpret and act on a wide range of human inputs is crucial for their success. Additionally, ethical considerations are at the heart of deploying generative AI in any user-facing application. Issues such as bias in AI responses, transparency in how AI decisions are made, and the autonomy of users in guiding the AI's actions are critical. As we integrate AI more deeply into our lives, ensuring these systems enhance rather than undermine human autonomy, respect user privacy, and promote fairness and inclusivity will be essential. By addressing these ethical challenges head-on, we can harness the benefits of generative AI while minimizing potential harms. Addressing these challenges requires new approaches to software testing to account for the non-deterministic nature of generative AI responses. At Artium, we have also been pioneering the use of [Continuous Alignment Testing](https://artium.ai/insights/test-driving-ai-applications) to ensure that products using generative AI are able to function with a high degree of confidence and safety.
+The approach brings problems of its own. An assistant can misunderstand what a user meant, and when it acts on the misunderstanding the result is frustrating at best and harmful at worst. Its responses can be biased, its reasons for a change can be unclear, and a user has to remain able to direct and overrule it. Its output also varies from one run to the next, so the testing methods used for conventional software don't settle whether it behaves correctly. At Artium we've been developing [Continuous Alignment Testing](https://artium.ai/insights/test-driving-ai-applications) to give products built on generative AI a measurable level of confidence and safety.
 
-The impact of generative AI on UX design, as shown by our work on APEX, is clear. By enabling a more natural, conversational interaction with technology, we're doing more than just making applications more accessible and efficient; we're changing how humans interact with computers. This move towards intuitive, adaptive interfaces suggests a future where technology truly serves everyone, no matter their background or level of expertise. As we keep improving and broadening the abilities of generative AI, the potential for innovation in UX seems endless. The evolution from command lines to conversational interfaces is just the start of a UX revolution that will keep growing and surprising us.
+For a company planning a product, this changes an early decision. The question of whether to design for the newcomer or the expert has been a choice between two markets, or a compromise that satisfied neither. Where the work can be described in conversation, one interface can now serve both.
 
-*I did not and could not have produced APEX on my own in the time that we were able to bring this together. APEX would not have been possible without the team that created it:*
+*APEX was the work of a team, and I couldn't have produced it alone in the time we had:*
 
-* *Cauri Jaye*
-    
-* *Ross Hale*
-    
-* *Serena Epstein*
-    
-* *Michael McCormick*
-    
-* *Ryan Durling*
-    
-* *Nick Mahoney*
-    
-* *George Wambold*
-    
-* *Nafisa Rawji*
-    
-* *Mark Whaley*
-    
-* *James Lenhart*
-    
-* *Chay Landaverde*
-    
-* *Gene Gurvich*
-    
-* *Randy Lutcavich*
-    
-* *John Wilger*
-    
-* *and the rest of the Artium team who supported our work*
+- Cauri Jaye
+- Ross Hale
+- Serena Epstein
+- Michael McCormick
+- Ryan Durling
+- Nick Mahoney
+- George Wambold
+- Nafisa Rawji
+- Mark Whaley
+- James Lenhart
+- Chay Landaverde
+- Gene Gurvich
+- Randy Lutcavich
+- John Wilger
+- and the rest of the Artium team who supported our work
