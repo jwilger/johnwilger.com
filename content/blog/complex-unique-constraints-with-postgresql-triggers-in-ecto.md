@@ -1,6 +1,6 @@
 +++
 title = "Complex Unique Constraints with PostgreSQL Triggers in Ecto"
-description = "Handling complex multi-column unique constraints in Ecto by leveraging PostgreSQL triggers and custom changeset validations."
+description = "How to enforce a uniqueness rule that a unique index can't express with a PostgreSQL trigger, and still get an ordinary Ecto changeset validation error."
 slug = "complex-unique-constraints-with-postgresql-triggers-in-ecto"
 date = 2020-02-16
 [extra]
@@ -10,8 +10,9 @@ cover = "https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/lRoX0shwjUQ/
 tags = ["postgresql", "database", "elixir", "ecto"]
 +++
 
-[Ecto][ecto] makes it easy to work with typical uniqueness constraints in your database; you just
-define your table like this:
+Some business rules are too important to enforce only in application code. If two customers can be sold the same meeting room for the same afternoon, it doesn't matter which part of the application let it through. A rule like that belongs in the database, where application code can't bypass it. The database's built-in tools cover the simple cases, though, and a rule with conditions in it, such as "this room is taken unless the earlier booking was an unpaid hold that has expired," doesn't fit a unique index. This post shows how to enforce that kind of rule with a PostgreSQL trigger and still have [Ecto][ecto], Elixir's database library, report a violation as an ordinary validation error.
+
+Ecto already handles the simple case. You define a table with a unique index:
 
 ```elixir
 defmodule MyApp.Repo.Migrations.CreateFoos do
@@ -27,8 +28,7 @@ defmodule MyApp.Repo.Migrations.CreateFoos do
 end
 ```
 
-and a module with a [changeset validation for the uniqueness constraint][ecto-unique-constraint],
-perhaps like:
+and a schema module whose changeset declares [the uniqueness constraint][ecto-unique-constraint]:
 
 ```elixir
 defmodule MyApp.Foo do
@@ -55,43 +55,29 @@ result = MyApp.Foo.changeset(%MyApp.Foo{}, %{name: "bar"})
          |> MyApp.Repo.insert()
 ```
 
-The Ecto library will attempt to insert your record, and if there is already a record where the
-name column is set to "bar", Ecto will see the uniqueness constraint violation error produced by
-the database and turn it into a validation error on your changeset, so that it would look
-something like:
+Ecto attempts the insert. If a row already has the name "bar", the database rejects the new one, and Ecto turns the database's uniqueness error into a validation error on the changeset:
 
 ```elixir
 {:error, %Ecto.Changeset{errors: [name: {"has already been taken", _}]}} = result
 ```
 
-### Something More Complex ###
+## A rule a unique index can't express
 
-I recently needed to enforce a database constraint similar in spirit to a unique index (if a
-record were in violation, I wanted the same behavior on the Elixir end of things—the changeset
-should report that the value for the field "has already been taken") however the criteria for what
-should be considered "unique" was more complex than what a simple unique index in PostgreSQL would
-be able to deal with.
+I recently needed a constraint that behaved like a unique index from the Elixir side, with the changeset reporting that a value "has already been taken," but whose definition of "unique" was more than a unique index in PostgreSQL can express.
 
-Let's pretend we have a project that is managing meeting room reservations. The process for
-reserving a meeting room is as follows:
+Take a system that manages meeting room reservations. A room is reserved in four steps:
 
 1. The customer chooses a room and selects the time range for the reservation.
-2. Assuming the room is available at that time, the system places a hold on the room for 24 hours
-3. Within that 24-hour period, the customer pays for the room and completes some contractual
-   information that must be signed by both the customer and the facility manager.
+2. If the room is available at that time, the system places a hold on it for 24 hours.
+3. Within those 24 hours, the customer pays for the room and completes some contractual information that must be signed by both the customer and the facility manager.
 4. Once the payment is complete and the contracts are signed, the reservation is confirmed.
 
-Here, then, are the business rules for creating a reservation:
+Two rules for creating a reservation follow from that:
 
-* A room reservation cannot be made for a given room and time-period if there exists another room
-  reservation for that same room with an overlapping time-period and the existing reservation is
-  in a "confirmed" status.
+* A room can't be reserved for a period that overlaps an existing reservation of the same room in "confirmed" status.
+* A room can't be reserved for a period that overlaps an existing reservation of the same room in "hold" status that was created within the last 24 hours.
 
-* A room reservation cannot be made for a given room and time-period if there exists another room
-  reservation for that same room with an overlapping time-period, the existing reservation is in a
-  "hold" status, and the existing reservation was created within the last 24 hours.
-
-We decide to store the room reservations in a table defined as:
+The reservations are stored in this table:
 
 ```elixir
 defmodule Meetings.Repo.Migrations.CreateRoomReservations do
@@ -110,7 +96,7 @@ defmodule Meetings.Repo.Migrations.CreateRoomReservations do
 end
 ```
 
-and ideally, we'd like to be able to model the `RoomReservation` in Elixir as:
+Ideally, the `RoomReservation` would be modeled in Elixir like this:
 
 ```elixir
 defmodule Meetings.RoomReservation do
@@ -138,9 +124,7 @@ defmodule Meetings.RoomReservation do
 end
 ```
 
-with the interesting bit being the `|> unique_constraint(:room_id)` line. When a customer tries to
-reserve a room that is already reserved for the given time period, we want the
-`Meeting.RoomReservation.create/1` function to return with a validation error:
+The line that matters is the call to `unique_constraint(:room_id, ...)`. When a customer tries to reserve a room that is already reserved for that period, `Meetings.RoomReservation.create/1` should return a validation error:
 
 ```elixir
 %{:error, %Ecto.Changeset{errors: [room_id: {"has already been reserved", _}]}} =
@@ -152,11 +136,7 @@ reserve a room that is already reserved for the given time period, we want the
   })
 ```
 
-Clearly, according to the business rules for the system, we can't just put a unique index on the
-`room_id` column. To the best of my knowledge, an exclusion constraint also won't work here,
-because of the need to *not* check against any rows that have a status of "hold" and an
-`inserted_at` timestamp that is more than 24 hours ago relative to the current time. It *is*
-however possible to use a trigger function to enforce the constraint in the database:
+A unique index on the `room_id` column can't express these rules. To the best of my knowledge an exclusion constraint can't either, because the check has to leave out rows with a status of "hold" and an `inserted_at` timestamp more than 24 hours old. A trigger function can enforce the rule in the database:
 
 ```elixir
 defmodule Meetings.Repo.Migrations.CreateRoomReservations do
@@ -217,10 +197,7 @@ defmodule Meetings.Repo.Migrations.CreateRoomReservations do
 end
 ```
 
-The problem is that instead of that nice validation error on the changeset that we *want* to get,
-we instead end up with an unhandled `Postgrex.Error` exception. We could, of course, simply rescue
-that exception in our `Meetings.RoomReservation.create/1` function and add the error to the
-changeset ourselves, but that starts to look a little ugly:
+The database now enforces the rule, but the Elixir code gets an unhandled `Postgrex.Error` exception where we wanted a validation error on the changeset. We could rescue the exception in `Meetings.RoomReservation.create/1` and add the error to the changeset ourselves, which starts to look ugly:
 
 ```elixir
 defmodule Meetings.RoomReservation do
@@ -244,16 +221,9 @@ defmodule Meetings.RoomReservation do
 end
 ```
 
-### TL;DR - It's All About the Raise
+## Raising the error Ecto expects
 
-Knowing that `Ecto.Changeset.unique_constraint/3` works by intercepting an error raised by the
-database, I set out to see if I could implement the complex unique constraint logic in the
-database and still be able to use the `Ecto.Changeset.unique_constraint/3` validation without
-needing to modify any Elixir code. Looking at [the relevant code in ecto_sql][ecto-sql-unique], we
-can see that the trick to getting the `room_reservations_check_room_availability` functionality to
-work with that function is to change the PostgreSQL exception to use the correct error code as
-well as a constraint name that is linked with the changeset validation. We can redifine the
-PostgreSQL function as:
+`Ecto.Changeset.unique_constraint/3` works by intercepting an error raised by the database. The constraint logic can therefore stay in the database and still work with that validation, with no rescue clause in the Elixir code, as long as the database raises the error Ecto is looking for. [The relevant code in ecto_sql][ecto-sql-unique] shows what that is. The PostgreSQL exception has to carry the unique-violation error code and a constraint name that matches the one given to the changeset validation. The trigger function becomes:
 
 ```sql
 CREATE FUNCTION room_reservations_check_room_availability() RETURNS TRIGGER AS
@@ -279,7 +249,7 @@ END;
 $$ language plpgsql;
 ```
 
-and then add the `:name` option to our `unique_constraint` in the changeset validation:
+and the changeset passes the same name to `unique_constraint` through the `:name` option:
 
 ```elixir
 defmodule Meetings.RoomReservation do
@@ -297,6 +267,8 @@ defmodule Meetings.RoomReservation do
   end
 end
 ```
+
+The rule is enforced in the database, and a caller of `create/1` sees a double booking as it would see any other validation failure.
 
 [ecto]: https://hexdocs.pm/ecto "Ecto"
 [ecto-unique-constraint]: https://hexdocs.pm/ecto/Ecto.Changeset.html#unique_constraint/3 "Ecto.Changeset.unique_constraint/3"
