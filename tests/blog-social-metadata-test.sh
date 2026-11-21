@@ -59,8 +59,8 @@ class MetadataParser(HTMLParser):
 
 
 title = "Somebody Has to Design the Factory"
-description = ('"Dark factory" software development doesn\'t mean typing an idea into a box. '
-               "Automating assembly created a second engineering discipline, and that's where senior judgment goes.")
+description = ("Automated assembly lines created a second engineering profession, the one that designs the line. "
+               "Software is acquiring its own, and the work belongs with a company's most experienced engineers.")
 expected = {
     "og:type": "article",
     "og:site_name": "John Wilger",
