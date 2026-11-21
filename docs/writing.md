@@ -78,6 +78,8 @@ Record each editorial correction here with the lesson it carries, and apply the 
 
 - **"Most experienced engineers", not "senior engineers".** John: "senior engineer" is "kind of meaningless and almost entry level these days thanks to title inflation". Describe people by experience, not by title ("senior", "staff"). And when writing about what changes for them, do their existing skill and knowledge justice: it is the basis of the new work, not something they must leave behind to retrain. (2026-11-20.)
 
+- **Cut the aside; don't promote it.** In the AI speed essay, the original's parenthetical joke about Claude Code declining work "due to time constraints" was rewritten as its own paragraph and John found it "completely out of place". An anecdote that interrupts the argument doesn't become relevant by being given a paragraph and a moral. If a passage in the original is a tangent, cut it. (2026-11-20.)
+
 ## Revision
 
 - Avoid stock punchlines like “That last part matters” and generic transitions like “It is worth noting”, “Importantly”, “Moreover”, “Furthermore”, “In today's landscape”, “The broader lesson”, and “The omission is deliberate”.

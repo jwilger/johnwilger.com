@@ -23,8 +23,6 @@ The standard complaint about AI-written code is that it's verbose, subtly wrong,
 
 People do tire of it. By the fifteenth pull request of the week, the failing test doesn't always get written first, the mutation suite doesn't always run before review, and the decision that should have been recorded lives in a Slack thread that will expire. We negotiate with discipline when we're tired or behind. An agent whose discipline is enforced by checks it can't get past has nothing to negotiate with. It writes the property test, chases the mutation the tests missed, updates the decision record, and runs a fourth review pass.
 
-It will sometimes claim otherwise. Claude Code has told me it wasn't going to bother with something "due to time constraints," though it has no clock, no deadline, and no meeting to get to. It learned the phrase from people who used it to get out of writing one more test, which is why the checks have to be enforced and can't simply be requested.
-
 The quality of the result is set by the checks you build more than by the model. Most teams haven't built enough of them, and they blame the model for what comes out.
 
 ## Why the first answer is tempting
