@@ -13,12 +13,7 @@ cover = "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&q=80
 
 **UPDATE 2019-07-25:**
 
-Based on some comments made on the original post below, I swapped out the Asus ThunderboltEX 2 AIC
-for a Gigabyte GC-Titan Ridge Thunderbolt AIC that supports two DisplayPort inputs. I'm happy to
-report that I can now use the monitor in full 5k resolution *and* that X11, GDM, and Gnome were
-able to autodetect all of the correct settings (after removing the `/etc/X11/xorg.conf`,
-`$HOME/.config/monitors.xml`, and `/var/lib/gdm3/.config/monitors.xml` files in order to get the
-autodetection to kick in.)
+Following some comments on the original post below, I replaced the Asus ThunderboltEX 2 AIC with a Gigabyte GC-Titan Ridge Thunderbolt AIC, which has two DisplayPort inputs. The monitor now runs at its full 5K resolution, and X11, GDM, and Gnome detected the correct settings without help. For the autodetection to take effect I had to remove `/etc/X11/xorg.conf`, `$HOME/.config/monitors.xml`, and `/var/lib/gdm3/.config/monitors.xml`.
 
 </section>
 
@@ -26,65 +21,25 @@ autodetection to kick in.)
 
 **UPDATE 2019-07-26:**
 
-Interestingly, the computer stopped recognizing the USB devices (speaker and microphone) in the
-monitor with the new, GC-Titan Ridge TB3 AIC installed. With the previous AIC, I did not
-specifically turn on any of the Discrete Thunderbolt Support options in the BIOS and everything
-was working fine. It would seem, however, that this AIC requires some BIOS settings to get
-everything working.
+With the GC-Titan Ridge card installed, the computer stopped recognizing the USB devices in the monitor (the speaker and microphone). With the previous card I hadn't turned on any of the Discrete Thunderbolt Support options in the BIOS, and everything had worked. This card needs some BIOS settings.
 
-I found [these directions for setting up TB3 in the Asus Prime Z390-A
-BIOS](https://www.technopat.net/konu/success-prime-z390-a-9900k-thunderbolt-3-macos-10-14.651013).
-In this case, the author was attempting to configure the BIOS for a Hackintosh build, but I
-cargo-culted the setup anyway with the exception of setting the Windows 10 Thunderbolt Support
-(when I attempted to set that to the specified value, the BIOS utility just froze up completely.)
+I found [these directions for setting up TB3 in the Asus Prime Z390-A BIOS](https://www.technopat.net/konu/success-prime-z390-a-9900k-thunderbolt-3-macos-10-14.651013). The author was configuring the BIOS for a Hackintosh build, but I copied the settings anyway, apart from the Windows 10 Thunderbolt Support option. When I tried to set that to the specified value, the BIOS utility froze.
 
-After changing those BIOS settings, the USB audio in the monitor was detected just fine on
-startup.
+After those changes, the monitor's USB audio was detected at startup.
 
 </section>
 
-Lachlan and I built a new desktop PC this past weekend (something I haven't done
-in probably 15 years). Over the past couple of years, I've grown more and more
-annoyed with some of the choices Apple has been making with MacOS that have made
-it more annoying to use the system for the kind of software development I do,
-and I've had an itch to return to my first love: Linux. I've also wanted to
-share that experience of building up a computer with Lachlan for a while, since
-he's the one of my kids who is really into all things technology. To be honest,
-while I brought the knowledge and experience of how to safely handle the
-equipment and debug any issues, Lachlan was the one who brought the knowledge of
-what technology is available today and was able to give great advice in terms of
-picking out the processor, motherboard, and video card.
+The 27" LG UltraFine 5K display accepts video only through Thunderbolt, so out of the box it works with recent MacBooks and with little else. I bought one for my MacBook without noticing that. A year later I wanted to use it with a desktop PC running Linux, and found very little written about how. It can be done. With the first Thunderbolt card I tried, it took hours of trial and error and three hand-written configuration files, and the display ran below its full resolution. With a different card, described in the updates above, it runs at full 5K with no configuration. Anyone starting now should begin with that second card. The rest of this post records the original setup.
 
-We had one particular challenge, though, in building this system. Last year, I
-bought one of the new 27" LG UltraFine 5k displays to use with my Macbook. It's
-truly a beautiful display in terms of picture quality, and...well...it was
-pretty darned expensive, too. What I stupidly didn't realize at the time is that
-it *only* has a Thunderbolt input and would pretty much only work "out of the
-box" with the newest Macbooks. D'oh!
+Lachlan and I built the PC over a weekend. I hadn't built one in about fifteen years. Over the previous couple of years, Apple's choices with macOS had made it more and more annoying for the kind of software development I do, and I'd wanted to go back to Linux, which I used first. I had also wanted to build a computer with Lachlan for a while, since he's the one of my kids who is really into technology. I brought the experience of handling the parts safely and debugging what went wrong. Lachlan knew what hardware is available now, and his advice on the processor, motherboard, and video card was good.
 
-A little research showed hints of being able to get the LG 5k monitor to work
-with a PC if you have a motherboard that provides a Thunderbolt header *and* you
-install a special Thunderbolt AIC (add-in card) that has a mini-DisplayPort
-input. The idea is that you use a patch cable to feed the DisplayPort output
-from your video card into the Thunderbolt AIC's mini-DisplayPort input, and then
-the AIC will send the video signal through its Thunderbolt output. Unfortunately
-there was not a huge amount of information out there about this particular
-setup, particularly with regard to Linux support.
+The monitor was the one difficult part of the build. It's a beautiful display, and it was expensive. Some research turned up hints that it could work with a PC whose motherboard has a Thunderbolt header, given a Thunderbolt add-in card (AIC) with a mini-DisplayPort input. A patch cable carries the DisplayPort output of the video card into the AIC's mini-DisplayPort input, and the AIC sends the video signal out through its Thunderbolt port. There wasn't much information about this arrangement, and less about Linux support for it.
 
-We decided to go ahead and try to get it working. While we spec'ed out the
-system with that as a central constraint, the AIC itself only cost around $35.00
-(USD), and the rest of the system would still be great aside from that. If it
-didn't work out, the worst case was that I'd sell the LG 5k monitor and buy a
-new monitor with regular DisplayPort inputs—a hassle, but not a disaster.
+We decided to try. We chose the rest of the system with that constraint in mind, but the AIC cost only about $35 (USD), and the system would be a good one regardless. If it failed, I'd sell the LG and buy a monitor with ordinary DisplayPort inputs, which would have been a hassle and no worse.
 
-I'm happy to report that we *did* get the monitor working great with Linux after
-a lot of trial and error (see below for the details about configuring Linux to
-work with this setup) and all of the other hardware worked well out of the box
-(except for the lack of any Linux drivers for all of the Asus Aura RGB stuff,
-which is only an aesthetic complaint—although an annoying one, because there is
-no way to turn off the slowly flashing red glow on the video card).
+It worked, after a lot of trial and error. The rest of the hardware worked without any effort, with one exception: there are no Linux drivers for the Asus Aura RGB lighting. That's an aesthetic complaint, though an annoying one, because the slowly flashing red glow on the video card can't be turned off.
 
-Here is the part-list for the build:
+Here is the parts list for the build:
 
 * CPU: Intel Core i9-9900k 5.0 GHz
 * CPU Cooler: Noctua NH-D15 82.5 CFM CPU Cooler
@@ -99,66 +54,32 @@ Here is the part-list for the build:
 * Thunderbolt AIC: Asus ThunderboltEX 3
 * Operating System: Ubuntu Linux 18.10
 
-After building the system with this configuration, running the Nvidia's DP
-output into the Thunderbolt AIC, and connecting the LG 5k monitor via its
-Thunderbolt cable, a fresh install of Ubuntu loaded up fine, and we were able to
-log into the Gnome 3 desktop just fine. Unfortunately (or perhaps fortunately in
-this case?), Nvidia does not provide their own open-source drivers for Linux,
-and Ubuntu does not install the closed-source drivers by default. Instead, you
-get the open-source nouveau driver. That driver works fine for most things, but
-if we wanted to settle for "most things", we'd just have used the on-board GPU
-of the motherboard. In order to take advantage of the Nvidia's capabilities, we
-needed to install the proprietary Nvidia drivers. Ubuntu's apt repository
-contains the `nvidia-driver-390` package, and they even make it easy to switch
-to it by running `ubuntu-drivers autoinstall`, however the distribution lags
-behind the official release of the drivers, which are up to version 415 as of
-this writing. In order to have access to the latest drivers, just add the PPA
-and update apt:
+## Installing the Nvidia driver
+
+With the Nvidia card's DisplayPort output running into the Thunderbolt AIC and the monitor connected by its Thunderbolt cable, a fresh install of Ubuntu started normally and we could log in to the Gnome 3 desktop. Nvidia doesn't publish open-source drivers for Linux, and Ubuntu doesn't install the closed-source ones by default, so what you get is the open-source nouveau driver. It handles most things. To use what the card can do, we needed Nvidia's proprietary driver.
+
+Ubuntu's apt repository has the `nvidia-driver-390` package, and `ubuntu-drivers autoinstall` will switch to it. The distribution lags behind Nvidia's releases, though, which were at version 415 when I wrote this. For the latest drivers, add the PPA and update apt:
 
 ```
 sudo add-apt-repository ppa:graphics-drivers/ppa
 sudo apt-get update
 ```
 
-Then you can install the proprietary driver with:
+Then install the proprietary driver:
 
 ```
 sudo apt install nvidia-driver-415 # or whatever the latest version is
 ```
 
-This will add the appropriate kernel module and some necessary configuration.
+This adds the kernel module and some configuration. After the reboot that follows, the desktop manager doesn't load. You get a blank screen, perhaps with a blinking cursor.
 
-Then you'll reboot your computer, and...
+## Getting the display to come up
 
-The desktop manager won't load. You'll probably be staring at a blank screen,
-perhaps with a blinking cursor.
+We had another display in the house with an HDMI input, so we connected it and rebooted. GDM loaded on the HDMI display. I reattached the LG as a second monitor. Nothing appeared on it, but Gnome's display settings listed it as a monitor.
 
-Luckily, I do have another display here at the house that has an HDMI input, so
-we were able to hook that display up for some debugging. We hooked up the other
-display and rebooted. This time, GDM loaded up on the HDMI display just fine. I
-then reattached the LG display as a second monitor. Nothing showed up on it,
-*but*, it showed up as a monitor in Gnome's display settings. Heh. That's
-weird...
+On a whim I changed the LG's resolution from "auto" to 4096x2304, and it started working. I don't know the cause for certain. My guess is that passing the signal through the Thunderbolt AIC makes automatic detection of the resolution fail.
 
-On a whim, I changed the resolution of the LG display from "auto" to 4096x2304,
-and..._all of the sudden it worked!_
-
-I don't know for sure, but my guess is that something about being passed through
-the Thunderbolt AIC is causing the automatic detection of the resolution to
-fail.
-
-Great, we're done now, right?
-
-Not exactly. I'll spare you the details of the rest of the debugging we went
-through (*lot's* of trial and error, searching Google, and piecing together what
-I could find from people who had sort-of-kind-of similar symptoms here and
-there, but never all in the same combination, and definitely never with this set
-of hardware.) Suffice it to say that the solution lies in being *very* specific
-about configuring the display with all three of Xorg, GDM, and Gnome. Here are
-the contents of the configuration files that needed to be changed in order to
-get this working on the new system (you may need to tweak them a bit if you have
-a different combination of hardware, but hopefully this saves you from the hours
-of trial and error!):
+That wasn't the end of it. The debugging that followed was trial and error, searching, and piecing together reports from people with similar symptoms, none of whom had this combination of hardware. The solution was to configure the display explicitly in all three of Xorg, GDM, and Gnome. These are the files that had to change. With different hardware you may need to adjust them.
 
 In `/etc/X11/xorg.conf`:
 
@@ -242,9 +163,7 @@ Section "Screen"
 EndSection
 ```
 
-In *both* `$HOME/.config/monitors.xml` *and*
-`/var/lib/gdm3/.config/monitors.xml` (my guess is that you'll need to change the
-value for `<serial>` here to the serial number for your actual monitor):
+In both `$HOME/.config/monitors.xml` and `/var/lib/gdm3/.config/monitors.xml` (my guess is that the value of `<serial>` has to be changed to the serial number of your own monitor):
 
 ```xml
 <monitors version="2">
@@ -272,6 +191,4 @@ value for `<serial>` here to the serial number for your actual monitor):
 </monitors>
 ```
 
-With those files in place, neither X nor Gnome were relying on autoconfiguration
-of the display's settings, and the LG 5k display seems to be working just fine
-(although not actually at "5k", but it still looks great.)
+With those files in place, neither X nor Gnome relies on autoconfiguration of the display, and the LG works. It isn't running at 5K in this setup, but it still looks great.
