@@ -1,5 +1,5 @@
 +++
-title = "What it Really Means to be \"Agile"
+title = "What it Really Means to be \"Agile\""
 description = "Two simple questions that cut through process dogma to determine if your team is actually agile."
 slug = "what-it-really-means-to-be-agile"
 date = 2010-12-15
@@ -9,81 +9,22 @@ cover = "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=800&q=80
 
 +++
 
-Yesterday, Elizabeth Hendrickson posted her [Agile Acid
-Test](http://testobsessed.com/2010/12/14/the-agile-acid-test/) in which she asks
-three questions to determine whether or not a team is truly "agile". There is
-also the [Agile Manifesto](http://agilemanifesto.org/) which describes the
-values that an agile team should adhere to. While there is nothing that I
-disagree with in either Elizabeth's post or the Agile Manifesto, there
-are two simpler questions you can ask that get to the heart of whether or
-not your team is agile: *Can you react immediately and without panic when
-external constraints on your project are changed*, and *does your team regularly
-and frequently review its processes to ensure the answer to the previous
-question is always "yes"?*
+An organization that adopts an agile method usually wants to know whether the adoption worked. The usual test is whether the team follows the method: whether it holds the meetings, keeps the backlog, and runs the sprints. That measures how closely a recipe is being followed, and a team can pass it and still be thrown when its plans have to change.
+
+Yesterday, Elizabeth Hendrickson posted her [Agile Acid Test](http://testobsessed.com/2010/12/14/the-agile-acid-test/), which asks three questions to determine whether a team is agile. The [Agile Manifesto](http://agilemanifesto.org/) describes the values an agile team should hold. I don't disagree with anything in either. Two simpler questions get to the heart of the matter, though. *Can you react immediately and without panic when external constraints on your project change?* And *does your team regularly and frequently review its processes to make sure the answer to the first question stays "yes"?*
 
 <!-- more -->
 
-If you can answer yes to both questions, then your team is agile. Whether you
-use XP, Scrum, Lean, Waterfall or any other process or mix of processes doesn't
-matter at all for the purpose of determining agility; these processes may help
-you deliver software that meets stakeholder needs in a timely fashion (or they
-may not), but no single one of them is "the right way".
+A team that can answer yes to both is agile. Whether it uses XP, Scrum, Lean, Waterfall, or some mixture of processes has no bearing on that. Those processes may help a team deliver software that meets its stakeholders' needs on time, or they may not, and none of them is the one right way.
 
-Note that I don't ask about delivered value or sustainable pace. It's not my
-intent to discount the importance of either of these things *in general*; I do
-not, however see them as a strict requirement of agility, per se. Granted, if a
-team isn't able to do both of these things, that team probably will not be
-successful in the long run, but if the team asks itself the two questions I
-propose, then the other things are likely to fall into place naturally. (When I
-say team, I am talking about the whole organization—it is critical that the team
-is empowered to make changes that can affect its answers to these questions, so
-the management needs to be part of the process.) Both the Agile Manifesto and
-Elizabeth's questions address qualities that are typically evident in truly
-agile teams, but the essence is that a team is able to *react quickly* to whatever
-is thrown at it and is able to *react differently* to changing situations.
+The questions don't mention delivered value or sustainable pace. Both are important, and a team that can't manage them probably won't succeed in the long run, but they aren't requirements of agility as such. A team that keeps asking itself the two questions is likely to arrive at them anyway. By "team" I mean the whole organization. The team has to have the authority to make changes that affect its answers, so management has to be part of the process. The Manifesto and Elizabeth's questions describe qualities that agile teams typically show. The essence is that a team can react quickly to whatever is thrown at it and can react differently as the situation changes.
 
-Most software development methodologies start out as experiments that worked for
-one team, got introduced to others and managed to gain successes and proponents.
-Then somebody puts a label on it and writes down the definition of what it means
-to do, say, Scrum. Now we have a neat list of things that a consultant can point
-to and say "yes, you are doing Scrum" or "no, that's not Scrum". This recipe for
-Scrum is now ready to ship off to other development organizations, and if only
-they perform the recipe just the way it's written down, everything will be fine.
+Most software development methodologies begin as an experiment that worked for one team. Other teams try it, it has some successes, and it gains advocates. Then someone gives it a name and writes down what it means to do, say, Scrum. Now there's a list that a consultant can point to and say "yes, you are doing Scrum" or "no, that's not Scrum." The recipe is ready to be shipped to other organizations, with the promise that following it exactly as written will make everything fine.
 
-Right...
+My wife and I both love to cook, and one of my favorite celebrity chefs is Alton Brown. He's the reason I stopped seeing cooking as something I had to do occasionally in order to eat and started enjoying it. He doesn't only give you a recipe. He gives you what you need to reflect on what you did and understand why a dish did or didn't turn out as you expected. You then know what to do differently next time, where otherwise you'd assume you can't make that recipe work and give up on it.
 
-A tangent: My wife and I both love to cook. One of my favorite celebrity chefs
-is Alton Brown—he is, in fact, singularly responsible for my move from viewing
-cooking as "something you had to do occasionally if you wanted to eat" to being
-something I actually enjoy doing. The reason for this is simple: he doesn't just
-give you a recipe, he gives you the tools you need to reflect on what you've
-done and understand why a dish did or did not turn out the way you expected.
-That way you know what to do differently next time as opposed to assuming you
-can't make that particular recipe work and giving up on it.
+Promoting agile methodologies as connect-the-dots exercises is the biggest failing of the agile software development movement. A methodology becomes popular enough that an organization's management, or often its developers, decide to adopt it for the benefits of "agile." They follow the process to the letter for one or two releases and don't meet the organization's goals. They conclude that agile won't work for them and go back to old patterns that seem to work at least a little better. By then the consultants and trainers have moved on, with an occasional tweet about "#notscrum."
 
-The promotion of various "agile" methodologies as connect-the-dots exercises is
-the biggest failing of the agile software development movement. A methodology
-gains enough popularity that an organization's management (or often the
-developers themselves) decide to adopt that methodology in order to take
-advantage of the benefits of "agile".  They follow the process to the letter for
-one or two releases, but they don't meet the goals of the organization, write
-off "agile" as something that won't work for them and go back to old patterns
-that are perceived to work at least a little bit better for them. Meanwhile, the
-consultants and trainers have moved on to greener pastures with the occasional
-tweet about "#notscrum".
+I much prefer the approach of people like Diana Larsen of [FutureWorks Consulting](http://futureworksconsulting.com/), co-author of [Agile Retrospectives](http://pragprog.com/titles/dlret/agile-retrospectives). She promotes agile methodologies, and she stresses that an organization has to reflect on what it has achieved and what it has failed at, and in both cases on how and why. Then she challenges the organization to find the next steps that will bring it closer to its goals.
 
-I much prefer the approach of those like Diana Larsen of [FutureWorks
-Consulting](http://futureworksconsulting.com/) and co-author of the excellent
-book [Agile
-Retrospectives](http://pragprog.com/titles/dlret/agile-retrospectives) who—while
-promoting agile methodologies—stresses the importance of an organization
-reflecting on what it has achieved, what it has failed at, and in both cases
-*how and why* it has done so. She will then challenge that organization to find
-the next steps it can take to get closer to meeting it's goals.
-
-With such an approach, a team that is new to agile software development may
-start out with a by-the-book Scrum implementation, but after several iterations
-of delivery, retrospective and process modification, that team may or may not
-have a process that still resembles Scrum. As long as that team is able to
-answer yes to my two questions, they may be "#notscrum", but they can hardly be
-called "#notagile".
+A team new to agile development that takes this approach may start with Scrum by the book. After several iterations of delivery, retrospective, and changes to its process, what it does may or may not still resemble Scrum. Whether it does matters less than whether the team can still answer yes to both questions.
